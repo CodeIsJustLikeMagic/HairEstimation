@@ -9,7 +9,7 @@ def show(title, image):
     height = image.shape[0]
     width = image.shape[1]
     # image = cv2.resize(image, (width, height))
-    image = cv2.resize(image, (int(width * 0.4), int(height * 0.4)))
+    image = cv2.resize(image, (int(width * 0.3), int(height * 0.3)))
     cv2.imshow(title, image)
 
 
@@ -51,7 +51,7 @@ def intensity(orig, gray, edges):
     kernel = np.ones((3, 3), np.uint8)
     img_dilation = cv2.dilate(edges, kernel, iterations=1)
     img_erosion = cv2.erode(img_dilation, kernel, iterations=1)
-    hairPixels = edges#img_dilation
+    hairPixels = img_dilation #edges
 
     #skel = skeletonize(img_dilation)
     hairPixelMask = np.ones(orig.shape[:2], dtype="uint8")
@@ -102,9 +102,11 @@ def intensity(orig, gray, edges):
     newhigh = 255
     oldhigh = uniquesortedValues[uniquesortedValues.size-1]
     newlow = oldlow = uniquesortedValues[1]
+    print(np.unique(intensity))
     #if hair scale
-    intensity = hairPixelMask *( newlow + ((newhigh - newlow) / (oldhigh - oldlow)) * (intensity-oldlow)) + (1-hairPixels)*255
+    intensity = ( newlow + ((newhigh - newlow) / (oldhigh - oldlow)) * (intensity-oldlow))
     #reapply hairPixelMask
+    #intensity = (1-hairPixelMask)*0 +(hairPixelMask * intensity) # no hair found = black
     print(np.unique(intensity))
     print(intensity)
 
