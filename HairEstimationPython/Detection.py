@@ -138,58 +138,87 @@ def detect(path):
     found(edges)
     intensity(orig, gray, edges)
     return orig,edges
-def scaleDots(path):
-    img_rgb = cv2.imread(path)
-    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('TemplateDot.jpg',0)
-    w, h = template.shape[::-1]
 
-    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    show('img',img_rgb)
-    threshold = 0.80
+def processMatchResult(img_rgb,res,threshold,templatew, templateh):
     loc = np.where(res >= threshold)
     cnt = 0
     actualpoints = np.array([])
     prevpt= (0,0)
-    differentPointthreshhold = 10
+    differentPointthreshhold = 20
+    rectangleImage = img_rgb.copy()
     for pt in zip(*loc[::-1]):
-         print(pt)
          if np.abs((pt[0]+pt[1]) - (prevpt[0]+prevpt[1])) >  differentPointthreshhold:
              actualpoints = np.append(actualpoints, pt)
              cnt = cnt + 1
          prevpt = pt
-         #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
-    #print('cnt' ,cnt)
+         cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
+    show('foundDots', rectangleImage)
     #print('actual points', actualpoints)
-    crop_img = img_rgb.copy()
-    if cnt != 4:
-        print('!!! ERROR: only found', actualpoints.size/2, 'Dots !!!')
+    return cnt,actualpoints
+def scaleDots(path):
+    img_rgb = cv2.imread(path)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread('TemplateDot.jpg',0)
+    templatew, templateh = template.shape[::-1]
 
-    else:
-        #x1,y1 is top left vertex
-        #x2,y2 is bottom right vertex
-        # image: pt1 ...... pt2
-        #        .           .
-        #        .           .
-        #        pt4 ...... pt3
-        #actualpoints= [pt1 x, pt1 y, pt2 x, pt2 y, pt3 x, pt3 y, pt4 x, pt4 y]
-        #finding x1:
-        x1 = int(max(actualpoints[0],actualpoints[6])) #pt1x, pt4x
-        x2 = int(min(actualpoints[2], actualpoints[4]))#pt2x, pt3x
-        y1 = int(max(actualpoints[1], actualpoints[3]))#pt1y, pt2y
-        y2 = int(min(actualpoints[5], actualpoints[7]))#pt3y, pt4y
-        print (x1,y1, x2, y2)
-        crop_img = crop_img[y1:y2, x1:x2].copy()
-        show('crop image', crop_img)
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    show('img',img_rgb)
+    show('match res', res)
 
-    cv2.imwrite('res.png', img_rgb)
-    #show('res', img_rgb)
+    threshold = 0.8
+    cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+    if cnt == 0:
+        print('no dots found, not cropping image')
+
+        cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        return img_rgb
+    tries = 0
+    retry = True
+    retImg = img_rgb.copy()
+    while (retry):
+        tries = tries + 1
+        if tries > 30:
+            print('gave up. Best found:', cnt)
+
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            retry = False
+        if cnt ==4:
+            # y1: the larger one of the lowerst 2 y
+            ypoints = np.sort(actualpoints[1::2])  # every odd item
+            xpoints = np.sort(actualpoints[::2])  # every even item
+            y1 = int(ypoints[1] + (templateh / 2))  # the largest one of the loweset 2y
+            y2 = int(ypoints[2] - (templateh / 2))
+            x1 = int(xpoints[1] + (templatew / 2))
+            x2 = int(xpoints[2] - (templatew / 2))
+            # x1,y1 is top left vertex
+            # x2,y2 is bottom right vertex
+            #print(x1, y1, x2, y2)
+            crop_img = img_rgb[y1:y2, x1:x2].copy()
+            show('crop image', crop_img)
+            retImg = crop_img
+            retry = False
+        if cnt >4:
+            #found to many... make threshhold higher
+            threshold = threshold+0.01
+            cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+        if cnt< 4:
+            #found to few dots.. make threshhold lower to let more pass
+            threshold = threshold-0.01
+            cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return crop_img
+    return retImg
+
+
+
 if __name__ == "__main__":
-    #detect('Dots.jpg')
+    detect('Dots.jpg')
     detect('Dot_Mummel_1.jpg')
+    detect('Dot_Mummel_1_3.jpg')
+    detect('Dot_Mummel_1_4.jpg')
+    detect('Dot_Mummel_4.jpg')
     #orig, edges = detect('Mummel_1.jpg')
     #orig, edges = detect('Mummel_6_long.jpg')
     #orig, edges = detect('Mummel_12_long_dense.jpg')
