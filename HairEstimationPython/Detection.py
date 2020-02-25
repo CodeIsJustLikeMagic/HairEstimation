@@ -6,10 +6,12 @@ from matplotlib import pyplot as plt
 
 
 def show(title, image):
+    resize = False
     height = image.shape[0]
     width = image.shape[1]
     # image = cv2.resize(image, (width, height))
-    image = cv2.resize(image, (int(width * 0.3), int(height * 0.3)))
+    if resize:
+        image = cv2.resize(image, (int(width * 0.2), int(height * 0.2)))
     cv2.imshow(title, image)
 
 
@@ -74,10 +76,10 @@ def intensity(orig, gray, edges):
     imediateBackground = (1-imediateBackground)*0+imediateBackground * gray
     #count colors that are ligher than black
     backGroundPixels = np.count_nonzero(imediateBackground > 0)
-    print(backGroundPixels)
+    #print(backGroundPixels)
     #average color = sum of colors / pixels
     averageBackgroundColor = np.sum(imediateBackground)/backGroundPixels
-    print('backgroundcolor', averageBackgroundColor)
+    #print('backgroundcolor', averageBackgroundColor)
 
     #average color of everything
     avgColor = np.sum(gray)/np.size(gray)
@@ -90,7 +92,7 @@ def intensity(orig, gray, edges):
     sum = np.sum(hairOnBlack)
     averageHairColor = sum/np.count_nonzero(hairPixels == 255)
 
-    print('average hair color ', averageHairColor)
+    #print('average hair color ', averageHairColor)
 
     #if average hair color is lighter than the background, flip hair on average
     #brither is more intense
@@ -102,15 +104,15 @@ def intensity(orig, gray, edges):
     newhigh = 255
     oldhigh = uniquesortedValues[uniquesortedValues.size-1]
     newlow = oldlow = uniquesortedValues[1]
-    print(np.unique(intensity))
+    #print(np.unique(intensity))
     #if hair scale
-    intensity = ( newlow + ((newhigh - newlow) / (oldhigh - oldlow)) * (intensity-oldlow))
+    #hmm maybe we shoudnt scale it...
+    #intensity = ( newlow + ((newhigh - newlow) / (oldhigh - oldlow)) * (intensity-oldlow))
     #reapply hairPixelMask
     #intensity = (1-hairPixelMask)*0 +(hairPixelMask * intensity) # no hair found = black
-    print(np.unique(intensity))
-    print(intensity)
-
-    show('ScaledIntensity', intensity)
+    intensitySum = np.sum(intensity)
+    print('intensitySum:',intensitySum)
+    show('Intensity', intensity)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -131,11 +133,45 @@ def process(path):
     return img, gray, edges
 
 def detect(path):
+    print(path)
     orig,gray, edges = process(path)
     found(edges)
     intensity(orig, gray, edges)
     return orig,edges
+def scaleDots(path):
+    img_rgb = cv2.imread(path)
+    img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    template = cv2.imread('TemplateDot.jpg',0)
+    w, h = template.shape[::-1]
 
+    res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
+    show('img',img_rgb)
+    show('res', res)
+    #pixelMask = np.ones(img_rgb.shape[:2], dtype="uint8")
+    #pixelMask[:,:] = (res >=0.8) # 0 or 1 depending on wehter it above the threshhold
+    #show('pixelMask',pixelMask*255)
+
+    #print(res)
+    #show('res', res)
+    #print(res)
+    #print('zip res', zip(*res[::-1]))
+    threshold = 0.8
+    loc = np.where(res >= threshold)
+    #show('loc',loc)
+    #print(loc)
+    print(zip(*loc[::]))
+    cv2.rectangle(img_rgb, (2,2), (10,10), (255,0,0), 2)
+    for pt in zip(*loc[::]):
+        cv2.rectangle(img_rgb, pt[::-1], (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+    cv2.imwrite('res.png', img_rgb)
+    show('res', img_rgb)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return
 if __name__ == "__main__":
+    scaleDots('Dots.jpg')
     #orig, orig = detect('HairTest1_18Hairs.png')
-    orig, orig = detect('Mummel_12_long_dense.jpg')
+    #orig, orig = detect('Mummel_1.jpg')
+    #orig, orig = detect('Mummel_6_long.jpg')
+    #orig, orig = detect('Mummel_12_long_dense.jpg')
+    #orig, orig = detect('Mummel_12_long_loose.jpg')
