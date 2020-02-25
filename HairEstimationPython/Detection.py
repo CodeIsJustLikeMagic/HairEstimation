@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 
 
 def show(title, image):
-    resize = False
+    resize = True
     height = image.shape[0]
     width = image.shape[1]
     # image = cv2.resize(image, (width, height))
@@ -21,7 +21,7 @@ def found(img):
     all = np.size(img)
 
     print('hairpixels:', sum)
-    print('imagepixels:', all, ' should be: ', img.shape[0] * img.shape[1])
+    print('imagepixels:', all)
     print('percentage:', (sum / all) * 100)
 
     return sum
@@ -117,14 +117,13 @@ def intensity(orig, gray, edges):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-def process(path):
-    img = cv2.imread(path)
+def process(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((3, 3), np.uint8)
     edges = cv2.Canny(gray, 40, 200, kernel)
 
-    # show('original', img)
-    # show('canny', edges)
+    show('original', img)
+    show('canny', edges)
     # show('dilation', img_dilation)
     # show('erode', img_erosion)
     # show('inversion', image)
@@ -134,7 +133,8 @@ def process(path):
 
 def detect(path):
     print(path)
-    orig,gray, edges = process(path)
+    croped = scaleDots(path)
+    orig,gray, edges = process(croped)
     found(edges)
     intensity(orig, gray, edges)
     return orig,edges
@@ -146,32 +146,51 @@ def scaleDots(path):
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     show('img',img_rgb)
-    show('res', res)
-    #pixelMask = np.ones(img_rgb.shape[:2], dtype="uint8")
-    #pixelMask[:,:] = (res >=0.8) # 0 or 1 depending on wehter it above the threshhold
-    #show('pixelMask',pixelMask*255)
-
-    #print(res)
-    #show('res', res)
-    #print(res)
-    #print('zip res', zip(*res[::-1]))
-    threshold = 0.8
+    threshold = 0.80
     loc = np.where(res >= threshold)
-    #show('loc',loc)
-    #print(loc)
-    print(zip(*loc[::]))
-    cv2.rectangle(img_rgb, (2,2), (10,10), (255,0,0), 2)
-    for pt in zip(*loc[::]):
-        cv2.rectangle(img_rgb, pt[::-1], (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+    cnt = 0
+    actualpoints = np.array([])
+    prevpt= (0,0)
+    differentPointthreshhold = 10
+    for pt in zip(*loc[::-1]):
+         print(pt)
+         if np.abs((pt[0]+pt[1]) - (prevpt[0]+prevpt[1])) >  differentPointthreshhold:
+             actualpoints = np.append(actualpoints, pt)
+             cnt = cnt + 1
+         prevpt = pt
+         #cv2.rectangle(img_rgb, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+    #print('cnt' ,cnt)
+    #print('actual points', actualpoints)
+    crop_img = img_rgb.copy()
+    if cnt != 4:
+        print('!!! ERROR: only found', actualpoints.size/2, 'Dots !!!')
+
+    else:
+        #x1,y1 is top left vertex
+        #x2,y2 is bottom right vertex
+        # image: pt1 ...... pt2
+        #        .           .
+        #        .           .
+        #        pt4 ...... pt3
+        #actualpoints= [pt1 x, pt1 y, pt2 x, pt2 y, pt3 x, pt3 y, pt4 x, pt4 y]
+        #finding x1:
+        x1 = int(max(actualpoints[0],actualpoints[6])) #pt1x, pt4x
+        x2 = int(min(actualpoints[2], actualpoints[4]))#pt2x, pt3x
+        y1 = int(max(actualpoints[1], actualpoints[3]))#pt1y, pt2y
+        y2 = int(min(actualpoints[5], actualpoints[7]))#pt3y, pt4y
+        print (x1,y1, x2, y2)
+        crop_img = crop_img[y1:y2, x1:x2].copy()
+        show('crop image', crop_img)
+
     cv2.imwrite('res.png', img_rgb)
-    show('res', img_rgb)
+    #show('res', img_rgb)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return
+    return crop_img
 if __name__ == "__main__":
-    scaleDots('Dots.jpg')
-    #orig, orig = detect('HairTest1_18Hairs.png')
-    #orig, orig = detect('Mummel_1.jpg')
-    #orig, orig = detect('Mummel_6_long.jpg')
-    #orig, orig = detect('Mummel_12_long_dense.jpg')
-    #orig, orig = detect('Mummel_12_long_loose.jpg')
+    #detect('Dots.jpg')
+    detect('Dot_Mummel_1.jpg')
+    #orig, edges = detect('Mummel_1.jpg')
+    #orig, edges = detect('Mummel_6_long.jpg')
+    #orig, edges = detect('Mummel_12_long_dense.jpg')
+    #orig, edges = detect('Mummel_12_long_loose.jpg')
