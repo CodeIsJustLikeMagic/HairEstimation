@@ -2,6 +2,8 @@
 
 import cv2
 import numpy as np
+import scipy
+from scipy.ndimage import label
 from matplotlib import pyplot as plt
 #region done
 def show(title, image):
@@ -118,9 +120,9 @@ def skeletonize(img):
 def removeSmallRegions(intensity, img):
     #https://docs.opencv.org/master/d3/db4/tutorial_py_watershed.html
     removalThreshold = 600
-    show('intenisty', intensity)
+    #show('intenisty', intensity)
     ret, markers = cv2.connectedComponents(intensity*255)
-    print('markers',np.unique(markers))
+    #print('markers',np.unique(markers))
     markers = markers+1
     labels = cv2.watershed(img, markers)
     returnImage = intensity.copy()
@@ -134,7 +136,7 @@ def removeSmallRegions(intensity, img):
         if np.sum(mask) < removalThreshold:
             #remove the region
             returnImage = mask*0+(1-mask)*returnImage
-    show('small regions removed',returnImage)
+    #show('small regions removed',returnImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return returnImage
@@ -272,17 +274,86 @@ def region_growing(img, seed):
     show('region growth res', outimg)
     return outimg
 
+def regions(intensity, img):
+    hairPixelMask = np.ones(intensity.shape[:2], dtype="uint8")
+    hairPixelMask[:, :] = (intensity != 0)  # 0 for no hair, 1 for hair.
+    #seperate the outer most region and get rid of it.
+    blacknwhite = img.copy()
+    blacknwhite = hairPixelMask*0 + (1-hairPixelMask)*255
+    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
+    blacknwhite = cv2.erode(blacknwhite, kernel, iterations=4)
+    show('blacknwhite', blacknwhite)
+
+    markers = np.zeros(intensity.shape[:2], dtype="uint8")
+    markers[0][0] = 1
+    print (markers)
+    img = cv2.cvtColor(intensity,cv2.COLOR_GRAY2RGB)
+    show('img',img)
+    markers = markers.astype(np.int32)
+    labels = cv2.watershed(img, markers)
+    print(labels)
+    for label in np.unique(labels):
+        mask = np.zeros(intensity.shape, dtype="uint8")
+        mask[labels == label] = 1
+        print(np.sum(mask))
+        image = intensity.copy()
+        image = mask*255+(1-mask)*0
+        show('label '+str(label),image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return
+
+    blacknwhite = cv2.distanceTransform(blacknwhite, 3, 3)
+    show('distance', blacknwhite)
+    lbl, ncc = scipy.ndimage.label(blacknwhite)
+    lbl = lbl * (255 / (ncc + 1))
+    #background = 0, border= hair = 255
+    # Completing the markers now.
+    lbl = (1-hairPixelMask)*255+hairPixelMask*lbl # if there is no hair make it white
+    #lbl[border == 255] = 255
+
+    lbl = lbl.astype(np.int32)
+    cv2.watershed(img, lbl)
+
+    lbl[lbl == -1] = 0
+    lbl = lbl.astype(np.uint8)
+    ret =  255 - lbl
+    show('ret', ret)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+    return
+    show('img', 255-img)
+    ret, markers = cv2.connectedComponents(255-(intensity*255))
+    markers[0] = 2
+    print('markers',np.unique(markers))
+    #markers = markers+1
+
+    #cv2.waitKey(0)
+    #cv2.destroyAllWindows()
+    #return
+    labels = cv2.watershed(255-img, markers)
+    for label in np.unique(labels):
+        mask = np.zeros(intensity.shape, dtype="uint8")
+        mask[labels == label] = 1
+        print(np.sum(mask))
+        image = intensity.copy()
+        image = mask*255+(1-mask)*0
+        show('label '+str(label),image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 def detect(path):
     print(path)
     croped = scaleDots(path)
     edges,intensity = edgeProcess(croped)
     #region_growing(edges,[12,12])
-    #removeSmallRegions(intensity, croped)
+    regions(intensity, croped)
 
 if __name__ == "__main__":
     detect('Dot_Mummel_1.jpg')
-    detect('Dot_Mummel_1_3.jpg')
-    detect('Dot_Mummel_1_4.jpg')
-    detect('Dot_Mummel_4.jpg')
-    detect('Dot_Mummel_medium.jpg')
+    #detect('Dot_Mummel_1_3.jpg')
+    #detect('Dot_Mummel_1_4.jpg')
+    #detect('Dot_Mummel_4.jpg')
+    #detect('Dot_Mummel_medium.jpg')
