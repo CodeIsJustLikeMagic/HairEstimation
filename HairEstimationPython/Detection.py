@@ -7,7 +7,7 @@ from scipy.ndimage import label
 from matplotlib import pyplot as plt
 #region done
 def show(title, image):
-    resize = False
+    resize = True
     height = image.shape[0]
     width = image.shape[1]
     # image = cv2.resize(image, (width, height))
@@ -132,7 +132,7 @@ def removeSmallRegions(intensity, img):
         #print(np.sum(mask))
         image = intensity.copy()
         image = mask*255+(1-mask)*0
-        show('label '+str(label),image)
+        #show('label '+str(label),image)
         if np.sum(mask) < removalThreshold:
             #remove the region
             returnImage = mask*0+(1-mask)*returnImage
@@ -208,110 +208,20 @@ def edgeProcess(orig):
     return edges,intensity
 #endregion
 
-def regions(intensity, img):
-    show('img', img)
-    show('intensity', intensity)
-    #intensity is black hair with white background.
-    #i want to detect the regions of background in the image.
-    kernel = np.ones((3, 3), np.uint8)
-    opening = cv2.morphologyEx(intensity, cv2.MORPH_OPEN, kernel, iterations=2)
-    sure_bg = cv2.dilate(opening, kernel, iterations=3)
-    #black regions show sure_bg, in this case hair
-    sure_bg = 255-sure_bg
-    show('sube_bg', sure_bg)
-    #finding sure foreground area
-    dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2, 5)
-    show('dist', dist_transform)
-    #ret, sure_fg = cv2.threshhold(dist_transform, 0.7*dist_transform.max(), 255,0)
-
-    #show('sure fg', sure_fg)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    return
-    hairPixelMask = np.ones(intensity.shape[:2], dtype="uint8")
-    hairPixelMask[:, :] = (intensity != 0)  # 0 for no hair, 1 for hair.
-    #seperate the outer most region and get rid of it.
-    blacknwhite = img.copy()
-    blacknwhite = hairPixelMask*0 + (1-hairPixelMask)*255
-    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
-    blacknwhite = cv2.erode(blacknwhite, kernel, iterations=4)
-    show('blacknwhite', blacknwhite)
-
-    markers = np.zeros(intensity.shape[:2], dtype="uint8")
-    markers[1][1] = 1
-    print (markers)
-    img = cv2.cvtColor(blacknwhite,cv2.COLOR_GRAY2RGB)
-    img = 255-img
-    show('img',img)
-    markers = markers.astype(np.int32)
-    labels = cv2.watershed(img, markers)
-    print(labels)
-    for label in np.unique(labels):
-        mask = np.zeros(intensity.shape, dtype="uint8")
-        mask[labels == label] = 1
-        print(np.sum(mask))
-        image = intensity.copy()
-        image = mask*255+(1-mask)*0
-        show('label '+str(label),image)
-
-    blacknwhite = cv2.distanceTransform(blacknwhite, 3, 3)
-    show('distance', blacknwhite)
-    lbl, ncc = scipy.ndimage.label(blacknwhite)
-    lbl = lbl * (255 / (ncc + 1))
-    #background = 0, border= hair = 255
-    # Completing the markers now.
-    lbl = (1-hairPixelMask)*255+hairPixelMask*lbl # if there is no hair make it white
-    #lbl[border == 255] = 255
-
-    lbl = lbl.astype(np.int32)
-    cv2.watershed(img, lbl)
-
-    lbl[lbl == -1] = 0
-    lbl = lbl.astype(np.uint8)
-    ret =  255 - lbl
-    show('ret', ret)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
-
-    return
-    show('img', 255-img)
-    ret, markers = cv2.connectedComponents(255-(intensity*255))
-    markers[0] = 2
-    print('markers',np.unique(markers))
-    #markers = markers+1
-
-    #cv2.waitKey(0)
-    #cv2.destroyAllWindows()
-    #return
-    labels = cv2.watershed(255-img, markers)
-    for label in np.unique(labels):
-        mask = np.zeros(intensity.shape, dtype="uint8")
-        mask[labels == label] = 1
-        print(np.sum(mask))
-        image = intensity.copy()
-        image = mask*255+(1-mask)*0
-        show('label '+str(label),image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-
 def detect(path):
     print(path)
     croped = scaleDots(path)
     edges,intensity = edgeProcess(croped)
-    #region_growing(edges,[12,12])
-    regions(intensity, croped)
-def regionstest(path):
-    orig = cv2.imread(path)
-    intensity = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
-    intensity = 255-intensity
-    regions(intensity, orig)
+    backgroundRegions(intensity)
+def backgroundRegions(intensity):
+    region(intensity)
 
-def region(path):
-    img = cv2.imread('testRG.png')
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+def region(intensity):
+    show('input intensity', intensity)
+    img = cv2.cvtColor(intensity,cv2.COLOR_GRAY2RGB)
+    gray = intensity
     ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-    thresh = 255-thresh
+    #thresh = 255-thresh
     show('thresh',thresh)
     # noise removal
     kernel = np.ones((3, 3), np.uint8)
@@ -333,6 +243,7 @@ def region(path):
     # Marker labelling
     ret, markers = cv2.connectedComponents(sure_fg)
     print(markers)
+    print(np.unique(markers))
     #ok that looks like it worked. hair(black) is now 2. and all the white parts(background) are labelded 1+
     # Add one to all labels so that sure background is not 0, but 1
     markers = markers + 1
@@ -342,18 +253,17 @@ def region(path):
     for marker in np.unique(markers):
         mask = np.zeros(gray.shape, dtype="uint8")
         mask[markers == marker] = 1
-        # print(np.sum(mask))
+        print(np.sum(mask))
         image = gray.copy()
         image = mask * 255 + (1 - mask) * 0
         show('marker ' + str(marker), image)
-    img[markers == -1] = [255, 0, 0]
+    #img[markers == -1] = [255, 0, 0]
     show('img', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 if __name__ == "__main__":
     #detect('testRG.png')
-    region('testRG.png')
-    #detect('Dot_Mummel_1.jpg')
+    detect('Dot_Mummel_1.jpg')
     #detect('Dot_Mummel_1_3.jpg')
     #detect('Dot_Mummel_1_4.jpg')
     #detect('Dot_Mummel_4.jpg')
