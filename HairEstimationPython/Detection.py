@@ -7,7 +7,7 @@ from scipy.ndimage import label
 from matplotlib import pyplot as plt
 #region done
 def show(title, image):
-    resize = True
+    resize = False
     height = image.shape[0]
     width = image.shape[1]
     # image = cv2.resize(image, (width, height))
@@ -132,7 +132,7 @@ def removeSmallRegions(intensity, img):
         #print(np.sum(mask))
         image = intensity.copy()
         image = mask*255+(1-mask)*0
-        #show('label '+str(label),image)
+        show('label '+str(label),image)
         if np.sum(mask) < removalThreshold:
             #remove the region
             returnImage = mask*0+(1-mask)*returnImage
@@ -207,74 +207,27 @@ def edgeProcess(orig):
     cv2.destroyAllWindows()
     return edges,intensity
 #endregion
-def get8n(x, y, shape):
-    out = []
-    maxx = shape[1]-1
-    maxy = shape[0]-1
-
-    #top left
-    outx = min(max(x-1,0),maxx)
-    outy = min(max(y-1,0),maxy)
-    out.append((outx,outy))
-
-    #top center
-    outx = x
-    outy = min(max(y-1,0),maxy)
-    out.append((outx,outy))
-
-    #top right
-    outx = min(max(x+1,0),maxx)
-    outy = min(max(y-1,0),maxy)
-    out.append((outx,outy))
-
-    #left
-    outx = min(max(x-1,0),maxx)
-    outy = y
-    out.append((outx,outy))
-
-    #right
-    outx = min(max(x+1,0),maxx)
-    outy = y
-    out.append((outx,outy))
-
-    #bottom left
-    outx = min(max(x-1,0),maxx)
-    outy = min(max(y+1,0),maxy)
-    out.append((outx,outy))
-
-    #bottom center
-    outx = x
-    outy = min(max(y+1,0),maxy)
-    out.append((outx,outy))
-
-    #bottom right
-    outx = min(max(x+1,0),maxx)
-    outy = min(max(y+1,0),maxy)
-    out.append((outx,outy))
-
-    return out
-
-def region_growing(img, seed):
-    list = []
-    outimg = np.zeros_like(img)
-    list.append((seed[0], seed[1]))
-    processed = []
-    while(len(list) > 0):
-        pix = list[0]
-        outimg[pix[0], pix[1]] = 255
-        for coord in get8n(pix[0], pix[1], img.shape):
-            if img[coord[0], coord[1]] != 0:
-                outimg[coord[0], coord[1]] = 255
-                if not coord in processed:
-                    list.append(coord)
-                processed.append(coord)
-        list.pop(0)
-        cv2.imshow("progress",outimg)
-        cv2.waitKey(1)
-    show('region growth res', outimg)
-    return outimg
 
 def regions(intensity, img):
+    show('img', img)
+    show('intensity', intensity)
+    #intensity is black hair with white background.
+    #i want to detect the regions of background in the image.
+    kernel = np.ones((3, 3), np.uint8)
+    opening = cv2.morphologyEx(intensity, cv2.MORPH_OPEN, kernel, iterations=2)
+    sure_bg = cv2.dilate(opening, kernel, iterations=3)
+    #black regions show sure_bg, in this case hair
+    sure_bg = 255-sure_bg
+    show('sube_bg', sure_bg)
+    #finding sure foreground area
+    dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2, 5)
+    show('dist', dist_transform)
+    #ret, sure_fg = cv2.threshhold(dist_transform, 0.7*dist_transform.max(), 255,0)
+
+    #show('sure fg', sure_fg)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return
     hairPixelMask = np.ones(intensity.shape[:2], dtype="uint8")
     hairPixelMask[:, :] = (intensity != 0)  # 0 for no hair, 1 for hair.
     #seperate the outer most region and get rid of it.
@@ -285,9 +238,10 @@ def regions(intensity, img):
     show('blacknwhite', blacknwhite)
 
     markers = np.zeros(intensity.shape[:2], dtype="uint8")
-    markers[0][0] = 1
+    markers[1][1] = 1
     print (markers)
-    img = cv2.cvtColor(intensity,cv2.COLOR_GRAY2RGB)
+    img = cv2.cvtColor(blacknwhite,cv2.COLOR_GRAY2RGB)
+    img = 255-img
     show('img',img)
     markers = markers.astype(np.int32)
     labels = cv2.watershed(img, markers)
@@ -299,9 +253,6 @@ def regions(intensity, img):
         image = intensity.copy()
         image = mask*255+(1-mask)*0
         show('label '+str(label),image)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
-    return
 
     blacknwhite = cv2.distanceTransform(blacknwhite, 3, 3)
     show('distance', blacknwhite)
@@ -350,9 +301,59 @@ def detect(path):
     edges,intensity = edgeProcess(croped)
     #region_growing(edges,[12,12])
     regions(intensity, croped)
+def regionstest(path):
+    orig = cv2.imread(path)
+    intensity = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
+    intensity = 255-intensity
+    regions(intensity, orig)
 
+def region(path):
+    img = cv2.imread('testRG.png')
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    thresh = 255-thresh
+    show('thresh',thresh)
+    # noise removal
+    kernel = np.ones((3, 3), np.uint8)
+    opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
+    show('opening', opening)
+    # sure background area
+    sure_bg = cv2.dilate(opening, kernel, iterations=1)
+    show('sure_bg',sure_bg)
+    # Finding sure foreground area
+    sure_fg = opening.copy()
+    #dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2, 5)
+    #show('dist_transform',dist_transform)
+    #ret, sure_fg = cv2.threshold(dist_transform, 0.7 * dist_transform.max(), 255, 0)
+    show('sure_fg', sure_fg)
+    # Finding unknown region
+    sure_fg = np.uint8(sure_fg)
+    unknown = cv2.subtract(sure_bg, sure_fg)
+    show('unknown',unknown)
+    # Marker labelling
+    ret, markers = cv2.connectedComponents(sure_fg)
+    print(markers)
+    #ok that looks like it worked. hair(black) is now 2. and all the white parts(background) are labelded 1+
+    # Add one to all labels so that sure background is not 0, but 1
+    markers = markers + 1
+    # Now, mark the region of unknown with zero
+    markers[unknown == 255] = 0
+    markers = cv2.watershed(img, markers)
+    for marker in np.unique(markers):
+        mask = np.zeros(gray.shape, dtype="uint8")
+        mask[markers == marker] = 1
+        # print(np.sum(mask))
+        image = gray.copy()
+        image = mask * 255 + (1 - mask) * 0
+        show('marker ' + str(marker), image)
+    img[markers == -1] = [255, 0, 0]
+    show('img', img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 if __name__ == "__main__":
-    detect('Dot_Mummel_1.jpg')
+    #detect('testRG.png')
+    region('testRG.png')
+    #detect('Dot_Mummel_1.jpg')
     #detect('Dot_Mummel_1_3.jpg')
     #detect('Dot_Mummel_1_4.jpg')
     #detect('Dot_Mummel_4.jpg')
