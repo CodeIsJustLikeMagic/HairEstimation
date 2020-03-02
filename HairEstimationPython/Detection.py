@@ -36,18 +36,26 @@ def scaleDots(path):
     template = cv2.imread('TemplateDot.jpg',0)
     templatew, templateh = template.shape[::-1]
 
+
+
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    #show('img',img_rgb)
-    #show('match res', res)
+    show('img',img_rgb)
+    show('match res', res)
 
     threshold = 0.8
     cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
     if cnt == 0:
-        print('no dots found, not cropping image')
-
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-        return img_rgb
+        #trying out inverted image. for blond hair on black background
+        revImg = 255 - img_gray
+        res = cv2.matchTemplate(revImg, template, cv2.TM_CCOEFF_NORMED)
+        show('revRes', res)
+        cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+        if cnt == 0:
+            #if still nothing found assume there arent any points
+            print('no dots found, not cropping image')
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+            return img_rgb
     tries = 0
     retry = True
     retImg = img_rgb.copy()
@@ -63,14 +71,17 @@ def scaleDots(path):
             # y1: the larger one of the lowerst 2 y
             ypoints = np.sort(actualpoints[1::2])  # every odd item
             xpoints = np.sort(actualpoints[::2])  # every even item
+            print(ypoints)
+            print(xpoints)
             y1 = int(ypoints[1] + (templateh / 2))  # the largest one of the loweset 2y
             y2 = int(ypoints[2] - (templateh / 2))
             x1 = int(xpoints[1] + (templatew / 2))
             x2 = int(xpoints[2] - (templatew / 2))
             # x1,y1 is top left vertex
             # x2,y2 is bottom right vertex
-            #print(x1, y1, x2, y2)
+            print(x1, y1, x2, y2)
             crop_img = img_rgb[y1:y2, x1:x2].copy()
+            print(crop_img)
             #show('crop image', crop_img)
             retImg = crop_img
             retry = False
@@ -242,28 +253,52 @@ def region(intensity):
     show('unknown',unknown)
     # Marker labelling
     ret, markers = cv2.connectedComponents(sure_fg)
-    print(markers)
-    print(np.unique(markers))
     #ok that looks like it worked. hair(black) is now 2. and all the white parts(background) are labelded 1+
     # Add one to all labels so that sure background is not 0, but 1
     markers = markers + 1
     # Now, mark the region of unknown with zero
     markers[unknown == 255] = 0
     markers = cv2.watershed(img, markers)
+    backgroundSum = 0
+
+    print(np.unique(markers))
+    print(' backgorund sections',)
+    allPixelSum = img.shape[0]*img.shape[1]
+    print('all pixels', allPixelSum)
+    sectionNum = np.unique(markers).size
+    print('number of section:', sectionNum)
+    innerSectionNum = sectionNum - 2
+    print('number of section inclosed:', innerSectionNum)#-1 is space between and 1 is hair
+    #finding size of outermost section
+    mask = np.zeros(gray.shape, dtype="uint8")
+    mask[markers == 2] = 1 # set pixels marked with 2 to 1. rest is 0.
+    outerSectionSum = np.sum(mask)
+    print('outerSectionSum', outerSectionSum)
+    innerSectionSum = allPixelSum- outerSectionSum
+    print('innerSectionSum', innerSectionSum)
+    print('innserSectionAvgSize', innerSectionSum/innerSectionNum)
+
+
     for marker in np.unique(markers):
-        mask = np.zeros(gray.shape, dtype="uint8")
-        mask[markers == marker] = 1
-        print(np.sum(mask))
-        image = gray.copy()
-        image = mask * 255 + (1 - mask) * 0
-        show('marker ' + str(marker), image)
+        #if(marker > 1): # skipping -1 and 1. -1 is space between, and 1 is hair(background).
+            mask = np.zeros(gray.shape, dtype="uint8")
+            mask[markers == marker] = 1
+            backgroundSum = backgroundSum+ np.sum(mask)
+            #print(np.sum(mask))
+            image = gray.copy()
+            image = mask * 255 + (1 - mask) * 0
+            show('marker ' + str(marker), image)
     #img[markers == -1] = [255, 0, 0]
-    show('img', img)
+    #print('backgorund pixels:', backgroundSum / (np.size(markers)-2))
+    #show('img', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 if __name__ == "__main__":
+    #detect('Dot_Felina_ 4_1.jpg')
+    detect('Dot_Felina_ 4_2.jpg')
+
     #detect('testRG.png')
-    detect('Dot_Mummel_1.jpg')
+    #detect('Dot_Mummel_1.jpg')
     #detect('Dot_Mummel_1_3.jpg')
     #detect('Dot_Mummel_1_4.jpg')
     #detect('Dot_Mummel_4.jpg')
