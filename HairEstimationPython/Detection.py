@@ -295,8 +295,26 @@ def region(intensity): #only uses intensity image. background black, hair white
     #show('img', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+def testEdgeDetection(path):
+    orig = cv2.imread(path)
+
+    blur = cv2.blur(orig, (5, 5))
+    show('blur', blur)
+    show('orig', orig)
+    gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    kernel = np.ones((3, 3), np.uint8)
+    edges = cv2.Canny(blur, 40, 200, kernel)
+    show('edges', edges)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
 if __name__ == "__main__":
-    detect('Dot_Felina_4_ 1.jpg')
+    testEdgeDetection('Dot_Felina_4_ 1.jpg')
+    testEdgeDetection('Dot_Mummel_1_3.jpg')
+    testEdgeDetection('Dot_Felina_ large.jpg')
+    testEdgeDetection('Dot_Felina_4_ 2.jpg')
+    #detect('Dot_Felina_4_ 1.jpg')
     #detect('Dot_Felina_ 4_2.jpg')
     #detect('Dot_Felina_ 4_3.jpg')
     #detect('testRG.png')
