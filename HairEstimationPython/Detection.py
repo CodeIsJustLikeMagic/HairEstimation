@@ -27,10 +27,10 @@ def processMatchResult(img_rgb,res,threshold,templatew, templateh):
              cnt = cnt + 1
          prevpt = pt
          cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
-    #show('foundDots', rectangleImage)
+    #show('foundDots', rectangleImage) #show found dots with red rectangle around them
     #print('actual points', actualpoints)
     return cnt,actualpoints
-def scaleDots(path):
+def cropDots(path):
     img_rgb = cv2.imread(path)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread('TemplateDot.jpg',0)
@@ -39,8 +39,8 @@ def scaleDots(path):
 
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    show('img',img_rgb)
-    show('match res', res)
+    #show('img',img_rgb)
+    #show('match res', res)
 
     threshold = 0.8
     cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
@@ -48,7 +48,7 @@ def scaleDots(path):
         #trying out inverted image. for blond hair on black background
         revImg = 255 - img_gray
         res = cv2.matchTemplate(revImg, template, cv2.TM_CCOEFF_NORMED)
-        show('revRes', res)
+        #show('revRes', res)
         cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
         if cnt == 0:
             #if still nothing found assume there arent any points
@@ -71,18 +71,19 @@ def scaleDots(path):
             # y1: the larger one of the lowerst 2 y
             ypoints = np.sort(actualpoints[1::2])  # every odd item
             xpoints = np.sort(actualpoints[::2])  # every even item
-            print(ypoints)
-            print(xpoints)
+            #print(ypoints)
+            #print(xpoints)
             y1 = int(ypoints[1] + (templateh / 2))  # the largest one of the loweset 2y
             y2 = int(ypoints[2] - (templateh / 2))
             x1 = int(xpoints[1] + (templatew / 2))
             x2 = int(xpoints[2] - (templatew / 2))
             # x1,y1 is top left vertex
             # x2,y2 is bottom right vertex
-            print(x1, y1, x2, y2)
+            #print(x1, y1, x2, y2)
+
             crop_img = img_rgb[y1:y2, x1:x2].copy()
-            print(crop_img)
-            #show('crop image', crop_img)
+            #print(crop_img)
+            show('crop image', crop_img)
             retImg = crop_img
             retry = False
         if cnt >4:
@@ -143,11 +144,12 @@ def removeSmallRegions(intensity, img):
         #print(np.sum(mask))
         image = intensity.copy()
         image = mask*255+(1-mask)*0
-        #show('label '+str(label),image)
+        show('label '+str(label),image)
         if np.sum(mask) < removalThreshold:
             #remove the region
             returnImage = mask*0+(1-mask)*returnImage
-    #show('small regions removed',returnImage)
+    show('small regions removed',returnImage)
+    1+1
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return returnImage
@@ -212,22 +214,22 @@ def edgeProcess(orig):
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     kernel = np.ones((3, 3), np.uint8)
     edges = cv2.Canny(gray, 40, 200, kernel)
-    intensity = hairPixelIntensity(orig, gray, edges)
-    hairPixelPercentage(intensity)
+    show('edges',edges)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    intensity = hairPixelIntensity(orig, gray, edges)
+    hairPixelPercentage(intensity)
     return edges,intensity
 #endregion
 
 def detect(path):
     print(path)
-    croped = scaleDots(path)
+    croped = cropDots(path)
     edges,intensity = edgeProcess(croped)
-    backgroundRegions(intensity)
+    #backgroundRegions(intensity)
 def backgroundRegions(intensity):
     region(intensity)
-
-def region(intensity):
+def region(intensity): #only uses intensity image. background black, hair white
     show('input intensity', intensity)
     img = cv2.cvtColor(intensity,cv2.COLOR_GRAY2RGB)
     gray = intensity
@@ -294,9 +296,9 @@ def region(intensity):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 if __name__ == "__main__":
-    #detect('Dot_Felina_ 4_1.jpg')
-    detect('Dot_Felina_ 4_2.jpg')
-
+    detect('Dot_Felina_4_ 1.jpg')
+    #detect('Dot_Felina_ 4_2.jpg')
+    #detect('Dot_Felina_ 4_3.jpg')
     #detect('testRG.png')
     #detect('Dot_Mummel_1.jpg')
     #detect('Dot_Mummel_1_3.jpg')
