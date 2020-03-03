@@ -19,37 +19,44 @@ def processMatchResult(img_rgb,res,threshold,templatew, templateh):
     cnt = 0
     actualpoints = np.array([])
     prevpt= (0,0)
-    differentPointthreshhold = 20
+    differentPointthreshhold = 1000**2
     rectangleImage = img_rgb.copy()
     for pt in zip(*loc[::-1]):
-         if np.abs((pt[0]+pt[1]) - (prevpt[0]+prevpt[1])) >  differentPointthreshhold:
+         if fuzzycontains(actualpoints,pt,differentPointthreshhold):
              actualpoints = np.append(actualpoints, pt)
              cnt = cnt + 1
          prevpt = pt
          cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
-    #show('foundDots', rectangleImage) #show found dots with red rectangle around them
-    #print('actual points', actualpoints)
-    return cnt,actualpoints
+    show('foundDots', rectangleImage) #show found dots with red rectangle around them
+    print('actual points', actualpoints)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    return cnt,actualpoints,rectangleImage
+def fuzzycontains(actualpoints, pt,differentPointthreshhold):
+    xpoints = actualpoints[::2]
+    ypoints = actualpoints[1::2]
+    for actpoints in zip(xpoints,ypoints):
+        if (pt[0] - actpoints[0]) ** 2 + (pt[1] - actpoints[1]) ** 2 < differentPointthreshhold:
+            return False
+    return True
 def cropDots(path):
     img_rgb = cv2.imread(path)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread('TemplateDot.jpg',0)
     templatew, templateh = template.shape[::-1]
 
-
-
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     #show('img',img_rgb)
     #show('match res', res)
 
     threshold = 0.8
-    cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+    cnt, actualpoints,rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
     if cnt == 0:
         #trying out inverted image. for blond hair on black background
         revImg = 255 - img_gray
         res = cv2.matchTemplate(revImg, template, cv2.TM_CCOEFF_NORMED)
         #show('revRes', res)
-        cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+        cnt, actualpoints,rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
         if cnt == 0:
             #if still nothing found assume there arent any points
             print('no dots found, not cropping image')
@@ -60,6 +67,7 @@ def cropDots(path):
     retry = True
     retImg = img_rgb.copy()
     while (retry):
+        print(threshold)
         tries = tries + 1
         if tries > 30:
             print('gave up. Best found:', cnt)
@@ -71,29 +79,30 @@ def cropDots(path):
             # y1: the larger one of the lowerst 2 y
             ypoints = np.sort(actualpoints[1::2])  # every odd item
             xpoints = np.sort(actualpoints[::2])  # every even item
-            #print(ypoints)
-            #print(xpoints)
+            print(xpoints)
+            print(ypoints)
             y1 = int(ypoints[1] + (templateh / 2))  # the largest one of the loweset 2y
             y2 = int(ypoints[2] - (templateh / 2))
             x1 = int(xpoints[1] + (templatew / 2))
             x2 = int(xpoints[2] - (templatew / 2))
             # x1,y1 is top left vertex
             # x2,y2 is bottom right vertex
-            #print(x1, y1, x2, y2)
+            print(x1, y1, x2, y2)
 
             crop_img = img_rgb[y1:y2, x1:x2].copy()
-            #print(crop_img)
-            show('crop image', crop_img)
+            print(crop_img)
+            #show('crop image', crop_img)
             retImg = crop_img
+            show('rectImg',rectImg)
             retry = False
         if cnt >4:
             #found to many... make threshhold higher
             threshold = threshold+0.01
-            cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+            cnt, actualpoints,rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
         if cnt< 4:
             #found to few dots.. make threshhold lower to let more pass
             threshold = threshold-0.01
-            cnt, actualpoints = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+            cnt, actualpoints,rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return retImg
@@ -144,7 +153,7 @@ def removeSmallRegions(intensity, img):
         #print(np.sum(mask))
         image = intensity.copy()
         image = mask*255+(1-mask)*0
-        show('label '+str(label),image)
+        #show('removeSmallRegions label '+str(label),image)
         if np.sum(mask) < removalThreshold:
             #remove the region
             returnImage = mask*0+(1-mask)*returnImage
@@ -210,8 +219,10 @@ def hairPixelIntensity(orig, gray, edges):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return intensity
-def edgeProcess(orig):
+def edgeProcess(orig,blur):
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
+    if blur:
+        gray = cv2.medianBlur(gray, 5)
     kernel = np.ones((3, 3), np.uint8)
     edges = cv2.Canny(gray, 40, 200, kernel)
     show('edges',edges)
@@ -222,11 +233,11 @@ def edgeProcess(orig):
     return edges,intensity
 #endregion
 
-def detect(path):
+def detect(path,blur):
     print(path)
     croped = cropDots(path)
-    edges,intensity = edgeProcess(croped)
-    #backgroundRegions(intensity)
+    edges,intensity = edgeProcess(croped,blur)
+    backgroundRegions(intensity)
 def backgroundRegions(intensity):
     region(intensity)
 def region(intensity): #only uses intensity image. background black, hair white
@@ -263,7 +274,7 @@ def region(intensity): #only uses intensity image. background black, hair white
     markers = cv2.watershed(img, markers)
     backgroundSum = 0
 
-    print(np.unique(markers))
+    #print(np.unique(markers))
     print(' backgorund sections',)
     allPixelSum = img.shape[0]*img.shape[1]
     print('all pixels', allPixelSum)
@@ -289,7 +300,7 @@ def region(intensity): #only uses intensity image. background black, hair white
             #print(np.sum(mask))
             image = gray.copy()
             image = mask * 255 + (1 - mask) * 0
-            show('marker ' + str(marker), image)
+            #show('marker ' + str(marker), image)
     #img[markers == -1] = [255, 0, 0]
     #print('backgorund pixels:', backgroundSum / (np.size(markers)-2))
     #show('img', img)
@@ -300,9 +311,15 @@ def testEdgeDetection(path):
 
     blur = cv2.blur(orig, (5, 5))
     show('blur', blur)
+    blur = cv2.GaussianBlur(orig, (5, 5), 0)
+    show('gaussianBlur', blur)
+    blur = cv2.medianBlur(orig, 5)
+    show('meidanblur', blur)
+    #blur = orig
     show('orig', orig)
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    #ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    #show('thresh', thresh)
     kernel = np.ones((3, 3), np.uint8)
     edges = cv2.Canny(blur, 40, 200, kernel)
     show('edges', edges)
@@ -310,16 +327,19 @@ def testEdgeDetection(path):
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    testEdgeDetection('Dot_Felina_4_ 1.jpg')
-    testEdgeDetection('Dot_Mummel_1_3.jpg')
-    testEdgeDetection('Dot_Felina_ large.jpg')
-    testEdgeDetection('Dot_Felina_4_ 2.jpg')
-    #detect('Dot_Felina_4_ 1.jpg')
-    #detect('Dot_Felina_ 4_2.jpg')
-    #detect('Dot_Felina_ 4_3.jpg')
+    #testEdgeDetection('Black_Mummel_Test_ (1).jpg')
+    #testEdgeDetection('Black_Mummel_Test_ (2).jpg')
+    #testEdgeDetection('Black_Mummel_Test_ (3).jpg')
+    #testEdgeDetection('Dot_Felina_4_ 1.jpg')
+    #testEdgeDetection('Dot_Mummel_1_3.jpg')
+    #testEdgeDetection('Dot_Felina_ large.jpg')
+    #testEdgeDetection('Dot_Felina_4_ 2.jpg')
+    #detect('Dot_Felina_4_ 1.jpg',True)
+    #detect('Dot_Felina_4_ 2.jpg',True)
+    detect('Dot_Felina_4_ 3.jpg',True)
     #detect('testRG.png')
     #detect('Dot_Mummel_1.jpg')
-    #detect('Dot_Mummel_1_3.jpg')
-    #detect('Dot_Mummel_1_4.jpg')
-    #detect('Dot_Mummel_4.jpg')
+    detect('Dot_Mummel_1_3.jpg',False)
+    detect('Dot_Mummel_1_4.jpg',False)
+    detect('Dot_Mummel_4.jpg',False)
     #detect('Dot_Mummel_medium.jpg')
