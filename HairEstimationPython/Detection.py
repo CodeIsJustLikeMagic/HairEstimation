@@ -239,8 +239,9 @@ def edgeProcess(orig,blur):
     return edges,intensity
 #endregion
 
-def detect(path,blur):
+def detect(path):
     print(path)
+    blur = False
     img_rgb = cv2.imread(path)
     if img_rgb is None:
         print('no image with that path found')
@@ -248,6 +249,7 @@ def detect(path,blur):
     croped = cropDots(img_rgb)
     edges,intensity = edgeProcess(croped,blur)
     backgroundRegions(intensity)
+    print()
 def backgroundRegions(intensity):
     region(intensity)
 def region(intensity): #only uses intensity image. background black, hair white
@@ -336,8 +338,15 @@ if __name__ == "__main__":
     #testEdgeDetection('Dot_Felina_ large.jpg')
     #testEdgeDetection('Dot_Felina_4_ 2.jpg')
 
-    detect('NewBlack_Felina_5.jpg',False)
-    detect('Dot_Mummel_4.jpg',False)
+    detect('Dot_Mummel_1.jpg')
+    detect('Dot_Mummel_10.jpg')
+    detect('Dot_Mummel_21 (2).jpg')
+    detect('Dot_Mummel_30.jpg')
+    detect('Dot_Mummel_40.jpg')
+    detect('Dot_Mummel_50 (2).jpg')
+    detect('Dot_Mummel_60 (2).jpg')
+    detect('Dot_Mummel_60 (1).jpg')
+
     #detect('NewBlack_Felina_5.jpg', False)
     #detect('Dot_Felina_4_ 2.jpg',True)
     #detect('Dot_Felina_4_ 3.jpg',True)
