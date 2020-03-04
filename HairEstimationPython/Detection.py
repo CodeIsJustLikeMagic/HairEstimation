@@ -301,19 +301,6 @@ def region(intensity): #only uses intensity image. background black, hair white
     print('innerSectionSum', innerSectionSum)
     print('innserSectionAvgSize', innerSectionSum/innerSectionNum)
 
-
-    for marker in np.unique(markers):
-        #if(marker > 1): # skipping -1 and 1. -1 is space between, and 1 is hair(background).
-            mask = np.zeros(gray.shape, dtype="uint8")
-            mask[markers == marker] = 1
-            backgroundSum = backgroundSum+ np.sum(mask)
-            #print(np.sum(mask))
-            image = gray.copy()
-            image = mask * 255 + (1 - mask) * 0
-            #show('marker ' + str(marker), image)
-    #img[markers == -1] = [255, 0, 0]
-    #print('backgorund pixels:', backgroundSum / (np.size(markers)-2))
-    #show('img', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 def testEdgeDetection(path):
