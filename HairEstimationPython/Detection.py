@@ -18,19 +18,16 @@ def processMatchResult(img_rgb,res,threshold,templatew, templateh):
     loc = np.where(res >= threshold)
     cnt = 0
     actualpoints = np.array([])
-    prevpt= (0,0)
-    differentPointthreshhold = 1000**2
+    differentPointthreshhold = (min(templateh,templateh)/2)**2 # adaptive threshhold
+    #print(differentPointthreshhold)
     rectangleImage = img_rgb.copy()
     for pt in zip(*loc[::-1]):
          if fuzzycontains(actualpoints,pt,differentPointthreshhold):
              actualpoints = np.append(actualpoints, pt)
              cnt = cnt + 1
-         prevpt = pt
          cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
-    show('foundDots', rectangleImage) #show found dots with red rectangle around them
-    print('actual points', actualpoints)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    #show('foundDots', rectangleImage) #show found dots with red rectangle around them
+    #print('actual points', actualpoints)
     return cnt,actualpoints,rectangleImage
 def fuzzycontains(actualpoints, pt,differentPointthreshhold):
     xpoints = actualpoints[::2]
@@ -39,8 +36,7 @@ def fuzzycontains(actualpoints, pt,differentPointthreshhold):
         if (pt[0] - actpoints[0]) ** 2 + (pt[1] - actpoints[1]) ** 2 < differentPointthreshhold:
             return False
     return True
-def cropDots(path):
-    img_rgb = cv2.imread(path)
+def cropDots(img_rgb):
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread('TemplateDot.jpg',0)
     templatew, templateh = template.shape[::-1]
@@ -67,7 +63,7 @@ def cropDots(path):
     retry = True
     retImg = img_rgb.copy()
     while (retry):
-        print(threshold)
+        #print(threshold)
         tries = tries + 1
         if tries > 30:
             print('gave up. Best found:', cnt)
@@ -79,18 +75,18 @@ def cropDots(path):
             # y1: the larger one of the lowerst 2 y
             ypoints = np.sort(actualpoints[1::2])  # every odd item
             xpoints = np.sort(actualpoints[::2])  # every even item
-            print(xpoints)
-            print(ypoints)
+            #print(xpoints)
+            #print(ypoints)
             y1 = int(ypoints[1] + (templateh / 2))  # the largest one of the loweset 2y
             y2 = int(ypoints[2] - (templateh / 2))
             x1 = int(xpoints[1] + (templatew / 2))
             x2 = int(xpoints[2] - (templatew / 2))
             # x1,y1 is top left vertex
             # x2,y2 is bottom right vertex
-            print(x1, y1, x2, y2)
+            #print(x1, y1, x2, y2)
 
             crop_img = img_rgb[y1:y2, x1:x2].copy()
-            print(crop_img)
+            #print(crop_img)
             #show('crop image', crop_img)
             retImg = crop_img
             show('rectImg',rectImg)
@@ -213,12 +209,22 @@ def hairPixelIntensity(orig, gray, edges):
     intensity = hairOnWhite.copy()
     intensity = 255-intensity
     intensity = removeSmallRegions(intensity,orig)
+    showMissed(intensity,gray,orig)
+
     intensitySum = np.sum(intensity)
     print('intensitySum:',intensitySum)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return intensity
+def showMissed(intensity, gray,orig):
+    #show how much hair is missed
+    hairPixelMask = np.ones(gray.shape[:2], dtype="uint8")
+    hairPixelMask[:, :] = (intensity != 0)  # 0 or 1 depending on wehter it is ==0
+    ret = gray.copy()
+    ret = hairPixelMask*255 + (1-hairPixelMask)*gray
+    show('missed hair', ret)
+    show('orig', orig)
 def edgeProcess(orig,blur):
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     if blur:
@@ -235,35 +241,39 @@ def edgeProcess(orig,blur):
 
 def detect(path,blur):
     print(path)
-    croped = cropDots(path)
+    img_rgb = cv2.imread(path)
+    if img_rgb is None:
+        print('no image with that path found')
+        return
+    croped = cropDots(img_rgb)
     edges,intensity = edgeProcess(croped,blur)
     backgroundRegions(intensity)
 def backgroundRegions(intensity):
     region(intensity)
 def region(intensity): #only uses intensity image. background black, hair white
-    show('input intensity', intensity)
+    #show('input intensity', intensity)
     img = cv2.cvtColor(intensity,cv2.COLOR_GRAY2RGB)
     gray = intensity
     ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     #thresh = 255-thresh
-    show('thresh',thresh)
+    #show('thresh',thresh)
     # noise removal
     kernel = np.ones((3, 3), np.uint8)
     opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
-    show('opening', opening)
+    #show('opening', opening)
     # sure background area
     sure_bg = cv2.dilate(opening, kernel, iterations=1)
-    show('sure_bg',sure_bg)
+    #show('sure_bg',sure_bg)
     # Finding sure foreground area
     sure_fg = opening.copy()
     #dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2, 5)
     #show('dist_transform',dist_transform)
     #ret, sure_fg = cv2.threshold(dist_transform, 0.7 * dist_transform.max(), 255, 0)
-    show('sure_fg', sure_fg)
+    #show('sure_fg', sure_fg)
     # Finding unknown region
     sure_fg = np.uint8(sure_fg)
     unknown = cv2.subtract(sure_bg, sure_fg)
-    show('unknown',unknown)
+    #show('unknown',unknown)
     # Marker labelling
     ret, markers = cv2.connectedComponents(sure_fg)
     #ok that looks like it worked. hair(black) is now 2. and all the white parts(background) are labelded 1+
@@ -313,7 +323,7 @@ def testEdgeDetection(path):
     show('blur', blur)
     blur = cv2.GaussianBlur(orig, (5, 5), 0)
     show('gaussianBlur', blur)
-    blur = cv2.medianBlur(orig, 5)
+    #blur = cv2.medianBlur(orig, 3)
     show('meidanblur', blur)
     #blur = orig
     show('orig', orig)
@@ -321,25 +331,32 @@ def testEdgeDetection(path):
     #ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     #show('thresh', thresh)
     kernel = np.ones((3, 3), np.uint8)
-    edges = cv2.Canny(blur, 40, 200, kernel)
-    show('edges', edges)
+    edges = cv2.Canny(orig, 30, 200, kernel)
+    show('orig edges', edges)
+    edges2 = cv2.Canny(blur, 30,200, kernel)
+    show('blur canny', edges2)
+    show('diff', edges - edges2)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    #testEdgeDetection('Black_Mummel_Test_ (1).jpg')
+    #testEdgeDetection('NewBlack_Felina_5.jpg')
+    #testEdgeDetection('Dot_Mummel_4.jpg')
     #testEdgeDetection('Black_Mummel_Test_ (2).jpg')
     #testEdgeDetection('Black_Mummel_Test_ (3).jpg')
     #testEdgeDetection('Dot_Felina_4_ 1.jpg')
     #testEdgeDetection('Dot_Mummel_1_3.jpg')
     #testEdgeDetection('Dot_Felina_ large.jpg')
     #testEdgeDetection('Dot_Felina_4_ 2.jpg')
-    #detect('Dot_Felina_4_ 1.jpg',True)
+
+    detect('NewBlack_Felina_5.jpg',False)
+    detect('Dot_Mummel_4.jpg',False)
+    #detect('NewBlack_Felina_5.jpg', False)
     #detect('Dot_Felina_4_ 2.jpg',True)
-    detect('Dot_Felina_4_ 3.jpg',True)
+    #detect('Dot_Felina_4_ 3.jpg',True)
     #detect('testRG.png')
     #detect('Dot_Mummel_1.jpg')
-    detect('Dot_Mummel_1_3.jpg',False)
-    detect('Dot_Mummel_1_4.jpg',False)
-    detect('Dot_Mummel_4.jpg',False)
+    #detect('Dot_Mummel_1_3.jpg',False)
+    #detect('Dot_Mummel_1_4.jpg',False)
+    #detect('Dot_Mummel_4.jpg',False)
     #detect('Dot_Mummel_medium.jpg')
