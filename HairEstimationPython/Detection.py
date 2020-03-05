@@ -6,14 +6,20 @@ import scipy
 from scipy.ndimage import label
 from matplotlib import pyplot as plt
 #region done
+def add(data, keys, key, value):
+    data = np.append(data, value)
+    keys = np.append(keys, key)
+    return data, keys
 def show(title, image):
-    resize = True
-    height = image.shape[0]
-    width = image.shape[1]
-    # image = cv2.resize(image, (width, height))
-    if resize:
-        image = cv2.resize(image, (int(width * 0.2), int(height * 0.2)))
-    cv2.imshow(title, image)
+    show = False
+    if show:
+        resize = True
+        height = image.shape[0]
+        width = image.shape[1]
+        # image = cv2.resize(image, (width, height))
+        if resize:
+            image = cv2.resize(image, (int(width * 0.2), int(height * 0.2)))
+        cv2.imshow(title, image)
 #region cropDots
 def processMatchResult(img_rgb,res,threshold,templatew, templateh):
     loc = np.where(res >= threshold)
@@ -104,19 +110,17 @@ def cropDots(img_rgb):
     cv2.destroyAllWindows()
     return retImg
 #endregion
-def hairPixelPercentage(data, img):
+def hairPixelPercentage(data,keys, img):
     sum = np.count_nonzero(img > 0)
     all = np.size(img)
-
-    print('hairpixels:', sum)
-    data = np.append(data, sum)
-    print('imagepixels:', all)
-    data = np.append(data, all)
+    intensityShare = data[0]/sum
+    data, keys = add(data,keys,'intensityShare', intensityShare)
+    data, keys = add(data,keys,'hairpixels', sum)
+    data, keys = add(data,keys,'imagepixels', all)
     percentage = (sum / all) * 100
-    print('percentage:', percentage)
-    data = np.append(data, percentage)
+    data, keys = add(data,keys,'percentage', percentage)
 
-    return data
+    return data,keys
 
 def skeletonize(img):
     """ OpenCV function to return a skeletonized version of img, a Mat object"""
@@ -162,7 +166,7 @@ def removeSmallRegions(intensity, img):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return returnImage
-def hairPixelIntensity(data, orig, gray, edges):
+def hairPixelIntensity(data,keys, orig, gray, edges):
 
     kernel = np.ones((3, 3), np.uint8)
     img_dilation = cv2.dilate(edges, kernel, iterations=1)
@@ -216,11 +220,10 @@ def hairPixelIntensity(data, orig, gray, edges):
     showMissed(intensity,gray,orig)
 
     intensitySum = np.sum(intensity)
-    print('intensitySum:',intensitySum)
-    data = np.append(data, intensitySum)
+    data, keys = add(data,keys,'intensitySum:',intensitySum)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return data,intensity
+    return data,keys,intensity
 def showMissed(intensity, gray,orig):
     #show how much hair is missed
     hairPixelMask = np.ones(gray.shape[:2], dtype="uint8")
@@ -229,7 +232,7 @@ def showMissed(intensity, gray,orig):
     ret = hairPixelMask*255 + (1-hairPixelMask)*gray
     show('missed hair', ret)
     show('orig', orig)
-def edgeProcess(data, orig,blur):
+def edgeProcess(data,keys, orig,blur):
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     if blur:
         gray = cv2.medianBlur(gray, 5)
@@ -238,27 +241,12 @@ def edgeProcess(data, orig,blur):
     show('edges',edges)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    data,intensity = hairPixelIntensity(data, orig, gray, edges)
-    data = hairPixelPercentage(data, intensity)
-    return data, edges,intensity
-#endregion
-def processData(data):
-    return
-def detect(path):
-    print(path)
-    blur = False
-    img_rgb = cv2.imread(path)
-    if img_rgb is None:
-        print('no image with that path found')
-        return
-    data = np.array([])
-    croped = cropDots(img_rgb)
-    data, edges,intensity = edgeProcess(data, croped,blur)
-    data = backgroundRegions(data, intensity)
-    processData(data)
-    print()
+    data,keys ,intensity = hairPixelIntensity(data,keys, orig, gray, edges)
+    data,keys = hairPixelPercentage(data,keys, intensity)
+    return data,keys, edges,intensity
 
-def backgroundRegions(data, intensity): #only uses intensity image. background black, hair white
+
+def backgroundRegions(data,keys, intensity): #only uses intensity image. background black, hair white
     #show('input intensity', intensity)
     img = cv2.cvtColor(intensity,cv2.COLOR_GRAY2RGB)
     gray = intensity
@@ -292,33 +280,59 @@ def backgroundRegions(data, intensity): #only uses intensity image. background b
     markers = cv2.watershed(img, markers)
     backgroundSum = 0
 
-    #print(np.unique(markers))
-    print(' backgorund sections',)
     allPixelSum = img.shape[0]*img.shape[1]
-    print('all pixels', allPixelSum)
-    data = np.append(data, allPixelSum)
+    data, keys = add(data,keys,'all pixels', allPixelSum)
     sectionNum = np.unique(markers).size
-    print('number of section:', sectionNum)
-    data = np.append(data, sectionNum)
+    data, keys = add(data,keys,'number of section:', sectionNum)
     innerSectionNum = sectionNum - 2
-    print('number of section inclosed:', innerSectionNum)#-1 is space between and 1 is hair
-    data = np.append(data, innerSectionNum)
+    data, keys = add(data,keys,'number of section inclosed:', innerSectionNum)#-1 is space between and 1 is hair
     #finding size of outermost section
     mask = np.zeros(gray.shape, dtype="uint8")
     mask[markers == 2] = 1 # set pixels marked with 2 to 1. rest is 0.
-    outerSectionSum = np.sum(mask)
-    print('outerSectionSum', outerSectionSum)
-    data = np.append(data, outerSectionSum)
-    innerSectionSum = allPixelSum- outerSectionSum
-    print('innerSectionSum', innerSectionSum)
-    data = np.append(data, innerSectionSum)
-    innerSectionAvg = innerSectionSum/innerSectionNum
-    print('innserSectionAvgSize', innerSectionAvg)
-    data = np.append(data, innerSectionAvg)
 
+    image = intensity.copy()
+    image = mask * 255 + (1 - mask) * 0
+    show('outer section', image)
+    outerSectionSum = np.sum(mask)
+    data, keys = add(data,keys,'outerSectionSum', outerSectionSum)
+    data, keys = add(data,keys,'outerSectionPercentage', outerSectionSum/allPixelSum)
+    innerSectionSum = allPixelSum- outerSectionSum
+    data, keys = add(data,keys,'innerSectionSum', innerSectionSum)
+    innerSectionAvg = innerSectionSum/innerSectionNum
+    data, keys = add(data,keys,'innserSectionAvgSize', innerSectionAvg)
+    data, keys = add(data,keys,'innerSectionAvgSize Percentage', innerSectionAvg/allPixelSum)
+    sizes = np.array([])
+    for marker in np.unique(markers):
+        if(marker > 2):
+            mask = np.zeros(gray.shape, dtype="uint8")
+            mask[markers == marker] = 1
+            sizes = np.append(sizes,np.sum(mask))
+    innerSectionSizeVariance = np.var(sizes)
+    data, keys = add(data,keys,'innerSectionSizeVariance',innerSectionSizeVariance)
+    data, keys = add(data,keys,'std', np.std(sizes))
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    return data
+    return data,keys
+#endregion
+def showstats(data, keys):
+    for i in range(np.size(data)):
+        print(keys[i], data[i])
+    print()
+def detect(path):
+    print(path)
+    blur = False
+    img_rgb = cv2.imread(path)
+    if img_rgb is None:
+        print('no image with that path found')
+        return
+    data = np.array([])
+    keys = np.array([])
+    croped = cropDots(img_rgb)
+    data,keys, edges,intensity = edgeProcess(data, keys, croped,blur)
+    data,keys = backgroundRegions(data,keys , intensity)
+    showstats( data,keys)
+    return data,keys
+
 def testEdgeDetection(path):
     orig = cv2.imread(path)
 
@@ -352,14 +366,16 @@ if __name__ == "__main__":
     #testEdgeDetection('Dot_Felina_ large.jpg')
     #testEdgeDetection('Dot_Felina_4_ 2.jpg')
 
+
     detect('Dot_Mummel_1.jpg')
-    #detect('Dot_Mummel_10.jpg')
-    #detect('Dot_Mummel_21 (2).jpg')
-    #detect('Dot_Mummel_30.jpg')
-    #detect('Dot_Mummel_40.jpg')
-    #detect('Dot_Mummel_50 (2).jpg')
-    #detect('Dot_Mummel_60 (2).jpg')
-    #detect('Dot_Mummel_60 (1).jpg')
+    detect('Dot_Mummel_10.jpg')
+    detect('Dot_Mummel_21 (1).jpg')
+    detect('Dot_Mummel_21 (2).jpg')
+    detect('Dot_Mummel_30.jpg')
+    detect('Dot_Mummel_40.jpg')
+    detect('Dot_Mummel_50 (2).jpg')
+    detect('Dot_Mummel_60 (2).jpg')
+    detect('Dot_Mummel_60 (1).jpg')
 
     #detect('NewBlack_Felina_5.jpg', False)
     #detect('Dot_Felina_4_ 2.jpg',True)
