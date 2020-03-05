@@ -4,8 +4,9 @@ import cv2
 import numpy as np
 import scipy
 from scipy.ndimage import label
+from scipy import interpolate
 from matplotlib import pyplot as plt
-#region done
+#region detect
 def add(data, keys, key, value):
     data = np.append(data, value)
     keys = np.append(keys, key)
@@ -313,7 +314,7 @@ def backgroundRegions(data,keys, intensity): #only uses intensity image. backgro
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return data,keys
-#endregion
+
 def showstats(data, keys):
     for i in range(np.size(data)):
         print(keys[i], data[i])
@@ -330,7 +331,7 @@ def detect(path):
     croped = cropDots(img_rgb)
     data,keys, edges,intensity = edgeProcess(data, keys, croped,blur)
     data,keys = backgroundRegions(data,keys , intensity)
-    showstats( data,keys)
+    #showstats( data,keys)
     return data,keys
 
 def testEdgeDetection(path):
@@ -355,6 +356,30 @@ def testEdgeDetection(path):
     show('diff', edges - edges2)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+#endregion
+def calibrate(calibrationIn):
+    alldata = np.array([])
+    calibrationPaths = calibrationIn[::2]
+    hairAmount = calibrationIn[1::2]
+    for path in calibrationPaths:
+        data, stats = detect(path)
+        alldata = np.append(alldata, data)
+    print(alldata)
+    print(stats)
+    hairPercentages = alldata[4::np.size(stats)]
+    inclosedSections = alldata[7::np.size(stats)]
+    print(hairPercentages)
+
+
+    spl = interpolate.InterpolatedUnivariateSpline(hairPercentages,hairAmount)
+    fitx = np.linspace(0,hairPercentages.max(),100)
+
+    fig, ax = plt.subplots(figsize=(30,10))
+    #ax.plot(hairPercentages,hairAmount)
+    ax.plot(fitx,spl(fitx))
+    print('spl 2.436',spl(2.436))
+    plt.show()
+    #use percentage for initial estimation of hairamount.
 
 if __name__ == "__main__":
     #testEdgeDetection('NewBlack_Felina_5.jpg')
@@ -366,16 +391,20 @@ if __name__ == "__main__":
     #testEdgeDetection('Dot_Felina_ large.jpg')
     #testEdgeDetection('Dot_Felina_4_ 2.jpg')
 
-
-    detect('Dot_Mummel_1.jpg')
     detect('Dot_Mummel_10.jpg')
-    detect('Dot_Mummel_21 (1).jpg')
-    detect('Dot_Mummel_21 (2).jpg')
-    detect('Dot_Mummel_30.jpg')
-    detect('Dot_Mummel_40.jpg')
-    detect('Dot_Mummel_50 (2).jpg')
-    detect('Dot_Mummel_60 (2).jpg')
-    detect('Dot_Mummel_60 (1).jpg')
+    calibrationIn = np.array(['Dot_Mummel_10.jpg',10, 'Dot_mummel_30.jpg',30, 'Dot_mummel_60 (2).jpg',60])
+    calibrate(calibrationIn)
+
+
+
+    #detect('Dot_Mummel_10.jpg')
+    #detect('Dot_Mummel_21 (1).jpg')
+    #detect('Dot_Mummel_21 (2).jpg')
+    #detect('Dot_Mummel_30.jpg')
+    #detect('Dot_Mummel_40.jpg')
+    #detect('Dot_Mummel_50 (2).jpg')
+    #detect('Dot_Mummel_60 (2).jpg')
+    #detect('Dot_Mummel_60 (1).jpg')
 
     #detect('NewBlack_Felina_5.jpg', False)
     #detect('Dot_Felina_4_ 2.jpg',True)
