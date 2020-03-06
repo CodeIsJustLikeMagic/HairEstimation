@@ -398,6 +398,19 @@ def calibrateProcessImages(calibrationIn):
     # f.write(alldata)
     # f.close()
     # save alldata and stats in a file
+def addCalibrationImage(path,amount):
+    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
+    data, keys = detect(path)
+    alldata = np.load('test.out' + '.npy')
+    print(alldata)
+    print(data)
+    alldata = np.append(alldata, data)
+    hairAmount = np.load('hairamount.out' + '.npy')
+    print(hairAmount)
+    hairAmount = np.append(hairAmount, amount)
+    print(hairAmount)
+    np.save('test.out', alldata)
+    np.save('hairamount.out', hairAmount)
 def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
     calibrationDataX = alldata[datapoint::np.size(keys)]
     hairAmount = np.array(list(map(int, hairAmount)))
@@ -436,12 +449,8 @@ def guess(path):
     keys = np.load('keys.out' + '.npy')
     hairAmount = np.load('hairamount.out' + '.npy')
     data,_ = detect(path)
-    #guessByPercentage(alldata,keys,hairAmount,data[4])
-    #guessByDataPoint(alldata,keys,hairAmount,data,4)
     guessByDataPoint(alldata,keys,hairAmount,data,7)
     guessByDataPoint(alldata,keys,hairAmount,data,4)
-    #guessBySectionNum(alldata,keys,hairAmount,data[7])
-    #guessByPercentage(4.0)
 
 if __name__ == "__main__":
     # testEdgeDetection('NewBlack_Felina_5.jpg')
@@ -456,6 +465,7 @@ if __name__ == "__main__":
     calibrationIn = np.array(['Dot_Mummel_1.jpg',1,'Dot_Mummel_3_ (1).jpg',3,'Dot_Mummel_10.jpg',10,'Dot_Mummel_15_ (2).jpg',15,'Dot_Mummel_22.jpg',22,'Dot_Mummel_25_ (1).jpg',25, 'Dot_mummel_30.jpg',30,'Dot_Mummel_40.jpg',40, 'Dot_Mummel_50 (3).jpg', 50,'Dot_mummel_60 (2).jpg',60])
     #calibrateProcessImages(calibrationIn)
     #guess('Dot_Mummel_10.jpg')
+    addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
     guess('Dot_Mummel_4.jpg')
     guess('Dot_Mummel_21 (1).jpg')
 
