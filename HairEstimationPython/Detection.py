@@ -357,17 +357,32 @@ def testEdgeDetection(path):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 #endregion
-def calibrate(calibrationIn):
+def calibrateProcessImages(calibrationIn):
+    np.set_printoptions(suppress=True,formatter={'float_kind':'{:0.5f}'.format})
     alldata = np.array([])
     calibrationPaths = calibrationIn[::2]
     hairAmount = calibrationIn[1::2]
     for path in calibrationPaths:
-        data, stats = detect(path)
+        data, keys = detect(path)
         alldata = np.append(alldata, data)
+    #f = open("calibrationImageStats.", "w+")
+    print('save',alldata)
+    np.save('test.out',alldata)
+    np.save('keys.out',keys)
+    np.save('hairamount.out',hairAmount)
+    #f.write(alldata)
+    #f.close()
+    #save alldata and stats in a file
+def calibrateStats():
+    #read alldata and stats from file.
+    #this way we can start calibrateStats without having to
+    alldata = np.load('test.out' + '.npy')
+    keys = np.load('keys.out'+'.npy')
+    hairAmount = np.load('hairamount.out'+'.npy')
     print(alldata)
-    print(stats)
-    hairPercentages = alldata[4::np.size(stats)]
-    inclosedSections = alldata[7::np.size(stats)]
+    print(keys)
+    hairPercentages = alldata[4::np.size(keys)]
+    inclosedSections = alldata[7::np.size(keys)]
     print(hairPercentages)
 
 
@@ -380,7 +395,6 @@ def calibrate(calibrationIn):
     print('spl 2.436',spl(2.436))
     plt.show()
     #use percentage for initial estimation of hairamount.
-
 if __name__ == "__main__":
     #testEdgeDetection('NewBlack_Felina_5.jpg')
     #testEdgeDetection('Dot_Mummel_4.jpg')
@@ -391,10 +405,9 @@ if __name__ == "__main__":
     #testEdgeDetection('Dot_Felina_ large.jpg')
     #testEdgeDetection('Dot_Felina_4_ 2.jpg')
 
-    detect('Dot_Mummel_10.jpg')
-    calibrationIn = np.array(['Dot_Mummel_10.jpg',10, 'Dot_mummel_30.jpg',30, 'Dot_mummel_60 (2).jpg',60])
-    calibrate(calibrationIn)
-
+    #calibrationIn = np.array(['Dot_Mummel_10.jpg',10, 'Dot_mummel_30.jpg',30, 'Dot_mummel_60 (2).jpg',60])
+    #calibrateProcessImages(calibrationIn)
+    calibrateStats()
 
 
     #detect('Dot_Mummel_10.jpg')
