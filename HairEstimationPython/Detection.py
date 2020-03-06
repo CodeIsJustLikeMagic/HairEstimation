@@ -430,11 +430,14 @@ def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
     ax.plot(fitx, lin(a, b, fitx))
     ax.scatter(x, y)
     plt.show()
-    print('Guess by',keys[datapoint],lin(a, b, imgdata[datapoint]))
-    print('Guess by', keys[datapoint], spl(imgdata[datapoint]))
+    linguess = lin(a, b, imgdata[datapoint])
+    splguess = spl(imgdata[datapoint])
+    print('Guess by',keys[datapoint],linguess)
+    print('Guess by', keys[datapoint], splguess)
     # fig2,ax2 = plt.subplot()
     # ax.plot()
     # use percentage for initial estimation of hairamount.
+    return linguess,splguess
 
 def lin(a,b,x):
     return a*x+b
@@ -449,10 +452,31 @@ def guess(path):
     keys = np.load('keys.out' + '.npy')
     hairAmount = np.load('hairamount.out' + '.npy')
     data,_ = detect(path)
-    guessByDataPoint(alldata,keys,hairAmount,data,7)
-    guessByDataPoint(alldata,keys,hairAmount,data,4)
+    print(data)
+    print(keys)
+
+    #find out if hair is looser or tigher than normal
+    outerSectionPercentageMean = np.mean(alldata[9::np.size(keys)])
+    #print(outerSectionPercentageMean)
+    isloosethreshhold = outerSectionPercentageMean/4
+    print(data[9], outerSectionPercentageMean+isloosethreshhold)
+    if data[9] < outerSectionPercentageMean+isloosethreshhold:
+        print('this hair bunch is loose')
+        print('prefer the lower estimations on this one. maybe even lower the percentage')
+        data[7] = data[7]/1.5
+        data[4] = data[4]/1.5
+    estimations = np.array([])
+    estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,7))
+    estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,4))
+    mean = np.mean(estimations)
+    print('mean', mean)
+
+
+
+
 
 if __name__ == "__main__":
+    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
     # testEdgeDetection('NewBlack_Felina_5.jpg')
     # testEdgeDetection('Dot_Mummel_4.jpg')
     # testEdgeDetection('Black_Mummel_Test_ (2).jpg')
@@ -465,9 +489,10 @@ if __name__ == "__main__":
     calibrationIn = np.array(['Dot_Mummel_1.jpg',1,'Dot_Mummel_3_ (1).jpg',3,'Dot_Mummel_10.jpg',10,'Dot_Mummel_15_ (2).jpg',15,'Dot_Mummel_22.jpg',22,'Dot_Mummel_25_ (1).jpg',25, 'Dot_mummel_30.jpg',30,'Dot_Mummel_40.jpg',40, 'Dot_Mummel_50 (3).jpg', 50,'Dot_mummel_60 (2).jpg',60])
     #calibrateProcessImages(calibrationIn)
     #guess('Dot_Mummel_10.jpg')
-    addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
+    #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
     guess('Dot_Mummel_4.jpg')
-    guess('Dot_Mummel_21 (1).jpg')
+    #guess('Dot_Mummel_60 (1).jpg')
+    #guess('Dot_Mummel_21 (2).jpg')
 
     # detect('Dot_Mummel_10.jpg')
     # detect('Dot_Mummel_21 (1).jpg')
