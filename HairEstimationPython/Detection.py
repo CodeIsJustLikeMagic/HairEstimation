@@ -1,8 +1,11 @@
 #! /usr/bin/env python3
-
+import datetime
 import cv2
+import os
 import numpy as np
-import scipy
+import re
+import matplotlib.dates as mdates
+
 from scipy import interpolate
 from matplotlib import pyplot as plt
 
@@ -55,7 +58,7 @@ def fuzzycontains(actualpoints, pt, differentPointthreshhold):
 
 def cropDots(img_rgb):
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('TemplateDot.jpg', 0)
+    template = cv2.imread('calibration/TemplateDot.jpg', 0)
     templatew, templateh = template.shape[::-1]
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
@@ -382,13 +385,22 @@ def testEdgeDetection(path):
 
 
 # endregion
-def calibrateProcessImages(calibrationIn):
+def calibration(folderName):
+    #find every image in the folder and use them to calibrate with
+    paths = os.listdir('calibration')
+    paths = [folderName+'/' + path for path in paths]
+    calibrateProcessImages(paths)
+
+def calibrateProcessImages(calibrationPaths):
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
     alldata = np.array([])
-    calibrationPaths = calibrationIn[::2]
-    hairAmount = calibrationIn[1::2]
+    hairAmount = np.array([])
     i=0
     for path in calibrationPaths:
+        numbers = re.findall(r'\d+', path)
+        if(np.size(numbers)==0):
+            continue
+        hairAmount = np.append(hairAmount, numbers[0])
         data, keys = detect(path)
         print('hair amount:', hairAmount[i], 'hair percent', data[4], 'outersectionSize:', data[9],'innersectionNum', data[7])
         i= i+1
@@ -483,6 +495,7 @@ def guess(path):
     keys = np.load('keys.out' + '.npy')
     hairAmount = np.load('hairamount.out' + '.npy')
     data,_ = detect(path)
+    print('alldata', alldata)
     print(data)
     print(keys)
     print(set(zip(keys,data)))
@@ -506,49 +519,56 @@ def guess(path):
         if e < 0:
             np.delete(estimations,e)
     mean = np.mean(estimations)
-    print('mean', mean, 'hair percent:', data[4], 'outer sectionSize:', data[9],'innersectionNum', data[7])
+    res = round(mean,0)
+    print('mean', mean,'res',res, 'hair percent:', data[4], 'outer sectionSize:', data[9],'innersectionNum', data[7])
+    save(path,res)
 
+def save(path,mean):
+    #save image data to a file with all the previous estimations by date. show a plot of the data
+    numbers = re.findall(r'\d+', path)
+    numbers = numbers[0]
+    year = numbers[0:4:]
+    month = numbers[4:6:]
+    day = numbers[6:8:]
+    ymd = year + '-' + month + '-' + day
+    print(path, ymd)
+    estimationResult = np.array([ymd,mean])
+    oldData = np.load('estimationResult.out.npy')
+    newData = np.append(oldData, estimationResult)
+    np.save('estimationResult.out' ,newData)
+def showEstimationResults():
+    data = np.load('estimationResult.out'+'.npy')
+    dates = data[::2]
+    print(dates)
+    dates = [datetime.datetime.strptime(d, "%Y-%m-%d").date() for d in dates]
+    hairAmounts = data[1::2]
 
+    print(dates, hairAmounts)
+    hairAmounts = np.array(list(map(float, hairAmounts)))
 
-
-
+    ax = plt.gca()
+    formatter = mdates.DateFormatter("%Y-%m-%d")
+    ax.xaxis.set_major_formatter(formatter)
+    locator = mdates.DayLocator(interval = 5)
+    ax.xaxis.set_major_locator(locator)
+    plt.scatter(dates, hairAmounts)
+    plt.plot(dates,hairAmounts)
+    plt.gcf().autofmt_xdate()
+    ax.grid()
+    plt.show()
+def clearSave():
+    np.save('estimationResult.out',np.array([]))
 if __name__ == "__main__":
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
-    # testEdgeDetection('NewBlack_Felina_5.jpg')
-    # testEdgeDetection('Dot_Mummel_4.jpg')
-    # testEdgeDetection('Black_Mummel_Test_ (2).jpg')
-    # testEdgeDetection('Black_Mummel_Test_ (3).jpg')
-    # testEdgeDetection('Dot_Felina_4_ 1.jpg')
-    # testEdgeDetection('Dot_Mummel_1_3.jpg')
-    # testEdgeDetection('Dot_Felina_ large.jpg')
-    # testEdgeDetection('Dot_Felina_4_ 2.jpg')
+    #calibration('calibration')
 
-    calibrationIn = np.array(['Dot_Mummel_1.jpg',1,'Dot_Mummel_3_ (1).jpg',3,'Dot_Mummel_10.jpg',10,'Dot_Mummel_15_ (2).jpg',15,'Dot_Mummel_22.jpg',22,'Dot_Mummel_25_ (1).jpg',25, 'Dot_mummel_30.jpg',30,'Dot_Mummel_40.jpg',40, 'Dot_Mummel_50 (3).jpg', 50,'Dot_mummel_60 (2).jpg',60])
-    calibrateProcessImages(calibrationIn)
-    #guess('Dot_Mummel_10.jpg')
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
-    guess('IMG_20200309_104544.jpg')
-    guess('IMG_20200309_104949.jpg')
-
+    #clearSave()
+    #guess('estimationInput/IMG_20200306_104544_22.jpg')
+    #guess('estimationInput/IMG_20200306_104949_22.jpg')
+    #guess('estimationInput/IMG_20200308_142449_25.jpg')
     #guess('Dot_Mummel_4.jpg')
     #guess('Dot_Mummel_60 (1).jpg')
     #guess('Dot_Mummel_21 (2).jpg')
 
-    # detect('Dot_Mummel_10.jpg')
-    # detect('Dot_Mummel_21 (1).jpg')
-    # detect('Dot_Mummel_21 (2).jpg')
-    # detect('Dot_Mummel_30.jpg')
-    # detect('Dot_Mummel_40.jpg')
-    # detect('Dot_Mummel_50 (2).jpg')
-    # detect('Dot_Mummel_60 (2).jpg')
-    # detect('Dot_Mummel_60 (1).jpg')
-
-    # detect('NewBlack_Felina_5.jpg', False)
-    # detect('Dot_Felina_4_ 2.jpg',True)
-    # detect('Dot_Felina_4_ 3.jpg',True)
-    # detect('testRG.png')
-    # detect('Dot_Mummel_1.jpg')
-    # detect('Dot_Mummel_1_3.jpg',False)
-    # detect('Dot_Mummel_1_4.jpg',False)
-    # detect('Dot_Mummel_4.jpg',False)
-    # detect('Dot_Mummel_medium.jpg')
+    showEstimationResults()
