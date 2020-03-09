@@ -387,8 +387,11 @@ def calibrateProcessImages(calibrationIn):
     alldata = np.array([])
     calibrationPaths = calibrationIn[::2]
     hairAmount = calibrationIn[1::2]
+    i=0
     for path in calibrationPaths:
         data, keys = detect(path)
+        print('hair amount:', hairAmount[i], 'hair percent', data[4], 'outersectionSize:', data[9],'innersectionNum', data[7])
+        i= i+1
         alldata = np.append(alldata, data)
     # f = open("calibrationImageStats.", "w+")
     print('save', alldata)
@@ -402,13 +405,11 @@ def addCalibrationImage(path,amount):
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
     data, keys = detect(path)
     alldata = np.load('test.out' + '.npy')
-    print(alldata)
-    print(data)
+    #print(alldata)
+    #print(data)
     alldata = np.append(alldata, data)
     hairAmount = np.load('hairamount.out' + '.npy')
-    print(hairAmount)
     hairAmount = np.append(hairAmount, amount)
-    print(hairAmount)
     np.save('test.out', alldata)
     np.save('hairamount.out', hairAmount)
 def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
@@ -445,6 +446,36 @@ def linregress(x,y):
     a = np.cov(x, y)[0, 1] / np.cov(x, y)[0, 0]  # slope
     b = y.mean() - a * x.mean()  # intersept
     return a,b
+def guessCombo(alldata,keys,hairAmount,imgdata):
+    hairperc = alldata[4::np.size(keys)]
+    outersec = alldata[9::np.size(keys)]
+    calibrationDataX = hairAmount/hairperc*outersec
+    hairAmount = np.array(list(map(int, hairAmount)))
+    x = calibrationDataX
+    y = hairAmount
+    # make sure x goes up, sort both by x
+    inds = x.argsort()
+    x = x[inds]
+    y = y[inds]
+
+    a, b = linregress(x, y)
+    spl = interpolate.InterpolatedUnivariateSpline(x, y, k=1)
+
+    fitx = np.linspace(x.min(), x.max(), 100)
+    fig, ax = plt.subplots(figsize=(30, 10))
+    ax.plot(fitx, spl(fitx))
+    ax.plot(fitx, lin(a, b, fitx))
+    ax.scatter(x, y)
+    plt.show()
+    imgY = 3
+    linguess = lin(a, b, imgdata[datapoint])
+    splguess = spl(imgdata[datapoint])
+    print('Guess by', keys[datapoint], linguess)
+    print('Guess by', keys[datapoint], splguess)
+    # fig2,ax2 = plt.subplot()
+    # ax.plot()
+    # use percentage for initial estimation of hairamount.
+    return linguess, splguess
 def guess(path):
     # read alldata and stats from file.
     # this way we can start calibrateStats without having to
@@ -454,13 +485,15 @@ def guess(path):
     data,_ = detect(path)
     print(data)
     print(keys)
+    print(set(zip(keys,data)))
 
     #find out if hair is looser or tigher than normal
     outerSectionPercentageMean = np.mean(alldata[9::np.size(keys)])
+    print(alldata[9::np.size(keys)])
     #print(outerSectionPercentageMean)
     isloosethreshhold = outerSectionPercentageMean/4
-    print(data[9], outerSectionPercentageMean+isloosethreshhold)
-    if data[9] < outerSectionPercentageMean+isloosethreshhold:
+    print('outersectionPercentage',data[9], outerSectionPercentageMean+isloosethreshhold)
+    if data[9] < outerSectionPercentageMean-isloosethreshhold:
         print('this hair bunch is loose')
         print('prefer the lower estimations on this one. maybe even lower the percentage')
         data[7] = data[7]/1.5
@@ -469,7 +502,11 @@ def guess(path):
     estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,7))
     estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,4))
     mean = np.mean(estimations)
-    print('mean', mean)
+    for e in estimations:
+        if e < 0:
+            np.delete(estimations,e)
+    mean = np.mean(estimations)
+    print('mean', mean, 'hair percent:', data[4], 'outer sectionSize:', data[9],'innersectionNum', data[7])
 
 
 
@@ -487,10 +524,13 @@ if __name__ == "__main__":
     # testEdgeDetection('Dot_Felina_4_ 2.jpg')
 
     calibrationIn = np.array(['Dot_Mummel_1.jpg',1,'Dot_Mummel_3_ (1).jpg',3,'Dot_Mummel_10.jpg',10,'Dot_Mummel_15_ (2).jpg',15,'Dot_Mummel_22.jpg',22,'Dot_Mummel_25_ (1).jpg',25, 'Dot_mummel_30.jpg',30,'Dot_Mummel_40.jpg',40, 'Dot_Mummel_50 (3).jpg', 50,'Dot_mummel_60 (2).jpg',60])
-    #calibrateProcessImages(calibrationIn)
+    calibrateProcessImages(calibrationIn)
     #guess('Dot_Mummel_10.jpg')
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
-    guess('Dot_Mummel_4.jpg')
+    guess('IMG_20200309_104544.jpg')
+    guess('IMG_20200309_104949.jpg')
+
+    #guess('Dot_Mummel_4.jpg')
     #guess('Dot_Mummel_60 (1).jpg')
     #guess('Dot_Mummel_21 (2).jpg')
 
