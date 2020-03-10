@@ -411,23 +411,23 @@ def calibrateProcessImages(calibrationPaths):
         alldata = np.append(alldata, data)
     # f = open("calibrationImageStats.", "w+")
     print('save', alldata)
-    np.save('test.out', alldata)
-    np.save('keys.out', keys)
-    np.save('hairamount.out', hairAmount)
+    np.save(calibrationDatapath, alldata)
+    np.save(keyDatapath, keys)
+    np.save(hairAmountDatapath, hairAmount)
     # f.write(alldata)
     # f.close()
     # save alldata and stats in a file
 def addCalibrationImage(path,amount):
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
     data, keys = detect(path)
-    alldata = np.load('test.out' + '.npy')
+    alldata = np.load(calibrationDatapath + '.npy')
     #print(alldata)
     #print(data)
     alldata = np.append(alldata, data)
-    hairAmount = np.load('hairamount.out' + '.npy')
+    hairAmount = np.load(hairAmountDatapath + '.npy')
     hairAmount = np.append(hairAmount, amount)
-    np.save('test.out', alldata)
-    np.save('hairamount.out', hairAmount)
+    np.save(calibrationDatapath, alldata)
+    np.save(hairAmountDatapath, hairAmount)
 #endregion
 #region guess
 def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
@@ -502,9 +502,9 @@ def guess(path):
     print('guessing the amount of hair in the picture')
     # read alldata and stats from file.
     # this way we can start calibrateStats without having to
-    alldata = np.load('test.out' + '.npy')
-    keys = np.load('keys.out' + '.npy')
-    hairAmount = np.load('hairamount.out' + '.npy')
+    alldata = np.load(calibrationDatapath+'.npy')
+    keys = np.load(keyDatapath + '.npy')
+    hairAmount = np.load(hairAmountDatapath + '.npy')
     data,_ = detect(path)
     #print('alldata', alldata)
     #print(data)
@@ -544,10 +544,10 @@ def save(path,mean):
     day = numbers[6:8:]
     ymd = year + '-' + month + '-' + day
     estimationResult = np.array([ymd,mean])
-    oldData = np.load('estimationResult.out.npy')
+    oldData = np.load(estimationResultDatapath+'.npy')
     newData = np.append(oldData, estimationResult)
     print('saving data point', ymd, mean, 'ImagePath:', path)
-    np.save('estimationResult.out' ,newData)
+    np.save(estimationResultDatapath ,newData)
 #endregion
 # region showanddebugg
 def debugg(state):
@@ -555,7 +555,7 @@ def debugg(state):
     debugstate = state
 
 def plotEstimationResult():
-    data = np.load('estimationResult.out'+'.npy')
+    data = np.load(estimationResultDatapath+'.npy')
     if np.size(data)== 0:
         print('no data to show')
         return
@@ -574,7 +574,7 @@ def plotEstimationResult():
     ax.grid()
     plt.show()
 def clearSave():
-    np.save('estimationResult.out',np.array([]))
+    np.save(estimationResultDatapath,np.array([]))
     print('erased saved estimation results')
 # endregion
 datapath = 'EstimationDataUser1'
@@ -611,9 +611,75 @@ def commandlinehandeling():
             func(args.filepath)
     else:
         func()
+calibrationDirectorypath = ''
+dataDirectorypath = ''
+calibrationDatapath = ''
+keyDatapath =''
+estimationResultDatapath=''
+activeUserDatapath = 'activeUser.txt'
+hairAmountDatapath = ''
+usersDirectory ='Users'
+def buildPaths(user):
+    global calibrationDirectorypath
+    global dataDirectorypath
+    global calibrationDatapath
+    global keyDatapath
+    global estimationResultDatapath
+    global hairAmountDatapath
+    calibrationDirectorypath = usersDirectory+'/'+user + '/calibration'
+    dataDirectorpath = usersDirectory+'/'+user + '/data'
+    calibrationDatapath = dataDirectorpath+'/calibrationData.out'
+    keyDatapath  = dataDirectorpath+'/calibkeyData.out'
+    estimationResultdatapath = dataDirectorpath+'/result.out'
+    hairAmountDatapath = dataDirectorpath+'/calibhairAmount.out'
+def loadUser():
+    currentUser = ''
+    fp=open(activeUserDatapath, 'w+')
+    currentUser = fp.read()
+    if(len(currentUser)==0):
+        print('empty file')
+        os.mkdir('Users')
+        addUser('default')
+        fp.close()
+        return
+    buildPaths(currentUser)
+    fp.close()
+def switchUser(user):
+    if False == os.path.exists(usersDirectory):
+        addUser(user)
+        return
+    if os.path.exists(user+'/data/calibrationData.out'):
+        #user exits
+        buildPaths(user)
+    else:
+        print('User '+user+' does not exist. Command <addUser '+user+'> to create.')
+        folder = os.path.dirname(os.path.abspath( __file__ ))
+        folder = folder +'/'+usersDirectory
+        print('Maybe you are looking for: ',  [ f.name for f in os.scandir(folder) if f.is_dir() ])
+def addUser(user):
+    fp = open(activeUserDatapath, 'w+')
+    fp.write(user)
+    buildPaths(user)
+    if False == os.path.exists(usersDirectory):
+        os.mkdir(usersDirectory)
+        return
+    try:
+        os.mkdir(user)
+        os.mkdir(calibrationDirectorypath)
+        os.mkdir(dataDirectorypath)
 
+        np.save(keyDatapath, np.array([]))
+        np.save(estimationResultDatapath, np.array([]))
+        np.save(hairAmountDatapath, np.array([]))
+        np.save(calibrationDatapath, np.array([]))
+    except FileExistsError:
+        print('User directory exists already')
+    switchUser(user)
 if __name__ == "__main__":
-    commandlinehandeling()
+
+    #commandlinehandeling()
+    switchUser('jan')
+    #loadUser()
     #calibration('calibration')
 
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
