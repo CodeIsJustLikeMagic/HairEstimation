@@ -11,15 +11,14 @@ from matplotlib import pyplot as plt
 
 
 # region detect
-def add(data, keys, key, value):
+def h_add(data, keys, key, value):
     data = np.append(data, value)
     keys = np.append(keys, key)
     return data, keys
 
-
-def show(title, image):
-    show = False
-    if show:
+debugstate = False
+def h_show(title, image):
+    if debugstate:
         resize = True
         height = image.shape[0]
         width = image.shape[1]
@@ -28,9 +27,8 @@ def show(title, image):
             image = cv2.resize(image, (int(width * 0.2), int(height * 0.2)))
         cv2.imshow(title, image)
 
-
 # region cropDots
-def processMatchResult(img_rgb, res, threshold, templatew, templateh):
+def h_processMatchResult(img_rgb, res, threshold, templatew, templateh):
     loc = np.where(res >= threshold)
     cnt = 0
     actualpoints = np.array([])
@@ -38,7 +36,7 @@ def processMatchResult(img_rgb, res, threshold, templatew, templateh):
     # print(differentPointthreshhold)
     rectangleImage = img_rgb.copy()
     for pt in zip(*loc[::-1]):
-        if fuzzycontains(actualpoints, pt, differentPointthreshhold):
+        if h_fuzzycontains(actualpoints, pt, differentPointthreshhold):
             actualpoints = np.append(actualpoints, pt)
             cnt = cnt + 1
         cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
@@ -47,7 +45,7 @@ def processMatchResult(img_rgb, res, threshold, templatew, templateh):
     return cnt, actualpoints, rectangleImage
 
 
-def fuzzycontains(actualpoints, pt, differentPointthreshhold):
+def h_fuzzycontains(actualpoints, pt, differentPointthreshhold):
     xpoints = actualpoints[::2]
     ypoints = actualpoints[1::2]
     for actpoints in zip(xpoints, ypoints):
@@ -57,6 +55,7 @@ def fuzzycontains(actualpoints, pt, differentPointthreshhold):
 
 
 def cropDots(img_rgb):
+    print('cropping image to TemplateDot using PatternMatching')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
     template = cv2.imread('calibration/TemplateDot.jpg', 0)
     templatew, templateh = template.shape[::-1]
@@ -66,13 +65,13 @@ def cropDots(img_rgb):
     # show('match res', res)
 
     threshold = 0.8
-    cnt, actualpoints, rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+    cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
     if cnt == 0:
         # trying out inverted image. for blond hair on black background
         revImg = 255 - img_gray
         res = cv2.matchTemplate(revImg, template, cv2.TM_CCOEFF_NORMED)
         # show('revRes', res)
-        cnt, actualpoints, rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+        cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
         if cnt == 0:
             # if still nothing found assume there arent any points
             print('no dots found, not cropping image')
@@ -106,19 +105,18 @@ def cropDots(img_rgb):
             # print(x1, y1, x2, y2)
 
             crop_img = img_rgb[y1:y2, x1:x2].copy()
-            # print(crop_img)
-            # show('crop image', crop_img)
             retImg = crop_img
-            show('rectImg', rectImg)
+            h_show('rectImg', rectImg)
+            h_show('crop image', crop_img)
             retry = False
         if cnt > 4:
             # found to many... make threshhold higher
             threshold = threshold + 0.01
-            cnt, actualpoints, rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+            cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
         if cnt < 4:
             # found to few dots.. make threshhold lower to let more pass
             threshold = threshold - 0.01
-            cnt, actualpoints, rectImg = processMatchResult(img_rgb, res, threshold, templatew, templateh)
+            cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return retImg
@@ -129,15 +127,15 @@ def hairPixelPercentage(data, keys, img):
     sum = np.count_nonzero(img > 0)
     all = np.size(img)
     intensityShare = data[0] / sum
-    data, keys = add(data, keys, 'intensityShare', intensityShare)
-    data, keys = add(data, keys, 'hairpixels', sum)
-    data, keys = add(data, keys, 'imagepixels', all)
+    data, keys = h_add(data, keys, 'intensityShare', intensityShare)
+    data, keys = h_add(data, keys, 'hairpixels', sum)
+    data, keys = h_add(data, keys, 'imagepixels', all)
     percentage = (sum / all) * 100
-    data, keys = add(data, keys, 'percentage', percentage)
+    data, keys = h_add(data, keys, 'percentage', percentage)
 
     return data, keys
 
-
+#not used
 def skeletonize(img):
     """ OpenCV function to return a skeletonized version of img, a Mat object"""
 
@@ -163,8 +161,8 @@ def skeletonize(img):
 
 def removeSmallRegions(intensity, img):
     # https://docs.opencv.org/master/d3/db4/tutorial_py_watershed.html
-    removalThreshold = 600
-    # show('intenisty', intensity)
+    print('removing smaller Regions...')
+    removalThreshold = img.shape[0]*img.shape[1]*0.00009
     ret, markers = cv2.connectedComponents(intensity * 255)
     # print('markers',np.unique(markers))
     markers = markers + 1
@@ -178,11 +176,12 @@ def removeSmallRegions(intensity, img):
         image = mask * 255 + (1 - mask) * 0
         # show('removeSmallRegions label '+str(label),image)
         if np.sum(mask) < removalThreshold:
-            # remove the region
+            # remove region if it is to small
             returnImage = mask * 0 + (1 - mask) * returnImage
-    show('small regions removed', returnImage)
+    h_show('small regions removed', returnImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    print('done')
     return returnImage
 
 
@@ -235,33 +234,35 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     # brither is more intense
     intensity = hairOnWhite.copy()
     intensity = 255 - intensity
+    h_show('intenstiy', intensity)
     intensity = removeSmallRegions(intensity, orig)
-    showMissed(intensity, gray, orig)
+    h_showMissed(intensity, gray, orig)
 
     intensitySum = np.sum(intensity)
-    data, keys = add(data, keys, 'intensitySum:', intensitySum)
+    data, keys = h_add(data, keys, 'intensitySum:', intensitySum)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return data, keys, intensity
 
 
-def showMissed(intensity, gray, orig):
+def h_showMissed(intensity, gray, orig):
     # show how much hair is missed
     hairPixelMask = np.ones(gray.shape[:2], dtype="uint8")
     hairPixelMask[:, :] = (intensity != 0)  # 0 or 1 depending on wehter it is ==0
     ret = gray.copy()
     ret = hairPixelMask * 255 + (1 - hairPixelMask) * gray
-    show('missed hair', ret)
-    show('orig', orig)
+    h_show('missed hair', ret)
+    h_show('orig', orig)
 
 
 def edgeProcess(data, keys, orig, blur):
+    print('detecting Hair via edge detection')
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     if blur:
         gray = cv2.medianBlur(gray, 5)
     kernel = np.ones((3, 3), np.uint8)
     edges = cv2.Canny(gray, 40, 200, kernel)
-    show('edges', edges)
+    h_show('edges', edges)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     data, keys, intensity = hairPixelIntensity(data, keys, orig, gray, edges)
@@ -270,6 +271,7 @@ def edgeProcess(data, keys, orig, blur):
 
 
 def backgroundRegions(data, keys, intensity):  # only uses intensity image. background black, hair white
+    print('processing background regions...')
     # show('input intensity', intensity)
     img = cv2.cvtColor(intensity, cv2.COLOR_GRAY2RGB)
     gray = intensity
@@ -304,26 +306,26 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     backgroundSum = 0
 
     allPixelSum = img.shape[0] * img.shape[1]
-    data, keys = add(data, keys, 'all pixels', allPixelSum)
+    data, keys = h_add(data, keys, 'all pixels', allPixelSum)
     sectionNum = np.unique(markers).size
-    data, keys = add(data, keys, 'number of section:', sectionNum)
+    data, keys = h_add(data, keys, 'number of section', sectionNum)
     innerSectionNum = sectionNum - 2
-    data, keys = add(data, keys, 'number of section inclosed:', innerSectionNum)  # -1 is space between and 1 is hair
+    data, keys = h_add(data, keys, 'number of section inclosed', innerSectionNum)  # -1 is space between and 1 is hair
     # finding size of outermost section
     mask = np.zeros(gray.shape, dtype="uint8")
     mask[markers == 2] = 1  # set pixels marked with 2 to 1. rest is 0.
 
     image = intensity.copy()
     image = mask * 255 + (1 - mask) * 0
-    show('outer section', image)
+    h_show('outer section', image)
     outerSectionSum = np.sum(mask)
-    data, keys = add(data, keys, 'outerSectionSum', outerSectionSum)
-    data, keys = add(data, keys, 'outerSectionPercentage', outerSectionSum / allPixelSum)
+    data, keys = h_add(data, keys, 'outerSectionSum', outerSectionSum)
+    data, keys = h_add(data, keys, 'outerSectionPercentage', outerSectionSum / allPixelSum)
     innerSectionSum = allPixelSum - outerSectionSum
-    data, keys = add(data, keys, 'innerSectionSum', innerSectionSum)
+    data, keys = h_add(data, keys, 'innerSectionSum', innerSectionSum)
     innerSectionAvg = innerSectionSum / innerSectionNum
-    data, keys = add(data, keys, 'innserSectionAvgSize', innerSectionAvg)
-    data, keys = add(data, keys, 'innerSectionAvgSize Percentage', innerSectionAvg / allPixelSum)
+    data, keys = h_add(data, keys, 'innserSectionAvgSize', innerSectionAvg)
+    data, keys = h_add(data, keys, 'innerSectionAvgSize Percentage', innerSectionAvg / allPixelSum)
     sizes = np.array([])
     for marker in np.unique(markers):
         if marker > 2:
@@ -331,14 +333,15 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
             mask[markers == marker] = 1
             sizes = np.append(sizes, np.sum(mask))
     innerSectionSizeVariance = np.var(sizes)
-    data, keys = add(data, keys, 'innerSectionSizeVariance', innerSectionSizeVariance)
-    data, keys = add(data, keys, 'std', np.std(sizes))
+    data, keys = h_add(data, keys, 'innerSectionSizeVariance', innerSectionSizeVariance)
+    data, keys = h_add(data, keys, 'std', np.std(sizes))
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+    print('done')
     return data, keys
 
 
-def showstats(data, keys):
+def h_showstats(data, keys):
     for i in range(np.size(data)):
         print(keys[i], data[i])
     print()
@@ -364,27 +367,28 @@ def testEdgeDetection(path):
     orig = cv2.imread(path)
 
     blur = cv2.blur(orig, (5, 5))
-    show('blur', blur)
+    h_show('blur', blur)
     blur = cv2.GaussianBlur(orig, (5, 5), 0)
-    show('gaussianBlur', blur)
+    h_show('gaussianBlur', blur)
     # blur = cv2.medianBlur(orig, 3)
-    show('meidanblur', blur)
+    h_show('meidanblur', blur)
     # blur = orig
-    show('orig', orig)
+    h_show('orig', orig)
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     # ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
     # show('thresh', thresh)
     kernel = np.ones((3, 3), np.uint8)
     edges = cv2.Canny(orig, 30, 200, kernel)
-    show('orig edges', edges)
+    h_show('orig edges', edges)
     edges2 = cv2.Canny(blur, 30, 200, kernel)
-    show('blur canny', edges2)
-    show('diff', edges - edges2)
+    h_show('blur canny', edges2)
+    h_show('diff', edges - edges2)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
 # endregion
+# region calibration
 def calibration(folderName):
     #find every image in the folder and use them to calibrate with
     paths = os.listdir('calibration')
@@ -424,6 +428,8 @@ def addCalibrationImage(path,amount):
     hairAmount = np.append(hairAmount, amount)
     np.save('test.out', alldata)
     np.save('hairamount.out', hairAmount)
+#endregion
+#region guess
 def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
     calibrationDataX = alldata[datapoint::np.size(keys)]
     hairAmount = np.array(list(map(int, hairAmount)))
@@ -437,12 +443,16 @@ def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
     a, b = linregress(x, y)
     spl = interpolate.InterpolatedUnivariateSpline(x, y,k=1)
 
-    fitx = np.linspace(x.min(), x.max(), 100)
-    fig, ax = plt.subplots(figsize=(30, 10))
-    ax.plot(fitx, spl(fitx))
-    ax.plot(fitx, lin(a, b, fitx))
-    ax.scatter(x, y)
-    plt.show()
+    if debugstate:
+        fitx = np.linspace(x.min(), x.max(), 100)
+        fig, ax = plt.subplots(figsize=(30, 10))
+        ax.plot(fitx, spl(fitx))
+        ax.plot(fitx, lin(a, b, fitx))
+        ax.scatter(x, y)
+        ax.set_title('Guess by '+keys[datapoint]+' funktion')
+        ax.set_xlabel(keys[datapoint])
+        ax.set_ylabel('amount of hair')
+        plt.show()
     linguess = lin(a, b, imgdata[datapoint])
     splguess = spl(imgdata[datapoint])
     print('Guess by',keys[datapoint],linguess)
@@ -536,20 +546,25 @@ def save(path,mean):
     oldData = np.load('estimationResult.out.npy')
     newData = np.append(oldData, estimationResult)
     np.save('estimationResult.out' ,newData)
+#endregion
+# region showanddebugg
+def debugg(state):
+    global debugstate
+    debugstate = state
+
 def showEstimationResults():
     data = np.load('estimationResult.out'+'.npy')
+    if np.size(data)== 0:
+        print('no data to show')
+        return
     dates = data[::2]
-    print(dates)
     dates = [datetime.datetime.strptime(d, "%Y-%m-%d").date() for d in dates]
     hairAmounts = data[1::2]
-
-    print(dates, hairAmounts)
     hairAmounts = np.array(list(map(float, hairAmounts)))
-
     ax = plt.gca()
     formatter = mdates.DateFormatter("%Y-%m-%d")
     ax.xaxis.set_major_formatter(formatter)
-    locator = mdates.DayLocator(interval = 5)
+    locator = mdates.DayLocator(interval = 1)
     ax.xaxis.set_major_locator(locator)
     plt.scatter(dates, hairAmounts)
     plt.plot(dates,hairAmounts)
@@ -558,13 +573,15 @@ def showEstimationResults():
     plt.show()
 def clearSave():
     np.save('estimationResult.out',np.array([]))
+# endregion
 if __name__ == "__main__":
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
     #calibration('calibration')
 
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
     #clearSave()
-    #guess('estimationInput/IMG_20200306_104544_22.jpg')
+    #debugg(True)
+    guess('estimationInput/IMG_20200306_104544_22.jpg')
     #guess('estimationInput/IMG_20200306_104949_22.jpg')
     #guess('estimationInput/IMG_20200308_142449_25.jpg')
     #guess('Dot_Mummel_4.jpg')
