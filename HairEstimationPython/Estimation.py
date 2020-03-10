@@ -1,22 +1,22 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 import datetime
 import cv2
 import os
 import numpy as np
 import re
 import matplotlib.dates as mdates
-
+import argparse
 from scipy import interpolate
 from matplotlib import pyplot as plt
 
 
+debugstate = False
 # region detect
 def h_add(data, keys, key, value):
     data = np.append(data, value)
     keys = np.append(keys, key)
     return data, keys
 
-debugstate = False
 def h_show(title, image):
     if debugstate:
         resize = True
@@ -348,7 +348,7 @@ def h_showstats(data, keys):
 
 
 def detect(path):
-    print(path)
+    print('image path',path)
     blur = False
     img_rgb = cv2.imread(path)
     if img_rgb is None:
@@ -455,8 +455,8 @@ def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
         plt.show()
     linguess = lin(a, b, imgdata[datapoint])
     splguess = spl(imgdata[datapoint])
-    print('Guess by',keys[datapoint],linguess)
-    print('Guess by', keys[datapoint], splguess)
+    print('(linear funktion) Guess by',keys[datapoint],linguess)
+    print('(spline funktion) Guess by', keys[datapoint], splguess)
     # fig2,ax2 = plt.subplot()
     # ax.plot()
     # use percentage for initial estimation of hairamount.
@@ -499,23 +499,24 @@ def guessCombo(alldata,keys,hairAmount,imgdata):
     # use percentage for initial estimation of hairamount.
     return linguess, splguess
 def guess(path):
+    print('guessing the amount of hair in the picture')
     # read alldata and stats from file.
     # this way we can start calibrateStats without having to
     alldata = np.load('test.out' + '.npy')
     keys = np.load('keys.out' + '.npy')
     hairAmount = np.load('hairamount.out' + '.npy')
     data,_ = detect(path)
-    print('alldata', alldata)
-    print(data)
-    print(keys)
-    print(set(zip(keys,data)))
+    #print('alldata', alldata)
+    #print(data)
+    #print(keys)
+    #print(set(zip(keys,data)))
 
     #find out if hair is looser or tigher than normal
     outerSectionPercentageMean = np.mean(alldata[9::np.size(keys)])
-    print(alldata[9::np.size(keys)])
+    #print(alldata[9::np.size(keys)])
     #print(outerSectionPercentageMean)
     isloosethreshhold = outerSectionPercentageMean/4
-    print('outersectionPercentage',data[9], outerSectionPercentageMean+isloosethreshhold)
+    #print('outersectionPercentage',data[9], outerSectionPercentageMean+isloosethreshhold)
     if data[9] < outerSectionPercentageMean-isloosethreshhold:
         print('this hair bunch is loose')
         print('prefer the lower estimations on this one. maybe even lower the percentage')
@@ -534,6 +535,7 @@ def guess(path):
     save(path,res)
 
 def save(path,mean):
+
     #save image data to a file with all the previous estimations by date. show a plot of the data
     numbers = re.findall(r'\d+', path)
     numbers = numbers[0]
@@ -541,10 +543,10 @@ def save(path,mean):
     month = numbers[4:6:]
     day = numbers[6:8:]
     ymd = year + '-' + month + '-' + day
-    print(path, ymd)
     estimationResult = np.array([ymd,mean])
     oldData = np.load('estimationResult.out.npy')
     newData = np.append(oldData, estimationResult)
+    print('saving data point', ymd, mean, 'ImagePath:', path)
     np.save('estimationResult.out' ,newData)
 #endregion
 # region showanddebugg
@@ -552,7 +554,7 @@ def debugg(state):
     global debugstate
     debugstate = state
 
-def showEstimationResults():
+def plotEstimationResult():
     data = np.load('estimationResult.out'+'.npy')
     if np.size(data)== 0:
         print('no data to show')
@@ -573,19 +575,55 @@ def showEstimationResults():
     plt.show()
 def clearSave():
     np.save('estimationResult.out',np.array([]))
+    print('erased saved estimation results')
 # endregion
-if __name__ == "__main__":
+datapath = 'EstimationDataUser1'
+def commandlinehandeling():
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
+    FUNCTION_MAP = {'calibrate': calibration,
+                    'guess': guess,
+                    'plot': plotEstimationResult,
+                    'clearSave': clearSave,
+                    'addCalibrationImage': addCalibrationImage}
+    parser = argparse.ArgumentParser(description='Estimate shed hair')
+    parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
+    parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
+    parser.add_argument("filepath", nargs='?',help="path to the Image", type=str)
+    args = parser.parse_args()
+    if args.debug:
+        debugg(True)
+    if args.debug == False:
+        debugg(False)
+    func = FUNCTION_MAP[args.command]
+    if func == guess:
+        if args.filepath is None :
+            print('Error: guess needs a path to an image as second positional argument.')
+            return
+        else:
+            func(args.filepath)
+    elif func == calibration:
+        func('calibration')
+    elif func == addCalibrationImage:
+        if args.filepath is None :
+            print('Error: allCalibrationImage needs a path to an image as second positional argument.')
+            return
+        else:
+            func(args.filepath)
+    else:
+        func()
+
+if __name__ == "__main__":
+    commandlinehandeling()
     #calibration('calibration')
 
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
     #clearSave()
     #debugg(True)
-    guess('estimationInput/IMG_20200306_104544_22.jpg')
+    #guess('estimationInput/IMG_20200306_104544_22.jpg')
     #guess('estimationInput/IMG_20200306_104949_22.jpg')
-    #guess('estimationInput/IMG_20200308_142449_25.jpg')
+    #
     #guess('Dot_Mummel_4.jpg')
     #guess('Dot_Mummel_60 (1).jpg')
     #guess('Dot_Mummel_21 (2).jpg')
 
-    showEstimationResults()
+    #plotEstimationResult()
