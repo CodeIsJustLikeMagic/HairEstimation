@@ -351,11 +351,11 @@ def detect(path):
     print('image path',path)
     blur = False
     img_rgb = cv2.imread(path)
-    if img_rgb is None:
-        print('no image with that path found')
-        return
     data = np.array([])
     keys = np.array([])
+    if img_rgb is None:
+        print('no image with that path found')
+        return data,keys
     croped = cropDots(img_rgb)
     data, keys, edges, intensity = edgeProcess(data, keys, croped, blur)
     data, keys = backgroundRegions(data, keys, intensity)
@@ -432,6 +432,8 @@ def addCalibrationImage(path,amount):
     except FileNotFoundError:
         pass
     data, keys = detect(path)
+    if(np.size(data) == 0):
+        return
     alldata = np.append(alldata, data)
     hairAmount = np.append(hairAmount, amount)
     np.save(calibrationResultDatapath, alldata)
@@ -439,6 +441,13 @@ def addCalibrationImage(path,amount):
     np.save(keyDatapath,keys)
 #endregion
 #region guess
+def guessFolder(folder):
+    #estimate every image in the folder
+    folder = activeUserDirectory +'/'+folder
+    paths = os.listdir(folder)
+    paths = [folder+'/' + path for path in paths]
+    for path in paths:
+        guess(path)
 def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
     calibrationDataX = alldata[datapoint::np.size(keys)]
     hairAmount = np.array(list(map(int, hairAmount)))
@@ -551,7 +560,7 @@ def guess(path):
 
 def save(path,mean):
 
-    #save image data to a file with all the previous estimations by date. show a plot of the data
+    #save image data to a file with all the previous estimations by date
     numbers = re.findall(r'\d+', path)
     numbers = numbers[0]
     year = numbers[0:4:]
@@ -562,11 +571,28 @@ def save(path,mean):
     oldData = np.array([])
     if os.path.exists(estimationResultDatapath+'.npy'):
         oldData = np.load(estimationResultDatapath+'.npy')
+        oldDates = oldData [::2]
+        if ymd in oldDates:
+            print('found duplicate date')
     newData = np.append(oldData, estimationResult)
     print('saving data point', ymd, mean, 'ImagePath:', path)
+    print()
     np.save(estimationResultDatapath ,newData)
 #endregion
 # region showanddebugg
+def removeLastSaveImg():
+    try:
+        data = np.load(estimationResultDatapath+'.npy')
+        hairAmounts = np.load(hairAmountDatapath+'.npy')
+    except:
+        print('no data found')
+    #data has one pair per img. hairAmounts has one entry per img
+    print(data)
+    data = data[:-2]
+    print(data)
+    hairAmounts = hairAmounts[:-1]
+    np.save(estimationResultDatapath, data)
+    np.save(hairAmountDatapath, hairAmounts)
 def debugg(state):
     global debugstate
     debugstate = state
@@ -601,6 +627,7 @@ def clearSave():
 datapath = 'EstimationDataUser1'
 
 # region User filesystem handeling
+activeUserDirectory = ''
 calibrationImagesDirectorypath = ''
 dataDirectorypath = ''
 calibrationResultDatapath = ''
@@ -616,6 +643,8 @@ def buildPaths(user):
     global keyDatapath
     global estimationResultDatapath
     global hairAmountDatapath
+    global activeUserDirectory
+    activeUserDirectory = usersDirectory +'/'+user
     calibrationImagesDirectorypath = usersDirectory + '/' + user + '/calibrationImages'
     dataDirectorypath = usersDirectory+'/'+user + '/data'
     calibrationResultDatapath = dataDirectorypath + '/calibrationData.out'
@@ -633,6 +662,7 @@ def loadUser():
         else:#user found
             buildPaths(currentUser)
             print('active user: '+currentUser)
+            print()
     else:
         print('no users exits yet')
         createUser('default')
@@ -763,13 +793,15 @@ def commandlinehandeling():
                     'plot': plotEstimationResult,
                     'clearSave': clearSave,
                     'addCalibrationImage': addCalibrationImage, #args
+                    'guessFolder': guessFolder,
                     #handeling users
                     'allUsers': printAllUsers,
                     'activeUser': printActiveUser,
                     'delete': deleteUser, #args
                     'create': createUser, # args
                     'switch': switchUser, # args
-                    'repairUsers': repairUsers
+                    'repairUsers': repairUsers,
+                    'removeLastGuess': removeLastSaveImg
                     }
     parser = argparse.ArgumentParser(description='Estimate shed hair')
     parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
@@ -785,6 +817,12 @@ def commandlinehandeling():
     if func == guess :
         if args.arg1 is None :
             print('Error: guess needs a path to an image as second positional argument.')
+            return
+        else:
+            func(args.arg1)
+    elif func==guessFolder:
+        if args.arg1 is None :
+            print('Error: guess needs a path to a folder as second positional argument.')
             return
         else:
             func(args.arg1)
