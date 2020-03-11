@@ -57,7 +57,7 @@ def h_fuzzycontains(actualpoints, pt, differentPointthreshhold):
 def cropDots(img_rgb):
     print('cropping image to TemplateDot using PatternMatching')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('calibration/TemplateDot.jpg', 0)
+    template = cv2.imread('TemplateDot.jpg', 0)
     templatew, templateh = template.shape[::-1]
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
@@ -389,10 +389,12 @@ def testEdgeDetection(path):
 
 # endregion
 # region calibration
-def calibration(folderName):
+def calibration():
     #find every image in the folder and use them to calibrate with
-    paths = os.listdir('calibration')
-    paths = [folderName+'/' + path for path in paths]
+    #retrieve names of the images
+    paths = os.listdir(calibrationImagesDirectorypath)
+    #add the image names to the relative path
+    paths = [calibrationImagesDirectorypath+'/' + path for path in paths]
     calibrateProcessImages(paths)
 
 def calibrateProcessImages(calibrationPaths):
@@ -400,6 +402,9 @@ def calibrateProcessImages(calibrationPaths):
     alldata = np.array([])
     hairAmount = np.array([])
     i=0
+    if len(calibrationPaths) == 0:
+        print('No Images for calibration found. '+calibrationImagesDirectorypath+' is empty.')
+        return
     for path in calibrationPaths:
         numbers = re.findall(r'\d+', path)
         if(np.size(numbers)==0):
@@ -411,7 +416,7 @@ def calibrateProcessImages(calibrationPaths):
         alldata = np.append(alldata, data)
     # f = open("calibrationImageStats.", "w+")
     print('save', alldata)
-    np.save(calibrationDatapath, alldata)
+    np.save(calibrationResultDatapath, alldata)
     np.save(keyDatapath, keys)
     np.save(hairAmountDatapath, hairAmount)
     # f.write(alldata)
@@ -419,15 +424,19 @@ def calibrateProcessImages(calibrationPaths):
     # save alldata and stats in a file
 def addCalibrationImage(path,amount):
     np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
+    alldata = np.array([])
+    hairAmount = np.array([])
+    try:
+        alldata = np.load(calibrationResultDatapath + '.npy')
+        hairAmount = np.load(hairAmountDatapath + '.npy')
+    except FileNotFoundError:
+        pass
     data, keys = detect(path)
-    alldata = np.load(calibrationDatapath + '.npy')
-    #print(alldata)
-    #print(data)
     alldata = np.append(alldata, data)
-    hairAmount = np.load(hairAmountDatapath + '.npy')
     hairAmount = np.append(hairAmount, amount)
-    np.save(calibrationDatapath, alldata)
+    np.save(calibrationResultDatapath, alldata)
     np.save(hairAmountDatapath, hairAmount)
+    np.save(keyDatapath,keys)
 #endregion
 #region guess
 def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
@@ -499,12 +508,18 @@ def guessCombo(alldata,keys,hairAmount,imgdata):
     # use percentage for initial estimation of hairamount.
     return linguess, splguess
 def guess(path):
-    print('guessing the amount of hair in the picture')
     # read alldata and stats from file.
-    # this way we can start calibrateStats without having to
-    alldata = np.load(calibrationDatapath+'.npy')
-    keys = np.load(keyDatapath + '.npy')
-    hairAmount = np.load(hairAmountDatapath + '.npy')
+    try:
+        alldata = np.load(calibrationResultDatapath + '.npy')
+        keys = np.load(keyDatapath + '.npy')
+        hairAmount = np.load(hairAmountDatapath + '.npy')
+    except:
+        print('cant estimate hair without calibrating first. run <calibrate>')
+        return
+    if(np.size(alldata)==0) | (np.size(keys)== 0) | (np.size(hairAmount)==0) :
+        print('cant estimate hair without calibrating first. run <calibrate>')
+        return
+    print('guessing the amount of hair in the picture')
     data,_ = detect(path)
     #print('alldata', alldata)
     #print(data)
@@ -544,7 +559,9 @@ def save(path,mean):
     day = numbers[6:8:]
     ymd = year + '-' + month + '-' + day
     estimationResult = np.array([ymd,mean])
-    oldData = np.load(estimationResultDatapath+'.npy')
+    oldData = np.array([])
+    if os.path.exists(estimationResultDatapath+'.npy'):
+        oldData = np.load(estimationResultDatapath+'.npy')
     newData = np.append(oldData, estimationResult)
     print('saving data point', ymd, mean, 'ImagePath:', path)
     np.save(estimationResultDatapath ,newData)
@@ -555,7 +572,11 @@ def debugg(state):
     debugstate = state
 
 def plotEstimationResult():
-    data = np.load(estimationResultDatapath+'.npy')
+    try:
+        data = np.load(estimationResultDatapath+'.npy')
+    except:
+        print('no data to show. use command <guess>')
+        return
     if np.size(data)== 0:
         print('no data to show')
         return
@@ -578,116 +599,216 @@ def clearSave():
     print('erased saved estimation results')
 # endregion
 datapath = 'EstimationDataUser1'
-def commandlinehandeling():
-    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
-    FUNCTION_MAP = {'calibrate': calibration,
-                    'guess': guess,
-                    'plot': plotEstimationResult,
-                    'clearSave': clearSave,
-                    'addCalibrationImage': addCalibrationImage}
-    parser = argparse.ArgumentParser(description='Estimate shed hair')
-    parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
-    parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
-    parser.add_argument("filepath", nargs='?',help="path to the Image", type=str)
-    args = parser.parse_args()
-    if args.debug:
-        debugg(True)
-    if args.debug == False:
-        debugg(False)
-    func = FUNCTION_MAP[args.command]
-    if func == guess:
-        if args.filepath is None :
-            print('Error: guess needs a path to an image as second positional argument.')
-            return
-        else:
-            func(args.filepath)
-    elif func == calibration:
-        func('calibration')
-    elif func == addCalibrationImage:
-        if args.filepath is None :
-            print('Error: allCalibrationImage needs a path to an image as second positional argument.')
-            return
-        else:
-            func(args.filepath)
-    else:
-        func()
-calibrationDirectorypath = ''
+
+# region User filesystem handeling
+calibrationImagesDirectorypath = ''
 dataDirectorypath = ''
-calibrationDatapath = ''
+calibrationResultDatapath = ''
 keyDatapath =''
 estimationResultDatapath=''
 activeUserDatapath = 'activeUser.txt'
 hairAmountDatapath = ''
 usersDirectory ='Users'
 def buildPaths(user):
-    global calibrationDirectorypath
+    global calibrationImagesDirectorypath
     global dataDirectorypath
-    global calibrationDatapath
+    global calibrationResultDatapath
     global keyDatapath
     global estimationResultDatapath
     global hairAmountDatapath
-    calibrationDirectorypath = usersDirectory+'/'+user + '/calibration'
-    dataDirectorpath = usersDirectory+'/'+user + '/data'
-    calibrationDatapath = dataDirectorpath+'/calibrationData.out'
-    keyDatapath  = dataDirectorpath+'/calibkeyData.out'
-    estimationResultdatapath = dataDirectorpath+'/result.out'
-    hairAmountDatapath = dataDirectorpath+'/calibhairAmount.out'
+    calibrationImagesDirectorypath = usersDirectory + '/' + user + '/calibrationImages'
+    dataDirectorypath = usersDirectory+'/'+user + '/data'
+    calibrationResultDatapath = dataDirectorypath + '/calibrationData.out'
+    keyDatapath  = dataDirectorypath+'/calibkeyData.out'
+    estimationResultDatapath = dataDirectorypath+'/result.out'
+    hairAmountDatapath = dataDirectorypath+'/calibhairAmount.out'
 def loadUser():
-    currentUser = ''
-    fp=open(activeUserDatapath, 'w+')
-    currentUser = fp.read()
-    if(len(currentUser)==0):
-        print('empty file')
-        os.mkdir('Users')
-        addUser('default')
+    if os.path.exists(activeUserDatapath):
+        fp = open(activeUserDatapath, 'r+')
+        currentUser = fp.read()
         fp.close()
-        return
-    buildPaths(currentUser)
-    fp.close()
+        if (len(currentUser) == 0):
+            print('no aktive user found')
+            createUser('default')
+        else:#user found
+            buildPaths(currentUser)
+            print('active user: '+currentUser)
+    else:
+        print('no users exits yet')
+        createUser('default')
 def switchUser(user):
     if False == os.path.exists(usersDirectory):
-        addUser(user)
+        createUser(user)
         return
-    if os.path.exists(user+'/data/calibrationData.out'):
+    if user in h_getAllUsers():
         #user exits
         buildPaths(user)
+        fp = open(activeUserDatapath, 'w+')
+        fp.write(user)
+        fp.close()
+        print('switching to user '+user)
     else:
-        print('User '+user+' does not exist. Command <addUser '+user+'> to create.')
-        folder = os.path.dirname(os.path.abspath( __file__ ))
-        folder = folder +'/'+usersDirectory
-        print('Maybe you are looking for: ',  [ f.name for f in os.scandir(folder) if f.is_dir() ])
-def addUser(user):
+        print('user '+user+' does not exist. Command <create '+user+'> to create.')
+        print('maybe you are looking for: ', h_getAllUsers())
+def createUser(user):
     fp = open(activeUserDatapath, 'w+')
     fp.write(user)
+    fp.close()
     buildPaths(user)
     if False == os.path.exists(usersDirectory):
+        print('ceating Users directory')
         os.mkdir(usersDirectory)
-        return
     try:
-        os.mkdir(user)
-        os.mkdir(calibrationDirectorypath)
+        print('adding user '+user)
+        os.mkdir(usersDirectory+'/'+user)
+        os.mkdir(calibrationImagesDirectorypath)
         os.mkdir(dataDirectorypath)
-
-        np.save(keyDatapath, np.array([]))
-        np.save(estimationResultDatapath, np.array([]))
-        np.save(hairAmountDatapath, np.array([]))
-        np.save(calibrationDatapath, np.array([]))
     except FileExistsError:
         print('User directory exists already')
     switchUser(user)
-if __name__ == "__main__":
+def printActiveUser():
+    if os.path.exists(activeUserDatapath):
+        fp = open(activeUserDatapath, 'r+')
+        currentUser = fp.read()
+        fp.close()
+        if (len(currentUser) == 0):
+            print('no aktive user found')
+        else:
+            print('active User '+currentUser)
+    else:
+        print('no users exits yet. use command <create> to create')
+def h_getAllUsers():
+    if os.path.exists(usersDirectory):
+        folder = os.path.dirname(os.path.abspath(__file__))
+        folder = folder + '/' + usersDirectory
+        return [f.name for f in os.scandir(folder) if f.is_dir()]
+    else:
+        return []
+def printAllUsers():
+    print(h_getAllUsers())
+def deleteUser(user):
+    allUsers = h_getAllUsers()
+    if user in allUsers:
+        fp = open(activeUserDatapath, 'r+')
+        currentUser = fp.read()
+        fp.close()
+        if (len(currentUser) == 0) | (user == currentUser):
+            #dont switch
+            print('error: can not delete the currently active user. Create or switch to a different user before deleting.')
+        else:
+            print('deleting user '+user)
+            buildPaths(user)
+            try:
+                os.remove(keyDatapath+'.npy')
+                os.remove(estimationResultDatapath+'.npy')
+                os.remove(hairAmountDatapath+'.npy')
+                os.remove(calibrationResultDatapath + '.npy')
+            except FileNotFoundError:
+                pass
+            os.rmdir(calibrationImagesDirectorypath)
+            os.rmdir(dataDirectorypath)
+            os.rmdir(usersDirectory + '/' + user)
+            switchUser(currentUser)
+    else:#catch the case that the user doesnt exist.
+        print('user '+user+' doesnt exits. There is nothing to delete')
+def repairUser(user):
+    #repair filesystem for user
+    buildPaths(user)
+    #check if every directory and file exits. if its not there create it
+    if os.path.exists(calibrationImagesDirectorypath)==False:
+        os.mkdir(calibrationImagesDirectorypath)
+    if os.path.exists(dataDirectorypath)==False:
+        os.mkdir(dataDirectorypath)
 
-    #commandlinehandeling()
-    switchUser('jan')
-    #loadUser()
-    #calibration('calibration')
+    #np.save(keyDatapath, np.array([]))
+    #np.save(estimationResultDatapath, np.array([]))
+    #np.save(hairAmountDatapath, np.array([]))
+    #np.save(calibrationResultDatapath, np.array([]))
+def repairUsers():
+    print('attempting to repair users filesystem')
+    users = h_getAllUsers()
+    if len(users) == 0:
+        if os.path.exists(activeUserDatapath): # no directory but active user exits
+            fp = open(activeUserDatapath, 'r+')
+            currentUser = fp.read()
+            fp.close()
+            if (len(currentUser) > 0):
+                createUser(currentUser)
+        else:
+            print('no users found. Create new user with <create>')
+            print('every user folder needs to be in the subdirectory Users')
+        return
+    currentUser = ''
+    if os.path.exists(activeUserDatapath):
+        fp = open(activeUserDatapath, 'r+')
+        currentUser = fp.read()
+        fp.close()
+        if (len(currentUser) == 0):
+            currentUser = users[0]
+        if currentUser not in users:
+            createUser(currentUser)
+    else:
+        fp = open(activeUserDatapath, 'w+')
+        currentUser = users[0]
+
+    for user in users:
+        repairUser(user)
+    switchUser(currentUser)
+# endregion
+
+def commandlinehandeling():
+    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
+    FUNCTION_MAP = {'calibrate': calibration,
+                    'guess': guess, # args
+                    'plot': plotEstimationResult,
+                    'clearSave': clearSave,
+                    'addCalibrationImage': addCalibrationImage, #args
+                    #handeling users
+                    'allUsers': printAllUsers,
+                    'activeUser': printActiveUser,
+                    'delete': deleteUser, #args
+                    'create': createUser, # args
+                    'switch': switchUser, # args
+                    'repairUsers': repairUsers
+                    }
+    parser = argparse.ArgumentParser(description='Estimate shed hair')
+    parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
+    parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
+    parser.add_argument("arg1", nargs='?',help="depending on command: imagepath or user", type=str)
+    parser.add_argument("arg2", nargs='?', help="for command addCalibrationImage: hair Amount")
+    args = parser.parse_args()
+    if args.debug:
+        debugg(True)
+    if args.debug == False:
+        debugg(False)
+    func = FUNCTION_MAP[args.command]
+    if func == guess :
+        if args.arg1 is None :
+            print('Error: guess needs a path to an image as second positional argument.')
+            return
+        else:
+            func(args.arg1)
+    elif func == addCalibrationImage:
+        if args.arg1 is None :
+            print('Error: addCalibrationImage needs a path to an image as second positional argument.')
+            return
+        else:
+            func(args.arg1,args.arg2)
+    elif (func == deleteUser) | (func == createUser) | (func == switchUser):
+        if args.arg1 is None :
+            print('Error: command needs a user name as second postional argument')
+            return
+        else:
+            func(args.arg1)
+    else:
+        func()
+if __name__ == "__main__":
+    loadUser()
+    commandlinehandeling()
 
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
-    #clearSave()
-    #debugg(True)
     #guess('estimationInput/IMG_20200306_104544_22.jpg')
     #guess('estimationInput/IMG_20200306_104949_22.jpg')
-    #
     #guess('Dot_Mummel_4.jpg')
     #guess('Dot_Mummel_60 (1).jpg')
     #guess('Dot_Mummel_21 (2).jpg')
