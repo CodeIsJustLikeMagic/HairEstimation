@@ -623,8 +623,11 @@ def plotEstimationResult():
 def clearSave():
     np.save(estimationResultDatapath,np.array([]))
     print('erased saved estimation results')
+def printFile(path):
+    data = np.load(path)
+    print(data)
 # endregion
-datapath = 'EstimationDataUser1'
+
 
 # region User filesystem handeling
 activeUserDirectory = ''
@@ -794,6 +797,7 @@ def commandlinehandeling():
                     'clearSave': clearSave,
                     'addCalibrationImage': addCalibrationImage, #args
                     'guessFolder': guessFolder,
+                    'printFile': printFile,
                     #handeling users
                     'allUsers': printAllUsers,
                     'activeUser': printActiveUser,
@@ -832,7 +836,7 @@ def commandlinehandeling():
             return
         else:
             func(args.arg1,args.arg2)
-    elif (func == deleteUser) | (func == createUser) | (func == switchUser):
+    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile):
         if args.arg1 is None :
             print('Error: command needs a user name as second postional argument')
             return
