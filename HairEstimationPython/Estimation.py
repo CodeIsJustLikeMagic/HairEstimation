@@ -40,8 +40,8 @@ def h_processMatchResult(img_rgb, res, threshold, templatew, templateh):
             actualpoints = np.append(actualpoints, pt)
             cnt = cnt + 1
         cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
-    # show('foundDots', rectangleImage) #show found dots with red rectangle around them
-    # print('actual points', actualpoints)
+    h_show('foundDots', rectangleImage) #show found dots with red rectangle around them
+    print('actual points', actualpoints)
     return cnt, actualpoints, rectangleImage
 
 
@@ -61,16 +61,17 @@ def cropDots(img_rgb):
     templatew, templateh = template.shape[::-1]
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    # show('img',img_rgb)
-    # show('match res', res)
+    h_show('img',img_rgb)
+    h_show('match res', res)
 
     threshold = 0.8
     cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
     if cnt == 0:
+        print('fliping image cuz it is blond')
         # trying out inverted image. for blond hair on black background
         revImg = 255 - img_gray
         res = cv2.matchTemplate(revImg, template, cv2.TM_CCOEFF_NORMED)
-        # show('revRes', res)
+        h_show('revRes', res)
         cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
         if cnt == 0:
             # if still nothing found assume there arent any points
@@ -82,7 +83,8 @@ def cropDots(img_rgb):
     retry = True
     retImg = img_rgb.copy()
     while retry:
-        # print(threshold)
+        #print(cnt)
+        #print(threshold)
         tries = tries + 1
         if tries > 30:
             print('gave up. Best found:', cnt)
@@ -109,19 +111,42 @@ def cropDots(img_rgb):
             h_show('rectImg', rectImg)
             h_show('crop image', crop_img)
             retry = False
-        if cnt > 4:
+        elif cnt > 4:
             # found to many... make threshhold higher
             threshold = threshold + 0.01
             cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
-        if cnt < 4:
+        elif (cnt ==3) & (tries > 20):
+            retImg = h_removeOutlierPoint(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg)
+            retry = False
+        elif cnt < 4:
             # found to few dots.. make threshhold lower to let more pass
             threshold = threshold - 0.01
             cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
+
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     return retImg
-
-
+def h_3pointsCropPoints(points, templatelength):
+    if abs(points[0] - points[1]) > abs(points[1] - points[2]):
+        # middle point is large [ 367. 3856. 3873.]
+        choosenlowerPoint = int(points[0] - (templatelength / 2))
+        choosenhigherPoint = int(points[1] + (templatelength / 2))
+    else:
+        # middle point is small [ 367. 375. 3873.]
+        choosenlowerPoint = int(points[1] + (templatelength / 2))
+        choosenhigherPoint = int(points[2] - (templatelength / 2))
+    return choosenlowerPoint,choosenhigherPoint
+def h_removeOutlierPoint(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg):
+    #if if keep jumping between 3 and 5 take the lower number and crop based on that.
+    ypoints = np.sort(actualpoints[1::2])  # every odd item
+    xpoints = np.sort(actualpoints[::2])  # every even item
+    y1,y2 = h_3pointsCropPoints(ypoints,templateh)
+    x1,x2 = h_3pointsCropPoints(xpoints,templatew)
+    crop_img = img_rgb[y1:y2, x1:x2].copy()
+    retImg = crop_img
+    h_show('rectImg', rectImg)
+    h_show('crop image', crop_img)
+    return retImg
 # endregion
 def hairPixelPercentage(data, keys, img):
     sum = np.count_nonzero(img > 0)
@@ -846,7 +871,9 @@ def commandlinehandeling():
         func()
 if __name__ == "__main__":
     loadUser()
-    commandlinehandeling()
+    #commandlinehandeling()
+    debugg(True)
+    detect('Users/Bina/estimationImages/IMG_20200315_093236_10.jpg')
 
     #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
     #guess('estimationInput/IMG_20200306_104544_22.jpg')
