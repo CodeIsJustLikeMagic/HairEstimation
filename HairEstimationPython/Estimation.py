@@ -40,8 +40,8 @@ def h_processMatchResult(img_rgb, res, threshold, templatew, templateh):
             actualpoints = np.append(actualpoints, pt)
             cnt = cnt + 1
         cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
-    h_show('foundDots', rectangleImage) #show found dots with red rectangle around them
-    print('actual points', actualpoints)
+    #h_show('foundDots', rectangleImage) #show found dots with red rectangle around them
+    #print('actual points', actualpoints)
     return cnt, actualpoints, rectangleImage
 
 
@@ -61,7 +61,7 @@ def cropDots(img_rgb):
     templatew, templateh = template.shape[::-1]
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
-    h_show('img',img_rgb)
+    #h_show('img',img_rgb)
     h_show('match res', res)
 
     threshold = 0.8
@@ -92,7 +92,10 @@ def cropDots(img_rgb):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
             retry = False
-        if cnt == 4:
+        elif (cnt ==3) & (tries > 20):
+            retImg = h_cropWith3Points(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg)
+            retry = False
+        elif cnt == 4:
             # y1: the larger one of the lowerst 2 y
             ypoints = np.sort(actualpoints[1::2])  # every odd item
             xpoints = np.sort(actualpoints[::2])  # every even item
@@ -115,9 +118,7 @@ def cropDots(img_rgb):
             # found to many... make threshhold higher
             threshold = threshold + 0.01
             cnt, actualpoints, rectImg = h_processMatchResult(img_rgb, res, threshold, templatew, templateh)
-        elif (cnt ==3) & (tries > 20):
-            retImg = h_removeOutlierPoint(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg)
-            retry = False
+
         elif cnt < 4:
             # found to few dots.. make threshhold lower to let more pass
             threshold = threshold - 0.01
@@ -136,7 +137,7 @@ def h_3pointsCropPoints(points, templatelength):
         choosenlowerPoint = int(points[1] + (templatelength / 2))
         choosenhigherPoint = int(points[2] - (templatelength / 2))
     return choosenlowerPoint,choosenhigherPoint
-def h_removeOutlierPoint(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg):
+def h_cropWith3Points(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg):
     #if if keep jumping between 3 and 5 take the lower number and crop based on that.
     ypoints = np.sort(actualpoints[1::2])  # every odd item
     xpoints = np.sort(actualpoints[::2])  # every even item
@@ -297,12 +298,10 @@ def edgeProcess(data, keys, orig, blur):
 
 def backgroundRegions(data, keys, intensity):  # only uses intensity image. background black, hair white
     print('processing background regions...')
-    # show('input intensity', intensity)
+    h_show('input intensity', intensity)
     img = cv2.cvtColor(intensity, cv2.COLOR_GRAY2RGB)
     gray = intensity
     ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-    # thresh = 255-thresh
-    # show('thresh',thresh)
     # noise removal
     kernel = np.ones((3, 3), np.uint8)
     opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
@@ -310,18 +309,12 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     # sure background area
     sure_bg = cv2.dilate(opening, kernel, iterations=1)
     # show('sure_bg',sure_bg)
-    # Finding sure foreground area
-    sure_fg = opening.copy()
-    # dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2, 5)
-    # show('dist_transform',dist_transform)
-    # ret, sure_fg = cv2.threshold(dist_transform, 0.7 * dist_transform.max(), 255, 0)
+    sure_fg = opening.copy() # Finding sure foreground area
     # show('sure_fg', sure_fg)
-    # Finding unknown region
-    sure_fg = np.uint8(sure_fg)
+    sure_fg = np.uint8(sure_fg) # Finding unknown region
     unknown = cv2.subtract(sure_bg, sure_fg)
     # show('unknown',unknown)
-    # Marker labelling
-    ret, markers = cv2.connectedComponents(sure_fg)
+    ret, markers = cv2.connectedComponents(sure_fg) # Marker labelling
     # ok that looks like it worked. hair(black) is now 2. and all the white parts(background) are labelded 1+
     # Add one to all labels so that sure background is not 0, but 1
     markers = markers + 1
@@ -337,13 +330,13 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     innerSectionNum = sectionNum - 2
     data, keys = h_add(data, keys, 'number of section inclosed', innerSectionNum)  # -1 is space between and 1 is hair
     # finding size of outermost section
-    mask = np.zeros(gray.shape, dtype="uint8")
-    mask[markers == 2] = 1  # set pixels marked with 2 to 1. rest is 0.
+    maskoutr = np.zeros(gray.shape, dtype="uint8")
+    maskoutr[markers == 2] = 1  # set pixels marked with 2 to 1. rest is 0.
 
     image = intensity.copy()
-    image = mask * 255 + (1 - mask) * 0
+    image = maskoutr * 255 + (1 - maskoutr) * 0
     h_show('outer section', image)
-    outerSectionSum = np.sum(mask)
+    outerSectionSum = np.sum(maskoutr)
     data, keys = h_add(data, keys, 'outerSectionSum', outerSectionSum)
     data, keys = h_add(data, keys, 'outerSectionPercentage', outerSectionSum / allPixelSum)
     innerSectionSum = allPixelSum - outerSectionSum
@@ -351,6 +344,7 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     innerSectionAvg = innerSectionSum / innerSectionNum
     data, keys = h_add(data, keys, 'innserSectionAvgSize', innerSectionAvg)
     data, keys = h_add(data, keys, 'innerSectionAvgSize Percentage', innerSectionAvg / allPixelSum)
+    print('innerSectionNum',innerSectionNum)
     sizes = np.array([])
     for marker in np.unique(markers):
         if marker > 2:
@@ -360,10 +354,11 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     innerSectionSizeVariance = np.var(sizes)
     data, keys = h_add(data, keys, 'innerSectionSizeVariance', innerSectionSizeVariance)
     data, keys = h_add(data, keys, 'std', np.std(sizes))
+
     cv2.waitKey(0)
     cv2.destroyAllWindows()
     print('done')
-    return data, keys
+    return data, keys,maskoutr
 
 
 def h_showstats(data, keys):
@@ -371,6 +366,19 @@ def h_showstats(data, keys):
         print(keys[i], data[i])
     print()
 
+def denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr):
+    hairPixelMask = np.ones(intensity.shape[:2], dtype="uint8")
+    hairPixelMask[:, :] = (intensity != 0)  #1 for hair
+    densemaskoutr = 1-densemaskoutr # 1 for inside
+    maskoutr = 1-maskoutr # 1 for inside
+    looseMask = (maskoutr-densemaskoutr)
+    densehair = hairPixelMask * (densemaskoutr)
+    loosehair = hairPixelMask * (looseMask)
+    denseHairSum= np.count_nonzero(densehair > 0)
+    looseHairSum = np.count_nonzero(loosehair> 0)
+    data, keys = h_add(data, keys, 'denseHairSum', denseHairSum)
+    data, keys = h_add(data, keys, 'looseHairSum', looseHairSum)
+    return data,keys
 
 def detect(path):
     print('image path',path)
@@ -383,7 +391,9 @@ def detect(path):
         return data,keys
     croped = cropDots(img_rgb)
     data, keys, edges, intensity = edgeProcess(data, keys, croped, blur)
-    data, keys = backgroundRegions(data, keys, intensity)
+    data, keys,maskoutr = backgroundRegions(data, keys, intensity)
+    data,keys,densemaskoutr = backgroundRegions(data,keys,skeletonize(intensity))
+    data,keys = denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr)
     # showstats( data,keys)
     return data, keys
 
@@ -473,37 +483,18 @@ def guessFolder(folder):
     paths = [folder+'/' + path for path in paths]
     for path in paths:
         guess(path)
-def guessByDataPoint(alldata,keys,hairAmount,imgdata, datapoint):
-    calibrationDataX = alldata[datapoint::np.size(keys)]
+def guessByDataPoint(alldata, keys, hairAmount, imgdata, dataindex):
+    calibrationDataX = alldata[dataindex::np.size(keys)]
     hairAmount = np.array(list(map(int, hairAmount)))
     x = calibrationDataX
     y = hairAmount
-    # make sure x goes up, sort both by x
-    inds = x.argsort()
-    x = x[inds]
-    y = y[inds]
-
-    a, b = linregress(x, y)
-    spl = interpolate.InterpolatedUnivariateSpline(x, y,k=1)
-
-    if debugstate:
-        fitx = np.linspace(x.min(), x.max(), 100)
-        fig, ax = plt.subplots(figsize=(30, 10))
-        ax.plot(fitx, spl(fitx))
-        ax.plot(fitx, lin(a, b, fitx))
-        ax.scatter(x, y)
-        ax.set_title('Guess by '+keys[datapoint]+' funktion')
-        ax.set_xlabel(keys[datapoint])
-        ax.set_ylabel('amount of hair')
-        plt.show()
-    linguess = lin(a, b, imgdata[datapoint])
-    splguess = spl(imgdata[datapoint])
-    print('(linear funktion) Guess by',keys[datapoint],linguess)
-    print('(spline funktion) Guess by', keys[datapoint], splguess)
+    linguess, splguess = model(x, y, imgdata[dataindex], keys[dataindex])
+    print('(linear funktion) Guess by', keys[dataindex], linguess)
+    #print('(spline funktion) Guess by', keys[datapoint], splguess)
     # fig2,ax2 = plt.subplot()
     # ax.plot()
     # use percentage for initial estimation of hairamount.
-    return linguess,splguess
+    return linguess#,splguess
 
 def lin(a,b,x):
     return a*x+b
@@ -511,14 +502,7 @@ def linregress(x,y):
     a = np.cov(x, y)[0, 1] / np.cov(x, y)[0, 0]  # slope
     b = y.mean() - a * x.mean()  # intersept
     return a,b
-def guessCombo(alldata,keys,hairAmount,imgdata):
-    hairperc = alldata[4::np.size(keys)]
-    outersec = alldata[9::np.size(keys)]
-    calibrationDataX = hairAmount/hairperc*outersec
-    hairAmount = np.array(list(map(int, hairAmount)))
-    x = calibrationDataX
-    y = hairAmount
-    # make sure x goes up, sort both by x
+def model(x,y,datapoint,description):
     inds = x.argsort()
     x = x[inds]
     y = y[inds]
@@ -526,21 +510,69 @@ def guessCombo(alldata,keys,hairAmount,imgdata):
     a, b = linregress(x, y)
     spl = interpolate.InterpolatedUnivariateSpline(x, y, k=1)
 
-    fitx = np.linspace(x.min(), x.max(), 100)
-    fig, ax = plt.subplots(figsize=(30, 10))
-    ax.plot(fitx, spl(fitx))
-    ax.plot(fitx, lin(a, b, fitx))
-    ax.scatter(x, y)
-    plt.show()
-    imgY = 3
-    linguess = lin(a, b, imgdata[datapoint])
-    splguess = spl(imgdata[datapoint])
-    print('Guess by', keys[datapoint], linguess)
-    print('Guess by', keys[datapoint], splguess)
-    # fig2,ax2 = plt.subplot()
-    # ax.plot()
-    # use percentage for initial estimation of hairamount.
+    if debugstate:
+        fitx = np.linspace(x.min(), x.max(), 100)
+        fig, ax = plt.subplots(figsize=(10, 8))
+        ax.plot(fitx, spl(fitx))
+        ax.plot(fitx, lin(a, b, fitx))
+        ax.scatter(x, y)
+        ax.set_title('Guess by ' + description + ' funktion')
+        ax.set_xlabel(description)
+        ax.set_ylabel('amount of hair')
+        plt.show()
+    linguess = lin(a, b, datapoint)
+    splguess = spl(datapoint)
+    print('lin Guess by', description, linguess)
+    print('spl Guess by', description, splguess)
     return linguess, splguess
+def guessCombo(alldata,keys,hairAmount):#,imgdata):
+    #['0 intensitySum:' '1 intensityShare' '2 hairpixels' '3 imagepixels' '4 percentage'
+    # '5 all pixels' '6 number of section' '7 number of section inclosed'
+    # '8 outerSectionSum' '9 outerSectionPercentage' '10 innerSectionSum'
+    # '11 innserSectionAvgSize' '12 innerSectionAvgSize Percentage'
+    # '13 innerSectionSizeVariance' '14 std' '15 all pixels' '16 number of section'
+    # '17 number of section inclosed' '18 outerSectionSum' '19 outerSectionPercentage'
+    # '20 innerSectionSum' '21 innserSectionAvgSize' '22 innerSectionAvgSize Percentage'
+    # '23 innerSectionSizeVariance' '24 std', 25 densehairSum, 26 loosehair sum]
+
+    innersec = 1- alldata[9::np.size(keys)]#9 is outer section percent
+    #iinnersec = 1- imgdata[9]
+    denseSec = 1- alldata[19::np.size(keys)]
+    #idenseSec = 1- imgdata[20]
+
+    #small denseSec means loose bunch
+    #large innersec means large bunch
+    #diff is the percentage of hair that is loose
+    diff = innersec-denseSec
+    hairperc = alldata[4::np.size(keys)] #4 is hair percent
+    calibrationDataX = hairperc * (1+denseSec)
+    z = zip(hairAmount, innersec, denseSec, diff, hairperc)
+    print(list(z))
+
+    print(innersec)
+    print(denseSec)
+    print(hairperc)
+    secn = alldata[7::np.size(keys)]#number of inner sections
+    #ihairperc = imgdata[4]
+    #isecn= imgdata[7]
+    hairAmount = np.array(list(map(int, hairAmount)))
+    print(hairAmount)
+    x = calibrationDataX
+    y = hairAmount
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.scatter(x, y)
+    ax.scatter(hairperc,y, label='haiperc')
+    ax.set_ylabel('amount of hair')
+    ax.legend(loc = 'best')
+    plt.show()
+    #linguess, splguess = model(x,y,imgval,'hairperc/(1-outersec)')
+    # make sure x goes up, sort both by x
+    #return linguess,splguess
+def guessTest():
+    alldata = np.load(calibrationResultDatapath + '.npy')
+    keys = np.load(keyDatapath + '.npy')
+    hairAmount = np.load(hairAmountDatapath + '.npy')
+    guessCombo(alldata, keys, hairAmount)
 def guess(path):
     # read alldata and stats from file.
     try:
@@ -560,20 +592,11 @@ def guess(path):
     #print(keys)
     #print(set(zip(keys,data)))
 
-    #find out if hair is looser or tigher than normal
-    outerSectionPercentageMean = np.mean(alldata[9::np.size(keys)])
-    #print(alldata[9::np.size(keys)])
-    #print(outerSectionPercentageMean)
-    isloosethreshhold = outerSectionPercentageMean/4
-    #print('outersectionPercentage',data[9], outerSectionPercentageMean+isloosethreshhold)
-    if data[9] < outerSectionPercentageMean-isloosethreshhold:
-        print('this hair bunch is loose')
-        print('prefer the lower estimations on this one. maybe even lower the percentage')
-        data[7] = data[7]/1.5
-        data[4] = data[4]/1.5
+
     estimations = np.array([])
     estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,7))
     estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,4))
+    estimations = np.append(estimations, guessCombo(alldata,keys,hairAmount,data))
     mean = np.mean(estimations)
     for e in estimations:
         if e < 0:
@@ -872,14 +895,9 @@ def commandlinehandeling():
 if __name__ == "__main__":
     loadUser()
     #commandlinehandeling()
-    debugg(True)
-    detect('Users/Bina/estimationImages/IMG_20200315_093236_10.jpg')
 
-    #addCalibrationImage('Dot_Mummel_21 (1).jpg',21)
-    #guess('estimationInput/IMG_20200306_104544_22.jpg')
-    #guess('estimationInput/IMG_20200306_104949_22.jpg')
-    #guess('Dot_Mummel_4.jpg')
-    #guess('Dot_Mummel_60 (1).jpg')
-    #guess('Dot_Mummel_21 (2).jpg')
-
+    #debugg(True)
+    #detect('Users/Bina/estimationImages/IMG_20200315_093236_10.jpg')
+    guessTest()
+    #detect('D:/Eigene Dateien/Dokumente/GitHub/HairEstimation/HairEstimationPython/Users/Mummel/calibrationImages/30.jpg')
     #plotEstimationResult()
