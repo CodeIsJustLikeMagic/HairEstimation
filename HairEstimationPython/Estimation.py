@@ -477,6 +477,7 @@ def addCalibrationImage(path,amount):
 #endregion
 #region guess
 def guessTest():
+    debugg(True)
     alldata = np.load(calibrationResultDatapath + '.npy')
     keys = np.load(keyDatapath + '.npy')
     hairAmount = np.load(hairAmountDatapath + '.npy')
@@ -523,35 +524,35 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     secn = alldata[7::np.size(keys)]  # number of inner sections
     looseHairSum = alldata[26::np.size(keys)]
 
-    i_allPixels = imgdata[3::]
-    i_origperc = imgdata[4::]
-    i_hairpixels = imgdata[2::]
-    i_hairSectionSize = imgdata[10::]
+    i_allPixels = imgdata[3]
+    i_origperc = imgdata[4]
+    i_hairpixels = imgdata[2]
+    i_hairSectionSize = imgdata[10]
 
-    i_denseHairSum = imgdata[25::]
-    i_denseSectionperc = imgdata[19::]
-    i_denseinnerSectionSize = imgdata[20::]
+    i_denseHairSum = imgdata[25]
+    i_denseSectionperc = imgdata[19]
+    i_denseinnerSectionSize = imgdata[20]
 
-    i_outersectionperc = imgdata[9::]
-    i_secn = imgdata[7::]  # number of inner sections
-    i_looseHairSum = imgdata[26::]
+    i_outerSectionPerc = imgdata[9]
+    i_secn = imgdata[7]  # number of inner sections
+    i_looseHairSum = imgdata[26]
 
     denseDensity = (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc)))
     looseDensity = ((hairpixels - denseHairSum) / (hairSectionSize - denseInnerSectionSize)) * (
             (1 - outerSectionPerc) - (1 - denseSectionperc))
     i_denseDensity = (((i_denseHairSum / i_denseinnerSectionSize) * (1 - i_denseSectionperc)))
     i_looseDensity = ((i_hairpixels - i_denseHairSum) / (i_hairSectionSize - i_denseinnerSectionSize)) * (
-            (1 - outerSectionPerc) - (1 - denseSectionperc))
+            (1 - i_outerSectionPerc) - (1 - i_denseSectionperc))
 
     estimation = np.array([])
     estimation = np.append(estimation,
                            model(hairPerc,hairAmount,i_origperc,'hairpercent'))
     estimation = np.append(estimation,
                            model((hairpixels / hairSectionSize) * (1 - outerSectionPerc), hairAmount,
-                                 (i_hairpixels / i_hairSectionSize) * (1 - i_outersectionperc),'density * hairsection size'))
+                                 (i_hairpixels / i_hairSectionSize) * (1 - i_outerSectionPerc),'density * hairsection size'))
     estimation = np.append(estimation,
                            model((hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc,hairAmount,
-                                 (i_hairpixels/i_hairSectionSize)*(1-i_outersectionperc)*i_origperc,'density per sectionsize per hairperc'))
+                                 (i_hairpixels/i_hairSectionSize)*(1-i_outerSectionPerc)*i_origperc,'density per sectionsize per hairperc'))
     estimation = np.append(estimation,
                            model(denseDensity,hairAmount,
                                  i_denseDensity,'density of dense section in realtion to section size'))
@@ -560,7 +561,7 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
                                  i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio'))
     mean = np.mean(estimation)
     res = round(mean, 0)
-    print('mean', mean, 'res')
+    print('mean', mean, 'res', res)
     return res
 
 
