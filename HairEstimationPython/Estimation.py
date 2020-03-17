@@ -476,25 +476,94 @@ def addCalibrationImage(path,amount):
     np.save(keyDatapath,keys)
 #endregion
 #region guess
-def guessFolder(folder):
-    #estimate every image in the folder
-    folder = activeUserDirectory +'/'+folder
-    paths = os.listdir(folder)
-    paths = [folder+'/' + path for path in paths]
-    for path in paths:
-        guess(path)
-def guessByDataPoint(alldata, keys, hairAmount, imgdata, dataindex):
-    calibrationDataX = alldata[dataindex::np.size(keys)]
+def guessTest():
+    alldata = np.load(calibrationResultDatapath + '.npy')
+    keys = np.load(keyDatapath + '.npy')
+    hairAmount = np.load(hairAmountDatapath + '.npy')
+    imgdata = alldata[:np.size(keys)]
+    guessProcess(alldata,keys,hairAmount,imgdata)
+def guess(path):
+    # read alldata and stats from file.
+    try:
+        alldata = np.load(calibrationResultDatapath + '.npy')
+        keys = np.load(keyDatapath + '.npy')
+        hairAmount = np.load(hairAmountDatapath + '.npy')
+    except:
+        print('cant estimate hair without calibrating first. run <calibrate>')
+        return
+    if(np.size(alldata)==0) | (np.size(keys)== 0) | (np.size(hairAmount)==0) :
+        print('cant estimate hair without calibrating first. run <calibrate>')
+        return
+    print('guessing the amount of hair in the picture')
+    imgdata,_ = detect(path)
+
+    save(path, guessProcess(alldata, keys, hairAmount, imgdata))
+
+def guessProcess(alldata, keys, hairAmount, imgdata):
+    #['0 intensitySum:' '1 intensityShare' '2 hairpixels' '3 imagepixels' '4 percentage'
+    # '5 all pixels' '6 number of section' '7 number of section inclosed'
+    # '8 outerSectionSum' '9 outerSectionPercentage' '10 innerSectionSum'
+    # '11 innserSectionAvgSize' '12 innerSectionAvgSize Percentage'
+    # '13 innerSectionSizeVariance' '14 std' '15 all pixels' '16 number of section'
+    # '17 number of section inclosed' '18 outerSectionSum' '19 outerSectionPercentage'
+    # '20 innerSectionSum' '21 innserSectionAvgSize' '22 innerSectionAvgSize Percentage'
+    # '23 innerSectionSizeVariance' '24 std', 25 densehairSum, 26 loosehair sum]
+
     hairAmount = np.array(list(map(int, hairAmount)))
-    x = calibrationDataX
-    y = hairAmount
-    linguess, splguess = model(x, y, imgdata[dataindex], keys[dataindex])
-    print('(linear funktion) Guess by', keys[dataindex], linguess)
-    #print('(spline funktion) Guess by', keys[datapoint], splguess)
-    # fig2,ax2 = plt.subplot()
-    # ax.plot()
-    # use percentage for initial estimation of hairamount.
-    return linguess#,splguess
+    allPixels = alldata[3::np.size(keys)]
+    hairPerc = alldata[4::np.size(keys)]
+    hairpixels = alldata[2::np.size(keys)]
+    hairSectionSize = alldata[10::np.size(keys)]
+
+    denseHairSum = alldata[25::np.size(keys)]
+    denseSectionperc = alldata[19::np.size(keys)]
+    denseInnerSectionSize = alldata[20::np.size(keys)]
+
+    outerSectionPerc = alldata[9::np.size(keys)]
+    secn = alldata[7::np.size(keys)]  # number of inner sections
+    looseHairSum = alldata[26::np.size(keys)]
+
+    i_allPixels = imgdata[3::]
+    i_origperc = imgdata[4::]
+    i_hairpixels = imgdata[2::]
+    i_hairSectionSize = imgdata[10::]
+
+    i_denseHairSum = imgdata[25::]
+    i_denseSectionperc = imgdata[19::]
+    i_denseinnerSectionSize = imgdata[20::]
+
+    i_outersectionperc = imgdata[9::]
+    i_secn = imgdata[7::]  # number of inner sections
+    i_looseHairSum = imgdata[26::]
+
+    denseDensity = (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc)))
+    looseDensity = ((hairpixels - denseHairSum) / (hairSectionSize - denseInnerSectionSize)) * (
+            (1 - outerSectionPerc) - (1 - denseSectionperc))
+    i_denseDensity = (((i_denseHairSum / i_denseinnerSectionSize) * (1 - i_denseSectionperc)))
+    i_looseDensity = ((i_hairpixels - i_denseHairSum) / (i_hairSectionSize - i_denseinnerSectionSize)) * (
+            (1 - outerSectionPerc) - (1 - denseSectionperc))
+
+    estimation = np.array([])
+    estimation = np.append(estimation,
+                           model(hairPerc,hairAmount,i_origperc,'hairpercent'))
+    estimation = np.append(estimation,
+                           model((hairpixels / hairSectionSize) * (1 - outerSectionPerc), hairAmount,
+                                 (i_hairpixels / i_hairSectionSize) * (1 - i_outersectionperc),'density * hairsection size'))
+    estimation = np.append(estimation,
+                           model((hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc,hairAmount,
+                                 (i_hairpixels/i_hairSectionSize)*(1-i_outersectionperc)*i_origperc,'density per sectionsize per hairperc'))
+    estimation = np.append(estimation,
+                           model(denseDensity,hairAmount,
+                                 i_denseDensity,'density of dense section in realtion to section size'))
+    estimation = np.append(estimation,
+                           model(denseDensity / looseDensity, hairAmount,
+                                 i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio'))
+    mean = np.mean(estimation)
+    res = round(mean, 0)
+    print('mean', mean, 'res')
+    return res
+
+
 
 def lin(a,b,x):
     return a*x+b
@@ -509,102 +578,32 @@ def model(x,y,datapoint,description):
 
     a, b = linregress(x, y)
     spl = interpolate.InterpolatedUnivariateSpline(x, y, k=1)
-
+    linguess = lin(a, b, datapoint)
+    splguess = spl(datapoint)
     if debugstate:
         fitx = np.linspace(x.min(), x.max(), 100)
         fig, ax = plt.subplots(figsize=(10, 8))
-        ax.plot(fitx, spl(fitx))
-        ax.plot(fitx, lin(a, b, fitx))
-        ax.scatter(x, y)
+        ax.plot(fitx, spl(fitx),label ='splinefunktion')
+        ax.plot(fitx, lin(a, b, fitx),label ='linearRegression')
+        ax.scatter(x, y, label='calibrationData')
         ax.set_title('Guess by ' + description + ' funktion')
         ax.set_xlabel(description)
         ax.set_ylabel('amount of hair')
+        ax.scatter(datapoint,linguess,label='linear Guess')
+        ax.scatter(datapoint,splguess, label ='spline Guess')
+        ax.legend(loc='best')
         plt.show()
-    linguess = lin(a, b, datapoint)
-    splguess = spl(datapoint)
     print('lin Guess by', description, linguess)
     print('spl Guess by', description, splguess)
     return linguess, splguess
-def guessCombo(alldata,keys,hairAmount):#,imgdata):
-    #['0 intensitySum:' '1 intensityShare' '2 hairpixels' '3 imagepixels' '4 percentage'
-    # '5 all pixels' '6 number of section' '7 number of section inclosed'
-    # '8 outerSectionSum' '9 outerSectionPercentage' '10 innerSectionSum'
-    # '11 innserSectionAvgSize' '12 innerSectionAvgSize Percentage'
-    # '13 innerSectionSizeVariance' '14 std' '15 all pixels' '16 number of section'
-    # '17 number of section inclosed' '18 outerSectionSum' '19 outerSectionPercentage'
-    # '20 innerSectionSum' '21 innserSectionAvgSize' '22 innerSectionAvgSize Percentage'
-    # '23 innerSectionSizeVariance' '24 std', 25 densehairSum, 26 loosehair sum]
 
-    innersec = 1- alldata[9::np.size(keys)]#9 is outer section percent
-    #iinnersec = 1- imgdata[9]
-    denseSec = 1- alldata[19::np.size(keys)]
-    #idenseSec = 1- imgdata[20]
-
-    #small denseSec means loose bunch
-    #large innersec means large bunch
-    #diff is the percentage of hair that is loose
-    diff = innersec-denseSec
-    hairperc = alldata[4::np.size(keys)] #4 is hair percent
-    calibrationDataX = hairperc * (1+denseSec)
-    z = zip(hairAmount, innersec, denseSec, diff, hairperc)
-    print(list(z))
-
-    print(innersec)
-    print(denseSec)
-    print(hairperc)
-    secn = alldata[7::np.size(keys)]#number of inner sections
-    #ihairperc = imgdata[4]
-    #isecn= imgdata[7]
-    hairAmount = np.array(list(map(int, hairAmount)))
-    print(hairAmount)
-    x = calibrationDataX
-    y = hairAmount
-    fig, ax = plt.subplots(figsize=(10, 8))
-    ax.scatter(x, y)
-    ax.scatter(hairperc,y, label='haiperc')
-    ax.set_ylabel('amount of hair')
-    ax.legend(loc = 'best')
-    plt.show()
-    #linguess, splguess = model(x,y,imgval,'hairperc/(1-outersec)')
-    # make sure x goes up, sort both by x
-    #return linguess,splguess
-def guessTest():
-    alldata = np.load(calibrationResultDatapath + '.npy')
-    keys = np.load(keyDatapath + '.npy')
-    hairAmount = np.load(hairAmountDatapath + '.npy')
-    guessCombo(alldata, keys, hairAmount)
-def guess(path):
-    # read alldata and stats from file.
-    try:
-        alldata = np.load(calibrationResultDatapath + '.npy')
-        keys = np.load(keyDatapath + '.npy')
-        hairAmount = np.load(hairAmountDatapath + '.npy')
-    except:
-        print('cant estimate hair without calibrating first. run <calibrate>')
-        return
-    if(np.size(alldata)==0) | (np.size(keys)== 0) | (np.size(hairAmount)==0) :
-        print('cant estimate hair without calibrating first. run <calibrate>')
-        return
-    print('guessing the amount of hair in the picture')
-    data,_ = detect(path)
-    #print('alldata', alldata)
-    #print(data)
-    #print(keys)
-    #print(set(zip(keys,data)))
-
-
-    estimations = np.array([])
-    estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,7))
-    estimations = np.append(estimations, guessByDataPoint(alldata,keys,hairAmount,data,4))
-    estimations = np.append(estimations, guessCombo(alldata,keys,hairAmount,data))
-    mean = np.mean(estimations)
-    for e in estimations:
-        if e < 0:
-            np.delete(estimations,e)
-    mean = np.mean(estimations)
-    res = round(mean,0)
-    print('mean', mean,'res',res, 'hair percent:', data[4], 'outer sectionSize:', data[9],'innersectionNum', data[7])
-    save(path,res)
+def guessFolder(folder):
+    #estimate every image in the folder
+    folder = activeUserDirectory +'/'+folder
+    paths = os.listdir(folder)
+    paths = [folder+'/' + path for path in paths]
+    for path in paths:
+        guess(path)
 
 def save(path,mean):
 
