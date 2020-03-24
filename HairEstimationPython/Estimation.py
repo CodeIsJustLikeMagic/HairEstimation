@@ -40,7 +40,9 @@ def h_processMatchResult(img_rgb, res, threshold, templatew, templateh):
             actualpoints = np.append(actualpoints, pt)
             cnt = cnt + 1
         cv2.rectangle(rectangleImage, pt, (pt[0] + templatew, pt[1] + templateh), (0, 0, 255), 2)
-    #h_show('foundDots', rectangleImage) #show found dots with red rectangle around them
+    h_show('foundDots', rectangleImage) #show found dots with red rectangle around them
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     #print('actual points', actualpoints)
     return cnt, actualpoints, rectangleImage
 
@@ -94,6 +96,7 @@ def cropDots(img_rgb):
             cv2.destroyAllWindows()
             retry = False
         elif (cnt ==3) & (tries > 20):
+
             retImg = h_cropWith3Points(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg)
             retry = False
         elif cnt == 4:
@@ -131,20 +134,25 @@ def cropDots(img_rgb):
 def h_3pointsCropPoints(points, templatelength):
     if abs(points[0] - points[1]) > abs(points[1] - points[2]):
         # middle point is large [ 367. 3856. 3873.]
-        choosenlowerPoint = int(points[0] - (templatelength / 2))
-        choosenhigherPoint = int(points[1] + (templatelength / 2))
+        choosenlowerPoint = int(points[0] + (templatelength / 2))
+        choosenhigherPoint = int(points[1] - (templatelength / 2))
     else:
         # middle point is small [ 367. 375. 3873.]
         choosenlowerPoint = int(points[1] + (templatelength / 2))
         choosenhigherPoint = int(points[2] - (templatelength / 2))
     return choosenlowerPoint,choosenhigherPoint
 def h_cropWith3Points(img_rgb, res, threshold, templatew, templateh, actualpoints, rectImg):
+    print('crop with 3 points gets used')
     #if if keep jumping between 3 and 5 take the lower number and crop based on that.
     ypoints = np.sort(actualpoints[1::2])  # every odd item
     xpoints = np.sort(actualpoints[::2])  # every even item
+    print(xpoints,ypoints)
     y1,y2 = h_3pointsCropPoints(ypoints,templateh)
     x1,x2 = h_3pointsCropPoints(xpoints,templatew)
+    print(x1,x2,y1,y2)
+
     crop_img = img_rgb[y1:y2, x1:x2].copy()
+
     retImg = crop_img
     h_show('rectImg', rectImg)
     h_show('crop image', crop_img)
