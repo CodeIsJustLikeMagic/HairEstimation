@@ -57,7 +57,8 @@ def h_fuzzycontains(actualpoints, pt, differentPointthreshhold):
 def cropDots(img_rgb):
     print('cropping image to TemplateDot using PatternMatching')
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
-    template = cv2.imread('TemplateDot.jpg', 0)
+    print(activeUserDirectory)
+    template = cv2.imread(activeUserDirectory+'/TemplateDot.jpg', 0)
     templatew, templateh = template.shape[::-1]
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
@@ -430,6 +431,7 @@ def calibration():
     paths = os.listdir(calibrationImagesDirectorypath)
     #add the image names to the relative path
     paths = [calibrationImagesDirectorypath+'/' + path for path in paths]
+    print(paths)
     calibrateProcessImages(paths)
 
 def calibrateProcessImages(calibrationPaths):
@@ -523,7 +525,13 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     outerSectionPerc = alldata[9::np.size(keys)]
     secn = alldata[7::np.size(keys)]  # number of inner sections
     looseHairSum = alldata[26::np.size(keys)]
+    backgroundSectionNum = alldata[7::np.size(keys)]
+    denseSectionNum = alldata[17::np.size(keys)]
+    intensitySum= alldata[0::np.size(keys)]
+    intensityShare = alldata[1::np.size(keys)]
 
+    i_intensitySum= imgdata[0]
+    i_intensityShare = imgdata[1]
     i_allPixels = imgdata[3]
     i_origperc = imgdata[4]
     i_hairpixels = imgdata[2]
@@ -536,6 +544,8 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     i_outerSectionPerc = imgdata[9]
     i_secn = imgdata[7]  # number of inner sections
     i_looseHairSum = imgdata[26]
+    i_backgroundSectionNum = imgdata[7]
+    i_denseSectionNum = imgdata[17]
 
     denseDensity = (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc)))
     looseDensity = ((hairpixels - denseHairSum) / (hairSectionSize - denseInnerSectionSize)) * (
@@ -559,11 +569,24 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     estimation = np.append(estimation,
                            model(denseDensity / looseDensity, hairAmount,
                                  i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio'))
-    mean = np.mean(estimation)
+    estimation = np.append(estimation,
+                            model(backgroundSectionNum*(1-outerSectionPerc),hairAmount,
+                                  i_backgroundSectionNum*(
+                                          1-i_outerSectionPerc),'density by background sections peeking through'))
+    estimation = np.append(estimation,
+                           model(denseSectionNum*(1-outerSectionPerc),hairAmount,
+                                 i_denseSectionNum*(1-i_outerSectionPerc),'dense Density by background sections peeking through'))
+    estimation = np.append(estimation,
+                           model(intensitySum*hairpixels*(1-outerSectionPerc),hairAmount,
+                                 i_intensitySum*i_hairpixels*(1-i_outerSectionPerc),'intensity in relation to hairPixels and hairsection size'))
+    cleanedEstimation = np.array([])
+    for e in estimation:
+        if e > 0:
+            cleanedEstimation = np.append(cleanedEstimation, e)
+    mean = np.mean(cleanedEstimation)
     res = round(mean, 0)
     print('mean', mean, 'res', res)
     return res
-
 
 
 def lin(a,b,x):
@@ -606,7 +629,9 @@ def guessFolder(folder):
     for path in paths:
         guess(path)
 
-def save(path,mean):
+
+duplicateHandelingMode = 'r'
+def save(path, estRes):
 
     #save image data to a file with all the previous estimations by date
     numbers = re.findall(r'\d+', path)
@@ -615,32 +640,102 @@ def save(path,mean):
     month = numbers[4:6:]
     day = numbers[6:8:]
     ymd = year + '-' + month + '-' + day
-    estimationResult = np.array([ymd,mean])
+    estimationResult = np.array([ymd, estRes])
     oldData = np.array([])
     if os.path.exists(estimationResultDatapath+'.npy'):
         oldData = np.load(estimationResultDatapath+'.npy')
-        oldDates = oldData [::2]
+        oldDates = oldData[::2] #date est
         if ymd in oldDates:
-            print('found duplicate date')
+            print('found duplicate date. Using handeling mode:',duplicateHandelingMode)
+            #three handeling modi. replace, mean,ignoreNew
+            if duplicateHandelingMode =='i':
+                print('ignoring new estimation')
+                return
+            index = (np.where(oldData==ymd))[0]
+            index = index - 1  # index of est result.
+            if duplicateHandelingMode =='r':
+                #replace old date.
+                oldData[index] = estRes
+                np.save(estimationResultDatapath, oldData)
+                print('replacing old datapoint with', ymd, estRes, 'ImagePath:', path)
+                return
+            if duplicateHandelingMode =='m':
+                oldest = oldData[index]
+                mean = np.mean(np.array([oldest,estRes]))
+                oldData[index] = mean
+                np.save(estimationResultDatapath, oldData)
+                print('using mean between old and new data', ymd, mean, 'ImagePath:', path)
+                return
+            if duplicateHandelingMode =='k':
+                print('keeping duplicates')
     newData = np.append(oldData, estimationResult)
-    print('saving data point', ymd, mean, 'ImagePath:', path)
+    print('saving data point', ymd, estRes, 'ImagePath:', path)
     print()
     np.save(estimationResultDatapath ,newData)
 #endregion
 # region showanddebugg
+def printResult():
+    try:
+        data = np.load(estimationResultDatapath + '.npy')
+    except:
+        print('no data found')
+        return
+    print(data)
+def fullTest():
+    clearSave()
+    calibration()
+    global duplicateHandelingMode
+    duplicateHandelingMode = 'k'
+    guessFolder('estimationInput')
+    checkCalibration()
+    calculateError('10_20_30_12_42_57_60_30_22_16')#Jan
+    #calculateError('22_22_25_18_65_22_22_18_26_21_18_9') #mummel
+    #calculateError('10_18_20_10_30_50_30') #bina
+def checkCalibration():
+    try:
+        hairAmount = np.load(hairAmountDatapath + '.npy')
+    except:
+        print('no calibration data found')
+    print(np.sort(hairAmount))
+    if debugstate:
+        guessTest()
+def calculateError(numberstring):
+    try:
+        data = np.load(estimationResultDatapath + '.npy')
+    except:
+        print('no data found')
+        return
+    numbers = re.findall(r'\d+', numberstring)
+    numbers = np.array(list(map(int, numbers)))
+    if (np.size(numbers) == 0):
+        print('no actual hairAmount given in second positional argument')
+        return
+
+    estimatedHair = data[1::2]
+    estimatedHair = np.array(list(map(float,estimatedHair)))
+    estimatedHair = np.array(list(map(int, estimatedHair)))
+    print(estimatedHair)
+    if np.size(estimatedHair)>np.size(numbers):
+        estimatedHair = estimatedHair[np.size(estimatedHair)-np.size(numbers)::]
+    print('(estimated, actual)')
+    print(list(zip(estimatedHair,numbers)))
+    estimatedHair = np.array(estimatedHair)
+    error= estimatedHair-numbers
+    print('error per estimation', error)
+    error = abs(error)
+    meanerror = np.mean(error)
+    print('mean error', meanerror)
+
 def removeLastSaveImg():
     try:
-        data = np.load(estimationResultDatapath+'.npy')
-        hairAmounts = np.load(hairAmountDatapath+'.npy')
+        estimationData = np.load(estimationResultDatapath+'.npy')
     except:
         print('no data found')
     #data has one pair per img. hairAmounts has one entry per img
-    print(data)
-    data = data[:-2]
-    print(data)
-    hairAmounts = hairAmounts[:-1]
-    np.save(estimationResultDatapath, data)
-    np.save(hairAmountDatapath, hairAmounts)
+    print(estimationData)
+    estimationData = estimationData[:-2]
+    print(estimationData)
+    np.save(estimationResultDatapath, estimationData)
 def debugg(state):
     global debugstate
     debugstate = state
@@ -661,7 +756,7 @@ def plotEstimationResult():
     ax = plt.gca()
     formatter = mdates.DateFormatter("%Y-%m-%d")
     ax.xaxis.set_major_formatter(formatter)
-    locator = mdates.DayLocator(interval = 1)
+    locator = mdates.DayLocator(interval = 4)
     ax.xaxis.set_major_locator(locator)
     plt.scatter(dates, hairAmounts)
     plt.plot(dates,hairAmounts)
@@ -845,7 +940,12 @@ def commandlinehandeling():
                     'clearSave': clearSave,
                     'addCalibrationImage': addCalibrationImage, #args
                     'guessFolder': guessFolder,
+                    #checking result of calibration and debugging
+                    'calibrationResult': guessTest,
                     'printFile': printFile,
+                    'calculateError': calculateError,
+                    'checkCalibration': checkCalibration,
+                    'printResult': printResult,
                     #handeling users
                     'allUsers': printAllUsers,
                     'activeUser': printActiveUser,
@@ -853,14 +953,30 @@ def commandlinehandeling():
                     'create': createUser, # args
                     'switch': switchUser, # args
                     'repairUsers': repairUsers,
-                    'removeLastGuess': removeLastSaveImg
+                    'removeLastGuess': removeLastSaveImg,
+                    'fullTest': fullTest
                     }
     parser = argparse.ArgumentParser(description='Estimate shed hair')
     parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
     parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
     parser.add_argument("arg1", nargs='?',help="depending on command: imagepath or user", type=str)
     parser.add_argument("arg2", nargs='?', help="for command addCalibrationImage: hair Amount")
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-r", action='store_true')#replace
+    group.add_argument("-m",action = 'store_true')#use mean
+    group.add_argument("-i", action = 'store_true')#ignore second duplicate
+    group.add_argument("-k",action ='store_true')#keep duplicate
     args = parser.parse_args()
+    global duplicateHandelingMode
+    if args.r:
+
+        duplicateHandelingMode = 'r'
+    if args.m:
+        duplicateHandelingMode = 'm'
+    if args.i:
+        duplicateHandelingMode = 'i'
+    if args.k:
+        duplicateHandelingMode ='k'
     if args.debug:
         debugg(True)
     if args.debug == False:
@@ -884,9 +1000,9 @@ def commandlinehandeling():
             return
         else:
             func(args.arg1,args.arg2)
-    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile):
+    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile) |(func == calculateError):
         if args.arg1 is None :
-            print('Error: command needs a user name as second postional argument')
+            print('Error: command needs second postional argument')
             return
         else:
             func(args.arg1)
@@ -894,10 +1010,10 @@ def commandlinehandeling():
         func()
 if __name__ == "__main__":
     loadUser()
-    #commandlinehandeling()
+    commandlinehandeling()
 
     #debugg(True)
     #detect('Users/Bina/estimationImages/IMG_20200315_093236_10.jpg')
-    guessTest()
-    #detect('D:/Eigene Dateien/Dokumente/GitHub/HairEstimation/HairEstimationPython/Users/Mummel/calibrationImages/30.jpg')
+    #guessTest()
+    #guess('D:/Eigene Dateien/Dokumente/GitHub/HairEstimation/HairEstimationPython/Users/Mummel/calibrationImages/30.jpg')
     #plotEstimationResult()
