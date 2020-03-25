@@ -8,6 +8,7 @@ import matplotlib.dates as mdates
 import argparse
 from scipy import interpolate
 from matplotlib import pyplot as plt
+import math
 
 
 debugstate = False
@@ -592,10 +593,35 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
         if e > 0:
             cleanedEstimation = np.append(cleanedEstimation, e)
     mean = np.mean(cleanedEstimation)
+    print(cleanedEstimation)
+    cleanedEstimation = PGPremoveOutlier(cleanedEstimation,0.04,0.1)
+    print('outliers Removed', cleanedEstimation)
     res = round(mean, 0)
     print('mean', mean, 'res', res)
     return res
 
+
+def PGPremoveOutlier(PData, Pp1, Pp2):
+    # phase 1
+    mu1 = PData.mean()
+    sigma1 = math.sqrt(PData.var())  # std = standardabweichung (wie stats.binom.std()).
+    k = 1 / math.sqrt(Pp1)
+    odv1U = mu1 + k * sigma1
+    odv1L = mu1 - k * sigma1
+    # print('mu1 ',mu1, 'sigma: ',sigma1, 'k ', k, odv1U, odv1L)
+    NewData = np.array([i for i in PData if i <= odv1U])
+    NewData = np.array([i for i in NewData if i >= odv1L])
+
+    # phase2
+    mu2 = NewData.mean()
+    sigma2 = math.sqrt(PData.var())
+    k = 1 / math.sqrt(Pp2)
+    odv2U = mu2 + k * sigma2
+    odv2L = mu2 - k * sigma2
+    NewData = np.array([i for i in NewData if i <= odv2U])
+    NewData = np.array([i for i in NewData if i >= odv2L])
+
+    return NewData
 
 def lin(a,b,x):
     return a*x+b
@@ -696,7 +722,7 @@ def fullTest():
     duplicateHandelingMode = 'k'
     guessFolder('estimationInput')
     checkCalibration()
-    calculateError('10_20_30_12_42_57_60_30_22_16')#Jan
+    calculateError('5_10_14_20_20_30_30_40_40_7')#Jan
     #calculateError('22_22_25_18_65_22_22_18_26_21_18_9') #mummel
     #calculateError('10_18_20_10_30_50_30') #bina
 def checkCalibration():
