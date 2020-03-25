@@ -592,10 +592,10 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     for e in estimation:
         if e > 0:
             cleanedEstimation = np.append(cleanedEstimation, e)
-    mean = np.mean(cleanedEstimation)
     print(cleanedEstimation)
     cleanedEstimation = PGPremoveOutlier(cleanedEstimation,0.04,0.1)
     print('outliers Removed', cleanedEstimation)
+    mean = np.mean(cleanedEstimation)
     res = round(mean, 0)
     print('mean', mean, 'res', res)
     return res
