@@ -272,7 +272,14 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     # brither is more intense
     intensity = hairOnWhite.copy()
     intensity = 255 - intensity
+    #set pixels to 0 that are brither than the hair can be. brither than averageBackgroundColor
+    isBackgroundMask =  np.ones(orig.shape[:2], dtype="uint8")
+    isBackgroundMask[:, :] = (intensity > averageBackgroundColor) #0 when pixel has haircolor. q when it is probably background
+    intensity = isBackgroundMask * 0 + (1-isBackgroundMask) * intensity #background gets set to 0. rest stays the same
+
     h_show('intenstiy', intensity)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     intensity = removeSmallRegions(intensity, orig)
     h_showMissed(intensity, gray, orig)
 
