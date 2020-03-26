@@ -272,10 +272,6 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     # brither is more intense
     intensity = hairOnWhite.copy()
     intensity = 255 - intensity
-    #set pixels to 0 that are brither than the hair can be. brither than averageBackgroundColor
-    isBackgroundMask =  np.ones(orig.shape[:2], dtype="uint8")
-    isBackgroundMask[:, :] = (intensity > averageBackgroundColor) #0 when pixel has haircolor. q when it is probably background
-    intensity = isBackgroundMask * 0 + (1-isBackgroundMask) * intensity #background gets set to 0. rest stays the same
 
     h_show('intenstiy', intensity)
     cv2.waitKey(0)
@@ -547,6 +543,8 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     denseSectionNum = alldata[17::np.size(keys)]
     intensitySum= alldata[0::np.size(keys)]
     intensityShare = alldata[1::np.size(keys)]
+    denseSectionAVGSize = alldata[21::np.size(keys)]
+    looseSectionAVGSize =alldata[11::np.size(keys)]
 
     i_intensitySum= imgdata[0]
     i_intensityShare = imgdata[1]
@@ -564,6 +562,8 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     i_looseHairSum = imgdata[26]
     i_backgroundSectionNum = imgdata[7]
     i_denseSectionNum = imgdata[17]
+    i_denseSectionAVGSize = imgdata[21]
+    i_looseSectionAVGSize =imgdata[11]
 
     denseDensity = (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc)))
     looseDensity = ((hairpixels - denseHairSum) / (hairSectionSize - denseInnerSectionSize)) * (
@@ -574,29 +574,42 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
 
     estimation = np.array([])
     estimation = np.append(estimation,
-                           model(hairPerc,hairAmount,i_origperc,'hairpercent'))
+                           model(hairPerc,hairAmount,i_origperc,'hairpercent',False))
     estimation = np.append(estimation,
                            model((hairpixels / hairSectionSize) * (1 - outerSectionPerc), hairAmount,
-                                 (i_hairpixels / i_hairSectionSize) * (1 - i_outerSectionPerc),'density * hairsection size'))
+                                 (i_hairpixels / i_hairSectionSize) * (1 - i_outerSectionPerc),
+                                 'density * hairsection size',False))
     estimation = np.append(estimation,
                            model((hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc,hairAmount,
-                                 (i_hairpixels/i_hairSectionSize)*(1-i_outerSectionPerc)*i_origperc,'density per sectionsize per hairperc'))
+                                 (i_hairpixels/i_hairSectionSize)*(1-i_outerSectionPerc)*i_origperc,
+                                 'density per sectionsize per hairperc',False))
     estimation = np.append(estimation,
                            model(denseDensity,hairAmount,
-                                 i_denseDensity,'density of dense section in realtion to section size'))
+                                 i_denseDensity,'density of dense section in realtion to section size',False))
     estimation = np.append(estimation,
                            model(denseDensity / looseDensity, hairAmount,
-                                 i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio'))
+                                 i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio',False))
     estimation = np.append(estimation,
                             model(backgroundSectionNum*(1-outerSectionPerc),hairAmount,
                                   i_backgroundSectionNum*(
-                                          1-i_outerSectionPerc),'density by background sections peeking through'))
+                                          1-i_outerSectionPerc),
+                                  'density by background sections peeking through',False))
     estimation = np.append(estimation,
                            model(denseSectionNum*(1-outerSectionPerc),hairAmount,
-                                 i_denseSectionNum*(1-i_outerSectionPerc),'dense Density by background sections peeking through'))
+                                 i_denseSectionNum*(1-i_outerSectionPerc),
+                                 'dense Density by background sections peeking through',False))
     estimation = np.append(estimation,
                            model(intensitySum*hairpixels*(1-outerSectionPerc),hairAmount,
-                                 i_intensitySum*i_hairpixels*(1-i_outerSectionPerc),'intensity in relation to hairPixels and hairsection size'))
+                                 i_intensitySum*i_hairpixels*(1-i_outerSectionPerc),
+                                 'intensity in relation to hairPixels and hairsection size',True))
+    estimation = np.append(estimation,
+                           model(denseSectionAVGSize/(1-denseSectionperc),hairAmount,
+                                i_denseSectionAVGSize/(1-i_denseSectionperc),
+                           'average backgorund section sizes in dense section',True))
+    estimation = np.append(estimation,
+                           model((denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc),hairAmount,
+                                (i_denseSectionAVGSize/i_looseSectionAVGSize)/(1-i_outerSectionPerc),
+                                'dense average background section sizes compared to looseaveragebackgorund sections size',False))
     cleanedEstimation = np.array([])
     for e in estimation:
         if e > 0:
@@ -638,7 +651,7 @@ def linregress(x,y):
     a = np.cov(x, y)[0, 1] / np.cov(x, y)[0, 0]  # slope
     b = y.mean() - a * x.mean()  # intersept
     return a,b
-def model(x,y,datapoint,description):
+def model(x,y,datapoint,description,ignorelin):
     inds = x.argsort()
     x = x[inds]
     y = y[inds]
@@ -661,7 +674,10 @@ def model(x,y,datapoint,description):
         ax.legend(loc='best')
         plt.show()
     print('lin Guess by', description, linguess)
-    print('spl Guess by', description, splguess)
+    if ignorelin==False:
+        print('spl Guess by', description, splguess)
+    if ignorelin:
+        return linguess
     return linguess, splguess
 
 def guessFolder(folder):
