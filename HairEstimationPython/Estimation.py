@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 import datetime
+import shutil
+
 import cv2
 import os
 import numpy as np
@@ -251,14 +253,14 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     # print(backGroundPixels)
     # average color = sum of colors / pixels
     averageBackgroundColor = np.sum(imediateBackground) / backGroundPixels
-    # print('backgroundcolor', averageBackgroundColor)
+    print('backgroundcolor', averageBackgroundColor)
 
     # average color of everything
     avgColor = np.sum(gray) / np.size(gray)
 
     hairOnAverage = gray.copy()
     hairOnAverage = (1 - hairPixelMask) * int(avgColor) + hairPixelMask * gray
-    # show('hair on Average background color', hairOnAverage)
+    h_show('hair on Average background color', hairOnAverage)
 
     # average hair color
     sum = np.sum(hairOnBlack)
@@ -715,16 +717,14 @@ def printResult():
         print('no data found')
         return
     print(data)
-def fullTest():
+def fullTest(str):
     clearSave()
     calibration()
     global duplicateHandelingMode
     duplicateHandelingMode = 'k'
     guessFolder('estimationInput')
     checkCalibration()
-    calculateError('5_10_14_20_20_30_30_40_40_7')#Jan
-    #calculateError('22_22_25_18_65_22_22_18_26_21_18_9') #mummel
-    #calculateError('10_18_20_10_30_50_30') #bina
+    calculateError(str)
 def checkCalibration():
     try:
         hairAmount = np.load(hairAmountDatapath + '.npy')
@@ -908,16 +908,8 @@ def deleteUser(user):
         else:
             print('deleting user '+user)
             buildPaths(user)
-            try:
-                os.remove(keyDatapath+'.npy')
-                os.remove(estimationResultDatapath+'.npy')
-                os.remove(hairAmountDatapath+'.npy')
-                os.remove(calibrationResultDatapath + '.npy')
-            except FileNotFoundError:
-                pass
-            os.rmdir(calibrationImagesDirectorypath)
-            os.rmdir(dataDirectorypath)
-            os.rmdir(usersDirectory + '/' + user)
+            shutil.rmtree(usersDirectory + '/' + user, ignore_errors=True)
+            #os.rmdir(usersDirectory + '/' + user)
             switchUser(currentUser)
     else:#catch the case that the user doesnt exist.
         print('user '+user+' doesnt exits. There is nothing to delete')
@@ -1034,7 +1026,7 @@ def commandlinehandeling():
             return
         else:
             func(args.arg1,args.arg2)
-    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile) |(func == calculateError):
+    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile) |(func == calculateError) |(func == fullTest):
         if args.arg1 is None :
             print('Error: command needs second postional argument')
             return
