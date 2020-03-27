@@ -8,6 +8,9 @@ import numpy as np
 import re
 import matplotlib.dates as mdates
 import argparse
+
+import scipy
+from scipy import stats
 from scipy import interpolate
 from matplotlib import pyplot as plt
 import math
@@ -445,6 +448,7 @@ def testEdgeDetection(path):
 
 # endregion
 # region calibration
+useOldFunc = False
 def calibration():
     #find every image in the folder and use them to calibrate with
     #retrieve names of the images
@@ -476,7 +480,8 @@ def calibrateProcessImages(calibrationPaths):
     np.save(calibrationResultDatapath, alldata)
     np.save(keyDatapath, keys)
     np.save(hairAmountDatapath, hairAmount)
-
+    if useOldFunc==False:
+        ProcessBestFunctions(alldata, keys, hairAmount)
     # f.write(alldata)
     # f.close()
     # save alldata and stats in a file
@@ -523,7 +528,19 @@ def guess(path):
     imgdata,_ = detect(path)
 
     save(path, guessProcess(alldata, keys, hairAmount, imgdata))
-
+def automaticGuessFunctions():
+    try:
+        alldata = np.load(calibrationResultDatapath + '.npy')
+        keys = np.load(keyDatapath + '.npy')
+        hairAmount = np.load(hairAmountDatapath + '.npy')
+    except:
+        print('cant estimate hair without calibrating first. run <calibrate>')
+        return
+    if(np.size(alldata)==0) | (np.size(keys)== 0) | (np.size(hairAmount)==0) :
+        print('cant estimate hair without calibrating first. run <calibrate>')
+        return
+    print('automatically finding guess Functions')
+    ProcessBestFunctions(alldata, keys, hairAmount)
 def guessProcess(alldata, keys, hairAmount, imgdata):
     #['0 intensitySum:' '1 intensityShare' '2 hairpixels' '3 imagepixels' '4 percentage'
     # '5 all pixels' '6 number of section' '7 number of section inclosed'
@@ -534,6 +551,7 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     # '20 innerSectionSum' '21 innserSectionAvgSize' '22 innerSectionAvgSize Percentage'
     # '23 innerSectionSizeVariance' '24 std', 25 densehairSum, 26 loosehair sum]
     functions = loadFunctions()
+
 
     hairAmount = np.array(list(map(int, hairAmount)))
     allPixels = alldata[3::np.size(keys)]
@@ -633,28 +651,105 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
 def func_exp(x, a, b, c):
     return a * np.exp(b * x) + c
 def func_divx(x, a, b):
-    return a * 1 / x + b
+    return a * (1 / x) + b
 def func_log(x, a, b, c):
-    return a * np.log(b * x) + c
+    return a * np.log(abs(b) * x) + c
 def func_lin(x,a,b):
     return a * x + b
+def func_empty(x,a):
+    return -1*x*0.0000000000000000001*a
+def findBestFunction(x, y):
+    func = func_exp
+    possiblefunc = np.array([func_divx,func_exp,func_lin,func_log])
+    minChisq = 5000
+    bestFunc = func_lin
+    for func in possiblefunc:
+        try:
+            popt, pcov = curve_fit(func, x, y)
+        except:
+            continue
+        #plt.plot(x, y, 'ko', label="Original Noised Data")
+        #plt.plot(x, func(x, *popt), 'r-', label="Fitted Curve")
+        _,chisq = scipy.stats.chisquare(y, func(x, *popt), ddof = 2,axis = 0)
+        print(chisq)
+        if np.isnan(chisq):
+            continue
+        if chisq < minChisq:
+            print('found smaller')
+            minChisq = chisq
+            bestFunc = func
+    print(bestFunc)
+    return bestFunc
 
+def ProcessBestFunctions(alldata, keys, hairAmount):
+    hairAmount = np.array(list(map(int, hairAmount)))
+    allPixels = alldata[3::np.size(keys)]
+    hairPerc = alldata[4::np.size(keys)]
+    hairpixels = alldata[2::np.size(keys)]
+    hairSectionSize = alldata[10::np.size(keys)]
+
+    denseHairSum = alldata[25::np.size(keys)]
+    denseSectionperc = alldata[19::np.size(keys)]
+    denseInnerSectionSize = alldata[20::np.size(keys)]
+
+    outerSectionPerc = alldata[9::np.size(keys)]
+    secn = alldata[7::np.size(keys)]  # number of inner sections
+    looseHairSum = alldata[26::np.size(keys)]
+    backgroundSectionNum = alldata[7::np.size(keys)]
+    denseSectionNum = alldata[17::np.size(keys)]
+    intensitySum = alldata[0::np.size(keys)]
+    intensityShare = alldata[1::np.size(keys)]
+    denseSectionAVGSize = alldata[21::np.size(keys)]
+    looseSectionAVGSize = alldata[11::np.size(keys)]
+
+    denseDensity = (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc)))
+    looseDensity = ((hairpixels - denseHairSum) / (hairSectionSize - denseInnerSectionSize)) * (
+            (1 - outerSectionPerc) - (1 - denseSectionperc))
+
+    functions = np.array([])
+    functions = np.append(functions,findBestFunction(hairPerc,hairAmount))
+    functions = np.append(functions,findBestFunction((hairpixels / hairSectionSize) * (1 - outerSectionPerc), hairAmount))
+    functions = np.append(functions,findBestFunction((hairpixels / hairSectionSize) * (1 - outerSectionPerc) * hairPerc, hairAmount))
+    functions = np.append(functions,findBestFunction(denseDensity, hairAmount))
+    functions = np.append(functions,findBestFunction(denseDensity / looseDensity, hairAmount))
+    functions = np.append(functions,findBestFunction(backgroundSectionNum * (1 - outerSectionPerc), hairAmount))
+    functions = np.append(functions,findBestFunction(denseSectionNum * (1 - outerSectionPerc), hairAmount))
+    functions = np.append(functions,findBestFunction(intensitySum * hairpixels * (1 - outerSectionPerc), hairAmount))
+    functions = np.append(functions,findBestFunction(denseSectionAVGSize / (1 - denseSectionperc), hairAmount))
+    functions = np.append(functions,findBestFunction((denseSectionAVGSize / looseSectionAVGSize) / (1 - outerSectionPerc), hairAmount))
+    saveFunctions(functions)
+def saveFunctions(functions):
+    str = ''
+    for f in functions:
+        if f == func_divx:
+            str = str+'_divx'
+        if f == func_exp:
+            str = str+'_exp'
+        if f == func_lin:
+            str = str+'_lin'
+        if f == func_log:
+            str = str+'_log'
+    setFunctions(str)
 def loadFunctions():
+    functions = np.array([])
     if os.path.exists(guessfunctionDatapath):
         fp = open(guessfunctionDatapath, 'r+')
         data = fp.read()
         fp.close()
-    data = data.split("_")
-    functions = np.array([])
-    for e in data:
-        if e == 'exp':
-            functions = np.append(functions, func_exp)
-        if e == 'log':
-            functions = np.append(functions, func_log)
-        if e == 'divx':
-            functions = np.append(functions, func_divx)
-        if e == 'lin':
-            functions = np.append(functions, func_lin)
+        data = data.split("_")
+        for e in data:
+            if e == 'exp':
+                functions = np.append(functions, func_exp)
+            if e == 'log':
+                functions = np.append(functions, func_log)
+            if e == 'divx':
+                functions = np.append(functions, func_divx)
+            if e == 'lin':
+                functions = np.append(functions, func_lin)
+    #fill the rest up with func_empty
+    i = np.size(functions)
+    for i in range(15):
+        functions = np.append(functions,func_empty)
     return functions
 def setFunctions(str):
     fp = open(guessfunctionDatapath, 'w+')
@@ -689,11 +784,14 @@ def linregress(x,y):
     a = np.cov(x, y)[0, 1] / np.cov(x, y)[0, 0]  # slope
     b = y.mean() - a * x.mean()  # intersept
     return a,b
+
+
+
+
 def model(x,y,datapoint,description,ignorelin,func):
     inds = x.argsort()
     x = x[inds]
     y = y[inds]
-
     a, b = linregress(x, y)
     spl = interpolate.InterpolatedUnivariateSpline(x, y, k=1)
     popt, pcov = curve_fit(func, x, y)
@@ -722,6 +820,27 @@ def model(x,y,datapoint,description,ignorelin,func):
         return splguess,funcguess
     print('Guess by', description, '[ spl',splguess,';func',funcguess, ';linguess', linguess,']')
     return linguess, splguess, funcguess
+def findBestFunction(x, y):
+    func = func_exp
+    possiblefunc = np.array([func_divx,func_exp,func_lin,func_log])
+    minChisq = 5000
+    bestFunc = func_lin
+    for func in possiblefunc:
+        try:
+            popt, pcov = curve_fit(func, x, y)
+        except:
+            continue
+        #plt.plot(x, y, 'ko', label="Original Noised Data")
+        #plt.plot(x, func(x, *popt), 'r-', label="Fitted Curve")
+        _,chisq = scipy.stats.chisquare(y, func(x, *popt), ddof = 2,axis = 0)
+        print(chisq)
+        if np.isnan(chisq):
+            continue
+        if chisq < minChisq:
+            print('found smaller')
+            minChisq = chisq
+            bestFunc = func
+    return bestFunc
 
 def guessFolder(folder):
     #estimate every image in the folder
@@ -1034,7 +1153,7 @@ def repairUsers():
 # endregion
 
 def commandlinehandeling():
-    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.5f}'.format})
+    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.2f}'.format})
     FUNCTION_MAP = {'calibrate': calibration,
                     'guess': guess, # args
                     'plot': plotEstimationResult,
@@ -1042,6 +1161,7 @@ def commandlinehandeling():
                     'addCalibrationImage': addCalibrationImage, #args
                     'guessFolder': guessFolder,
                     'setGuessFunctions':setFunctions,
+                    'automaticGuessFunctions':automaticGuessFunctions,
                     #checking result of calibration and debugging
                     'calibrationResult': guessTest,
                     'printFile': printFile,
@@ -1069,7 +1189,11 @@ def commandlinehandeling():
     group.add_argument("-m",action = 'store_true')#use mean
     group.add_argument("-i", action = 'store_true')#ignore second duplicate
     group.add_argument("-k",action ='store_true')#keep duplicate
+    parser.add_argument("-o","--useOldFunc", help="dont find new functions during calibration",action="store_true")
     args = parser.parse_args()
+    global useOldFunc
+    if args.useOldFunc:
+        useOldFunc = True
     global duplicateHandelingMode
     if args.r:
 
