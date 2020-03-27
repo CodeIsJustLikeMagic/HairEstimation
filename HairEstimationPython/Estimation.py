@@ -11,6 +11,7 @@ import argparse
 from scipy import interpolate
 from matplotlib import pyplot as plt
 import math
+from scipy.optimize import curve_fit
 
 
 debugstate = False
@@ -393,6 +394,11 @@ def denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr):
     looseHairSum = np.count_nonzero(loosehair> 0)
     data, keys = h_add(data, keys, 'denseHairSum', denseHairSum)
     data, keys = h_add(data, keys, 'looseHairSum', looseHairSum)
+    #intensity per section
+    looseintensity = looseMask * intensity
+    denseintensity = densemaskoutr * intensity
+    data, keys = h_add(data, keys, 'IntensitySum in Loose Section', np.sum(looseintensity))
+    data,keys = h_add(data,keys, 'IntensitySum in Dense Section',np.sum(denseintensity))
     return data,keys
 
 def detect(path):
@@ -470,6 +476,7 @@ def calibrateProcessImages(calibrationPaths):
     np.save(calibrationResultDatapath, alldata)
     np.save(keyDatapath, keys)
     np.save(hairAmountDatapath, hairAmount)
+
     # f.write(alldata)
     # f.close()
     # save alldata and stats in a file
@@ -493,6 +500,7 @@ def addCalibrationImage(path,amount):
 #endregion
 #region guess
 def guessTest():
+    debugg(True)
     debugg(True)
     alldata = np.load(calibrationResultDatapath + '.npy')
     keys = np.load(keyDatapath + '.npy')
@@ -525,6 +533,7 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     # '17 number of section inclosed' '18 outerSectionSum' '19 outerSectionPercentage'
     # '20 innerSectionSum' '21 innserSectionAvgSize' '22 innerSectionAvgSize Percentage'
     # '23 innerSectionSizeVariance' '24 std', 25 densehairSum, 26 loosehair sum]
+    functions = loadFunctions()
 
     hairAmount = np.array(list(map(int, hairAmount)))
     allPixels = alldata[3::np.size(keys)]
@@ -574,55 +583,84 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
 
     estimation = np.array([])
     estimation = np.append(estimation,
-                           model(hairPerc,hairAmount,i_origperc,'hairpercent',False))
+                           model(hairPerc,hairAmount,i_origperc,'hairpercent',False,functions[0]))
     estimation = np.append(estimation,
                            model((hairpixels / hairSectionSize) * (1 - outerSectionPerc), hairAmount,
                                  (i_hairpixels / i_hairSectionSize) * (1 - i_outerSectionPerc),
-                                 'density * hairsection size',False))
+                                 'density * hairsection size',False,functions[1]))
     estimation = np.append(estimation,
                            model((hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc,hairAmount,
                                  (i_hairpixels/i_hairSectionSize)*(1-i_outerSectionPerc)*i_origperc,
-                                 'density per sectionsize per hairperc',False))
+                                 'density per sectionsize per hairperc',False,functions[2]))
     estimation = np.append(estimation,
                            model(denseDensity,hairAmount,
-                                 i_denseDensity,'density of dense section in realtion to section size',False))
+                                 i_denseDensity,'density of dense section in realtion to section size',False,functions[3]))
     estimation = np.append(estimation,
                            model(denseDensity / looseDensity, hairAmount,
-                                 i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio',False))
+                                 i_denseDensity/i_looseDensity,'dense Density to looseDensity ratio',False,functions[4]))
     estimation = np.append(estimation,
                             model(backgroundSectionNum*(1-outerSectionPerc),hairAmount,
                                   i_backgroundSectionNum*(
                                           1-i_outerSectionPerc),
-                                  'density by background sections peeking through',False))
+                                  'density by background sections peeking through',False,functions[5]))
     estimation = np.append(estimation,
                            model(denseSectionNum*(1-outerSectionPerc),hairAmount,
                                  i_denseSectionNum*(1-i_outerSectionPerc),
-                                 'dense Density by background sections peeking through',False))
+                                 'dense Density by background sections peeking through',False,functions[6]))
     estimation = np.append(estimation,
                            model(intensitySum*hairpixels*(1-outerSectionPerc),hairAmount,
                                  i_intensitySum*i_hairpixels*(1-i_outerSectionPerc),
-                                 'intensity in relation to hairPixels and hairsection size',True))
+                                 'intensity in relation to hairPixels and hairsection size',True,functions[7]))
     estimation = np.append(estimation,
                            model(denseSectionAVGSize/(1-denseSectionperc),hairAmount,
                                 i_denseSectionAVGSize/(1-i_denseSectionperc),
-                           'average backgorund section sizes in dense section',True))
+                           'average backgorund section sizes in dense section',True,functions[8]))
     estimation = np.append(estimation,
                            model((denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc),hairAmount,
                                 (i_denseSectionAVGSize/i_looseSectionAVGSize)/(1-i_outerSectionPerc),
-                                'dense average background section sizes compared to looseaveragebackgorund sections size',False))
+                                'dense average background section sizes compared to looseaveragebackgorund sections size',False,functions[9]))
     cleanedEstimation = np.array([])
     for e in estimation:
         if e > 0:
             cleanedEstimation = np.append(cleanedEstimation, e)
     print(cleanedEstimation)
-    cleanedEstimation = PGPremoveOutlier(cleanedEstimation,0.04,0.1)
+    cleanedEstimation = PGPremoveOutlier(cleanedEstimation,1.5,0.1)
     print('outliers Removed', cleanedEstimation)
     mean = np.mean(cleanedEstimation)
     res = round(mean, 0)
-    print('mean', mean, 'res', res)
+    print('mean', mean, 'res', res, 'median', np.median(cleanedEstimation))
     return res
+def func_exp(x, a, b, c):
+    return a * np.exp(b * x) + c
+def func_divx(x, a, b):
+    return a * 1 / x + b
+def func_log(x, a, b, c):
+    return a * np.log(b * x) + c
+def func_lin(x,a,b):
+    return a * x + b
 
-
+def loadFunctions():
+    if os.path.exists(guessfunctionDatapath):
+        fp = open(guessfunctionDatapath, 'r+')
+        data = fp.read()
+        fp.close()
+    data = data.split("_")
+    functions = np.array([])
+    for e in data:
+        if e == 'exp':
+            functions = np.append(functions, func_exp)
+        if e == 'log':
+            functions = np.append(functions, func_log)
+        if e == 'divx':
+            functions = np.append(functions, func_divx)
+        if e == 'lin':
+            functions = np.append(functions, func_lin)
+    return functions
+def setFunctions(str):
+    fp = open(guessfunctionDatapath, 'w+')
+    print('saving new guess functions to', guessfunctionDatapath)
+    fp.write(str)
+    fp.close()
 def PGPremoveOutlier(PData, Pp1, Pp2):
     # phase 1
     mu1 = PData.mean()
@@ -651,34 +689,39 @@ def linregress(x,y):
     a = np.cov(x, y)[0, 1] / np.cov(x, y)[0, 0]  # slope
     b = y.mean() - a * x.mean()  # intersept
     return a,b
-def model(x,y,datapoint,description,ignorelin):
+def model(x,y,datapoint,description,ignorelin,func):
     inds = x.argsort()
     x = x[inds]
     y = y[inds]
 
     a, b = linregress(x, y)
     spl = interpolate.InterpolatedUnivariateSpline(x, y, k=1)
+    popt, pcov = curve_fit(func, x, y)
+
     linguess = lin(a, b, datapoint)
     splguess = spl(datapoint)
+    funcguess = func(datapoint, *popt)
     if debugstate:
         fitx = np.linspace(x.min(), x.max(), 100)
         fig, ax = plt.subplots(figsize=(10, 8))
         ax.plot(fitx, spl(fitx),label ='splinefunktion')
         ax.plot(fitx, lin(a, b, fitx),label ='linearRegression')
+        plt.plot(x, func(x, *popt), 'r-', label="Fitted Curve")
         ax.scatter(x, y, label='calibrationData')
         ax.set_title('Guess by ' + description + ' funktion')
         ax.set_xlabel(description)
         ax.set_ylabel('amount of hair')
-        ax.scatter(datapoint,linguess,label='linear Guess')
+        if ignorelin==False:
+            ax.scatter(datapoint,linguess,label='linear Guess')
         ax.scatter(datapoint,splguess, label ='spline Guess')
+        ax.scatter(datapoint,funcguess, label ='func Guess')
         ax.legend(loc='best')
         plt.show()
-    print('lin Guess by', description, linguess)
-    if ignorelin==False:
-        print('spl Guess by', description, splguess)
     if ignorelin:
-        return linguess
-    return linguess, splguess
+        print('Guess by', description, '[ spl', splguess, ';func', funcguess, ']')
+        return splguess,funcguess
+    print('Guess by', description, '[ spl',splguess,';func',funcguess, ';linguess', linguess,']')
+    return linguess, splguess, funcguess
 
 def guessFolder(folder):
     #estimate every image in the folder
@@ -740,6 +783,13 @@ def printResult():
         print('no data found')
         return
     print(data)
+def onlyGuessTest(str):
+    clearSave()
+    global duplicateHandelingMode
+    duplicateHandelingMode = 'k'
+    guessFolder('estimationInput')
+    checkCalibration()
+    calculateError(str)
 def fullTest(str):
     clearSave()
     calibration()
@@ -828,7 +878,6 @@ def printFile(path):
     print(data)
 # endregion
 
-
 # region User filesystem handeling
 activeUserDirectory = ''
 calibrationImagesDirectorypath = ''
@@ -839,6 +888,7 @@ estimationResultDatapath=''
 activeUserDatapath = 'activeUser.txt'
 hairAmountDatapath = ''
 usersDirectory ='Users'
+guessfunctionDatapath = ''
 def buildPaths(user):
     global calibrationImagesDirectorypath
     global dataDirectorypath
@@ -847,6 +897,7 @@ def buildPaths(user):
     global estimationResultDatapath
     global hairAmountDatapath
     global activeUserDirectory
+    global guessfunctionDatapath
     activeUserDirectory = usersDirectory +'/'+user
     calibrationImagesDirectorypath = usersDirectory + '/' + user + '/calibrationImages'
     dataDirectorypath = usersDirectory+'/'+user + '/data'
@@ -854,6 +905,7 @@ def buildPaths(user):
     keyDatapath  = dataDirectorypath+'/calibkeyData.out'
     estimationResultDatapath = dataDirectorypath+'/result.out'
     hairAmountDatapath = dataDirectorypath+'/calibhairAmount.out'
+    guessfunctionDatapath = dataDirectorypath+'/guessfunctions.txt'
 def loadUser():
     if os.path.exists(activeUserDatapath):
         fp = open(activeUserDatapath, 'r+')
@@ -989,6 +1041,7 @@ def commandlinehandeling():
                     'clearSave': clearSave,
                     'addCalibrationImage': addCalibrationImage, #args
                     'guessFolder': guessFolder,
+                    'setGuessFunctions':setFunctions,
                     #checking result of calibration and debugging
                     'calibrationResult': guessTest,
                     'printFile': printFile,
@@ -1003,7 +1056,8 @@ def commandlinehandeling():
                     'switch': switchUser, # args
                     'repairUsers': repairUsers,
                     'removeLastGuess': removeLastSaveImg,
-                    'fullTest': fullTest
+                    'fullTest': fullTest,
+                    'onlyGuessTest': onlyGuessTest
                     }
     parser = argparse.ArgumentParser(description='Estimate shed hair')
     parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
@@ -1049,11 +1103,13 @@ def commandlinehandeling():
             return
         else:
             func(args.arg1,args.arg2)
-    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile) |(func == calculateError) |(func == fullTest):
+    elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile)\
+            |(func == calculateError) |(func == fullTest) |(func == onlyGuessTest) |(func == setFunctions):
         if args.arg1 is None :
             print('Error: command needs second postional argument')
             return
         else:
+
             func(args.arg1)
     else:
         func()
