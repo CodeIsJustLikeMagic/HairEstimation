@@ -512,7 +512,15 @@ def guessTest():
     hairAmount = np.load(hairAmountDatapath + '.npy')
     imgdata = alldata[:np.size(keys)]
     guessProcess(alldata,keys,hairAmount,imgdata)
-def guess(path):
+def h_ymd(path):
+    numbers = re.findall(r'\d+', path)
+    numbers = numbers[0]
+    year = numbers[0:4:]
+    month = numbers[4:6:]
+    day = numbers[6:8:]
+    ymd = year + '-' + month + '-' + day
+    return ymd
+def readFilesAndGuess(path):
     # read alldata and stats from file.
     try:
         alldata = np.load(calibrationResultDatapath + '.npy')
@@ -521,13 +529,33 @@ def guess(path):
     except:
         print('cant estimate hair without calibrating first. run <calibrate>')
         return
-    if(np.size(alldata)==0) | (np.size(keys)== 0) | (np.size(hairAmount)==0) :
+    if (np.size(alldata) == 0) | (np.size(keys) == 0) | (np.size(hairAmount) == 0):
         print('cant estimate hair without calibrating first. run <calibrate>')
         return
     print('guessing the amount of hair in the picture')
-    imgdata,_ = detect(path)
-
-    save(path, guessProcess(alldata, keys, hairAmount, imgdata))
+    imgdata, _ = detect(path)
+    return guessProcess(alldata, keys, hairAmount, imgdata)
+def guess(path):
+    estimationResult = readFilesAndGuess(path)
+    ymd = h_ymd(path)
+    save(path, estimationResult,ymd)
+def guessWithDaysAndTag(path,days,tag):
+    estimationResult = readFilesAndGuess(path)
+    saveDays(path,days,estimationResult)
+    ymd = h_ymd(path)
+    saveTag(tag,ymd)
+def guessWithDaysOrTag(path,arg):
+    if arg.isdigit():
+        guessWithDays(path,arg)
+    else:
+        guessWithTag(path,arg)
+def guessWithDays(path,days):
+    estimationResult = readFilesAndGuess(path)
+    saveDays(path,days,estimationResult)
+def guessWithTag(path,tag):
+    guess(path)
+    ymd = h_ymd(path)
+    saveTag(tag,ymd)
 def automaticGuessFunctions():
     try:
         alldata = np.load(calibrationResultDatapath + '.npy')
@@ -562,6 +590,7 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     denseHairSum = alldata[25::np.size(keys)]
     denseSectionperc = alldata[19::np.size(keys)]
     denseInnerSectionSize = alldata[20::np.size(keys)]
+    denseIntensity = alldata[28::np.size(keys)]
 
     outerSectionPerc = alldata[9::np.size(keys)]
     secn = alldata[7::np.size(keys)]  # number of inner sections
@@ -583,6 +612,7 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     i_denseHairSum = imgdata[25]
     i_denseSectionperc = imgdata[19]
     i_denseinnerSectionSize = imgdata[20]
+    i_denseIntensity = imgdata[28]
 
     i_outerSectionPerc = imgdata[9]
     i_secn = imgdata[7]  # number of inner sections
@@ -636,13 +666,19 @@ def guessProcess(alldata, keys, hairAmount, imgdata):
     estimation = np.append(estimation,
                            model((denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc),hairAmount,
                                 (i_denseSectionAVGSize/i_looseSectionAVGSize)/(1-i_outerSectionPerc),
-                                'dense average background section sizes compared to looseaveragebackgorund sections size',False,functions[9]))
+                                'dense average background section sizes compared to looseaveragebackgorund sections size',True,functions[9]))
+    estimation = np.append(estimation,
+                           model((denseIntensity/intensitySum)*(1-denseSectionperc),hairAmount,
+                                (i_denseIntensity/i_intensitySum)*(1-i_denseSectionperc),'denseIntensity/intensitySum * denseSectionSize',False,functions[10]))
+    estimation = np.append(estimation,
+                           model((denseIntensity/denseHairSum)*(1-denseSectionperc),hairAmount,
+                                 (i_denseIntensity/i_denseHairSum)*(1-i_denseSectionperc),'denseIntensity/denseHairSum* denseSectionSize',False,functions[11]))
     cleanedEstimation = np.array([])
     for e in estimation:
         if e > 0:
             cleanedEstimation = np.append(cleanedEstimation, e)
     print(cleanedEstimation)
-    cleanedEstimation = PGPremoveOutlier(cleanedEstimation,1.5,0.1)
+    cleanedEstimation = PGPremoveOutlier(cleanedEstimation,0.75,0.1)
     print('outliers Removed', cleanedEstimation)
     mean = np.mean(cleanedEstimation)
     res = round(mean, 0)
@@ -691,7 +727,7 @@ def ProcessBestFunctions(alldata, keys, hairAmount):
     denseHairSum = alldata[25::np.size(keys)]
     denseSectionperc = alldata[19::np.size(keys)]
     denseInnerSectionSize = alldata[20::np.size(keys)]
-
+    denseIntensity = alldata[28::np.size(keys)]
     outerSectionPerc = alldata[9::np.size(keys)]
     secn = alldata[7::np.size(keys)]  # number of inner sections
     looseHairSum = alldata[26::np.size(keys)]
@@ -717,6 +753,8 @@ def ProcessBestFunctions(alldata, keys, hairAmount):
     functions = np.append(functions,findBestFunction(intensitySum * hairpixels * (1 - outerSectionPerc), hairAmount))
     functions = np.append(functions,findBestFunction(denseSectionAVGSize / (1 - denseSectionperc), hairAmount))
     functions = np.append(functions,findBestFunction((denseSectionAVGSize / looseSectionAVGSize) / (1 - outerSectionPerc), hairAmount))
+    functions = np.append(functions,findBestFunction((denseIntensity/intensitySum)*(1-denseSectionperc),hairAmount))
+    functions = np.append(functions,findBestFunction((denseIntensity/denseHairSum)*(1-denseSectionperc),hairAmount))
     saveFunctions(functions)
 def saveFunctions(functions):
     str = ''
@@ -751,6 +789,37 @@ def loadFunctions():
     for i in range(15):
         functions = np.append(functions,func_empty)
     return functions
+def loadTags():
+    if os.path.exists(tagsDatapath):
+        fp = open(tagsDatapath,'r+')
+        content = fp.read().splitlines()
+        return content
+    return np.array([])
+def saveTag(tag, date):
+    #loadTags
+    taglists = loadTags()
+    #find our tag
+    #updatedTaglists = np.array([])
+    found = False
+    for i,tagstring in enumerate(taglists):
+        content = tagstring.split(' ')
+        if content[0] == tag:
+            #add date to the taglist
+            found = True
+            taglists[i] = taglists[i]+' '+date
+            # does taglits get changed as well?
+    if found == False:
+        #Tag doesnt exist jet.
+        print('creating new tag', tag)
+        taglists = np.append(taglists,  tag +' '+date)
+    saveAllTags(taglists)
+    #save updated tags
+def saveAllTags(taglists):
+    fp = open(tagsDatapath,'w+')
+    for singletaglist in taglists:
+        fp.write(singletaglist)
+        fp.write('\n')
+    fp.close()
 def setFunctions(str):
     fp = open(guessfunctionDatapath, 'w+')
     print('saving new guess functions to', guessfunctionDatapath)
@@ -852,15 +921,23 @@ def guessFolder(folder):
 
 
 duplicateHandelingMode = 'r'
-def save(path, estRes):
+def saveDays(path,days,estRes):
+    #save for the day in path and the number of days before that date.
+    ymd = h_ymd(path)
+    days =  int(days)
+    res = estRes / (days+0.0)
+    save(path,estRes/days,ymd)
+    days = days-1
+    DAY = datetime.timedelta(1)
+    ymd = datetime.datetime.strptime(ymd, "%Y-%m-%d").date()
+    for i in range(days):
+        ymd = ymd - DAY
+        dayStr = ymd.strftime("%Y-%m-%d")
+        save(path,res,dayStr)
+
+def save(path, estRes,ymd):
 
     #save image data to a file with all the previous estimations by date
-    numbers = re.findall(r'\d+', path)
-    numbers = numbers[0]
-    year = numbers[0:4:]
-    month = numbers[4:6:]
-    day = numbers[6:8:]
-    ymd = year + '-' + month + '-' + day
     estimationResult = np.array([ymd, estRes])
     oldData = np.array([])
     if os.path.exists(estimationResultDatapath+'.npy'):
@@ -957,6 +1034,7 @@ def removeLastSaveImg():
         estimationData = np.load(estimationResultDatapath+'.npy')
     except:
         print('no data found')
+        return
     #data has one pair per img. hairAmounts has one entry per img
     print(estimationData)
     estimationData = estimationData[:-2]
@@ -984,8 +1062,15 @@ def plotEstimationResult():
     ax.xaxis.set_major_formatter(formatter)
     locator = mdates.DayLocator(interval = 4)
     ax.xaxis.set_major_locator(locator)
-    plt.scatter(dates, hairAmounts)
-    plt.plot(dates,hairAmounts)
+    tags = loadTags()
+    for tag in tags:
+        tag = tag.split(' ')
+        tagdates = tag[1::]
+        tagdates = [datetime.datetime.strptime(d, "%Y-%m-%d").date() for d in tagdates]
+        plt.bar(tagdates,hairAmounts.max(),0.2,label=tag[0])
+    plt.scatter(dates, hairAmounts, color ='blue', label ='estimated Hair')
+    plt.plot(dates,hairAmounts, color ='blue')
+    ax.legend(loc='best')
     plt.gcf().autofmt_xdate()
     ax.grid()
     plt.show()
@@ -996,7 +1081,6 @@ def printFile(path):
     data = np.load(path)
     print(data)
 # endregion
-
 # region User filesystem handeling
 activeUserDirectory = ''
 calibrationImagesDirectorypath = ''
@@ -1008,6 +1092,7 @@ activeUserDatapath = 'activeUser.txt'
 hairAmountDatapath = ''
 usersDirectory ='Users'
 guessfunctionDatapath = ''
+tagsDatapath = ''
 def buildPaths(user):
     global calibrationImagesDirectorypath
     global dataDirectorypath
@@ -1017,6 +1102,7 @@ def buildPaths(user):
     global hairAmountDatapath
     global activeUserDirectory
     global guessfunctionDatapath
+    global tagsDatapath
     activeUserDirectory = usersDirectory +'/'+user
     calibrationImagesDirectorypath = usersDirectory + '/' + user + '/calibrationImages'
     dataDirectorypath = usersDirectory+'/'+user + '/data'
@@ -1025,6 +1111,7 @@ def buildPaths(user):
     estimationResultDatapath = dataDirectorypath+'/result.out'
     hairAmountDatapath = dataDirectorypath+'/calibhairAmount.out'
     guessfunctionDatapath = dataDirectorypath+'/guessfunctions.txt'
+    tagsDatapath = dataDirectorypath+'/tags.txt'
 def loadUser():
     if os.path.exists(activeUserDatapath):
         fp = open(activeUserDatapath, 'r+')
@@ -1162,6 +1249,7 @@ def commandlinehandeling():
                     'guessFolder': guessFolder,
                     'setGuessFunctions':setFunctions,
                     'automaticGuessFunctions':automaticGuessFunctions,
+                    'saveTag': saveTag,
                     #checking result of calibration and debugging
                     'calibrationResult': guessTest,
                     'printFile': printFile,
@@ -1170,7 +1258,7 @@ def commandlinehandeling():
                     'printResult': printResult,
                     #handeling users
                     'allUsers': printAllUsers,
-                    'activeUser': printActiveUser,
+                    'user': printActiveUser,
                     'delete': deleteUser, #args
                     'create': createUser, # args
                     'switch': switchUser, # args
@@ -1184,6 +1272,7 @@ def commandlinehandeling():
     parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
     parser.add_argument("arg1", nargs='?',help="depending on command: imagepath or user", type=str)
     parser.add_argument("arg2", nargs='?', help="for command addCalibrationImage: hair Amount")
+    parser.add_argument("arg3", nargs='?' )
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-r", action='store_true')#replace
     group.add_argument("-m",action = 'store_true')#use mean
@@ -1214,7 +1303,13 @@ def commandlinehandeling():
             print('Error: guess needs a path to an image as second positional argument.')
             return
         else:
-            func(args.arg1)
+            if args.arg2 is None:
+                if args.arg3 is None:
+                    func(args.arg1)
+                else:
+                    guessWithDaysAndTag(args.arg1,args.arg2,args.arg3)
+            else:
+                guessWithDaysOrTag(args.arg1,args.arg2) #second argument is a tag
     elif func==guessFolder:
         if args.arg1 is None :
             print('Error: guess needs a path to a folder as second positional argument.')
@@ -1227,6 +1322,11 @@ def commandlinehandeling():
             return
         else:
             func(args.arg1,args.arg2)
+    elif func == saveTag:
+        if (args.arg1 is None) | (args.arg2 is None):
+            print('Error: saveTag needs 2 positional arguments. tag date')
+        else:
+            func(args.arg1, args.arg2)
     elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile)\
             |(func == calculateError) |(func == fullTest) |(func == onlyGuessTest) |(func == setFunctions):
         if args.arg1 is None :
