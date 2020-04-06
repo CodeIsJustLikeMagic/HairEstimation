@@ -1,0 +1,225 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{visualScale}{article}{}
+      \name{author}{5}{}{%
+        {{hash=b819e8446291bd7dffc46f5961132c04}{%
+           family={Martínez-Velasco},
+           familyi={M\bibinithyphendelim V\bibinitperiod},
+           given={María},
+           giveni={M\bibinitperiod}}}%
+        {{hash=727e6017fc6e36df954163be8335fd66}{%
+           family={Vázquez-Herrera},
+           familyi={V\bibinithyphendelim H\bibinitperiod},
+           given={Norma},
+           giveni={N\bibinitperiod}}}%
+        {{hash=b7bd9bc5110d805d1b92b7010f1aa8c2}{%
+           family={Maddy},
+           familyi={M\bibinitperiod},
+           given={Austin},
+           giveni={A\bibinitperiod}}}%
+        {{hash=da0e02aba988dfda526d042a507eca12}{%
+           family={Asz-Sigall},
+           familyi={A\bibinithyphendelim S\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod}}}%
+        {{hash=30844d9afef120d9a57068eade904cc8}{%
+           family={Tosti},
+           familyi={T\bibinitperiod},
+           given={Antonella},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{b8f874d154cd56af192b8216bf2db837}
+      \strng{fullhash}{36cfddd4a7fe314b0a1675713d9d4aa5}
+      \strng{bibnamehash}{b8f874d154cd56af192b8216bf2db837}
+      \strng{authorbibnamehash}{b8f874d154cd56af192b8216bf2db837}
+      \strng{authornamehash}{b8f874d154cd56af192b8216bf2db837}
+      \strng{authorfullhash}{36cfddd4a7fe314b0a1675713d9d4aa5}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Dermatology and Therapy}
+      \field{month}{02}
+      \field{title}{The Hair Shedding Visual Scale: A Quick Tool to Assess Hair Loss in Women}
+      \field{volume}{7}
+      \field{year}{2017}
+      \verb{doi}
+      \verb 10.1007/s13555-017-0171-8
+      \endverb
+    \endentry
+    \entry{seasoalShedding}{article}{}
+      \name{author}{4}{}{%
+        {{hash=71cd6fbb77f558b42df2531e04cfc898}{%
+           family={Hsiang},
+           familyi={H\bibinitperiod},
+           given={E.Y.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=f06dc762c00188665d683a9414835c3b}{%
+           family={Semenov},
+           familyi={S\bibinitperiod},
+           given={Yevgeniy},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=e7323b9884238753ec6c274726f11f35}{%
+           family={Aguh},
+           familyi={A\bibinitperiod},
+           given={Crystal},
+           giveni={C\bibinitperiod}}}%
+        {{hash=991a9fa8e153a1baedc080e6536c0b6e}{%
+           family={Kwatra},
+           familyi={K\bibinitperiod},
+           given={S.G.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{fullhash}{755a4e2d06858fb18abce01debaad8bf}
+      \strng{bibnamehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{authorbibnamehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{authornamehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{authorfullhash}{755a4e2d06858fb18abce01debaad8bf}
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{British Journal of Dermatology}
+      \field{month}{10}
+      \field{title}{Seasonality of hair loss: a time series analysis of Google Trends data 2004 to 2016}
+      \field{volume}{178}
+      \field{year}{2017}
+      \verb{doi}
+      \verb 10.1111/bjd.16075
+      \endverb
+    \endentry
+    \entry{chemicalAlopecia}{inbook}{}
+      \name{author}{2}{}{%
+        {{hash=0d6b455ff20daf6130c5ff164534ee28}{%
+           family={Maibach},
+           familyi={M\bibinitperiod},
+           given={Howard},
+           giveni={H\bibinitperiod}}}%
+        {{hash=c2a94144e40dc3796500549a57cc1245}{%
+           family={Yamaguchi},
+           familyi={Y\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{be6671954a14fc0ed42430ee70cac41a}
+      \strng{fullhash}{be6671954a14fc0ed42430ee70cac41a}
+      \strng{bibnamehash}{be6671954a14fc0ed42430ee70cac41a}
+      \strng{authorbibnamehash}{be6671954a14fc0ed42430ee70cac41a}
+      \strng{authornamehash}{be6671954a14fc0ed42430ee70cac41a}
+      \strng{authorfullhash}{be6671954a14fc0ed42430ee70cac41a}
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-3-642-02034-6}
+      \field{journaltitle}{Kanerva's Occupational Dermatology, Second Edition}
+      \field{month}{01}
+      \field{title}{Chemically Induced Hair Loss/Alopecia}
+      \field{year}{2012}
+      \field{pages}{1935\bibrangedash 1942}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1007/978-3-642-02035-3_205
+      \endverb
+    \endentry
+    \entry{ironDeficiency}{article}{}
+      \name{author}{3}{}{%
+        {{hash=aeb6516025d21e791aacd159cfc58e44}{%
+           family={Trost},
+           familyi={T\bibinitperiod},
+           given={Leonid},
+           giveni={L\bibinitperiod}}}%
+        {{hash=df7531aa8a5a577df0f463fa74435d2b}{%
+           family={Bergfeld},
+           familyi={B\bibinitperiod},
+           given={Wilma},
+           giveni={W\bibinitperiod}}}%
+        {{hash=74e5dabf10425c91085a5a0226f04ae3}{%
+           family={Calogeras},
+           familyi={C\bibinitperiod},
+           given={Ellen},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{f528bdd686dc0e23e59e6bf42e8276bc}
+      \strng{fullhash}{f528bdd686dc0e23e59e6bf42e8276bc}
+      \strng{bibnamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
+      \strng{authorbibnamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
+      \strng{authornamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
+      \strng{authorfullhash}{f528bdd686dc0e23e59e6bf42e8276bc}
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Academy of Dermatology}
+      \field{month}{06}
+      \field{title}{The diagnosis and treatment of iron deficiency and its potential relationship to hair loss}
+      \field{volume}{54}
+      \field{year}{2006}
+      \field{pages}{824\bibrangedash 44}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1016/j.jaad.2005.11.1104
+      \endverb
+    \endentry
+    \entry{GreenScreenHair}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=1c32bd528dc2fa2897f93c0222e1585f}{%
+           family={Legendre},
+           familyi={L\bibinitperiod},
+           given={Chloe},
+           giveni={C\bibinitperiod}}}%
+        {{hash=14d91a06dd7bd352aded7e99c6acafa0}{%
+           family={Krissman},
+           familyi={K\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=4aae50ca585b8b048183a76ff6e98dd8}{%
+           family={Debevec},
+           familyi={D\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{864e7d74d442c3cd2b53c9978061365c}
+      \strng{fullhash}{864e7d74d442c3cd2b53c9978061365c}
+      \strng{bibnamehash}{864e7d74d442c3cd2b53c9978061365c}
+      \strng{authorbibnamehash}{864e7d74d442c3cd2b53c9978061365c}
+      \strng{authornamehash}{864e7d74d442c3cd2b53c9978061365c}
+      \strng{authorfullhash}{864e7d74d442c3cd2b53c9978061365c}
+      \field{sortinit}{7}
+      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{978-1-4503-5015-0}
+      \field{month}{07}
+      \field{title}{Improved chromakey of hair strands via orientation filter convolution}
+      \field{year}{2017}
+      \field{pages}{1\bibrangedash 2}
+      \range{pages}{2}
+      \verb{doi}
+      \verb 10.1145/3102163.3102200
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

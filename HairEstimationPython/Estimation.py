@@ -1265,7 +1265,8 @@ def commandlinehandeling():
                     'repairUsers': repairUsers,
                     'removeLastGuess': removeLastSaveImg,
                     'fullTest': fullTest,
-                    'onlyGuessTest': onlyGuessTest
+                    'onlyGuessTest': onlyGuessTest,
+                    'testEdgeDetection': testEdgeDetection
                     }
     parser = argparse.ArgumentParser(description='Estimate shed hair')
     parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
@@ -1328,7 +1329,7 @@ def commandlinehandeling():
         else:
             func(args.arg1, args.arg2)
     elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile)\
-            |(func == calculateError) |(func == fullTest) |(func == onlyGuessTest) |(func == setFunctions):
+            |(func == calculateError) |(func == fullTest) |(func == onlyGuessTest) |(func == setFunctions) | (func == testEdgeDetection):
         if args.arg1 is None :
             print('Error: command needs second postional argument')
             return
