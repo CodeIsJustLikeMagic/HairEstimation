@@ -184,13 +184,27 @@ Im ersten schritt der Bildverarbeitung wird das Bild auf die Markierungen in den
 Durch das Zuschneiden der Bilder wird sichergestellt, das die Haare immer etwa einen gleich großen Hintergrund haben. So werden die Daten die aus den Bildern gezogen werden nicht verfälscht dadurch, das die Haare eventuell von unterschiedlichen Abständen fotografiert wurden. 
 
 Nach dem Zuschneiden werde die Haare von dem Hintergrund getrennt.
-Das ist in der Methode edgeProcess implementiert.
+Das ist in der Methode edgeProcess implementiert. 
+Mithilfe von Canny Edge detection werden die Haare grob erkannt.
+Weiße Pixel gelten als Haare, schwarze als Hintergrund.
 
-Mithilfe von Canny Edge detection werden die Haare erkannt.
 \begin{figure}
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig64/04edges.png}
 	\caption[]{Canny Kantendetektion}
+	\label{img:Crop}
+\end{figure}
+
+In der Methode hairPixelIntensity wird die detection verfeinert.
+Auf das Resultat der Katendetection wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
+
+Da Haare halb-transparent sind, wird ihre Farbe intensiver, wenn sie sich überlagern. Sie weisen eine höhere Intensität auf.
+Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.1\textwidth]{01quellc.PNG}
+	\caption[]{Implementierung haare weiß, hintergrund schwarz}
 	\label{img:Crop}
 \end{figure}
 

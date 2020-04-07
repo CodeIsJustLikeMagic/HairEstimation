@@ -177,7 +177,6 @@ def hairPixelPercentage(data, keys, img):
 
     return data, keys
 
-#not used
 def skeletonize(img):
     """ OpenCV function to return a skeletonized version of img, a Mat object"""
 
@@ -229,50 +228,13 @@ def removeSmallRegions(intensity, img):
 
 def hairPixelIntensity(data, keys, orig, gray, edges):
     kernel = np.ones((3, 3), np.uint8)
-    img_dilation = cv2.dilate(edges, kernel, iterations=1)
-    img_erosion = cv2.erode(img_dilation, kernel, iterations=1)
-    hairPixels = img_dilation  # edges
-
-    # skel = skeletonize(img_dilation)
+    hairPixels = cv2.dilate(edges, kernel, iterations=1)  # edges
     hairPixelMask = np.ones(orig.shape[:2], dtype="uint8")
     hairPixelMask[:, :] = (hairPixels != 0)  # 0 or 1 depending on wehter it is ==0
-    hairOnBlack = gray.copy()
-    hairOnBlack = hairPixelMask * gray
-
     hairOnWhite = gray.copy()
-    # no hair*255 + hair * hair On Black(gray)
     # if no hair found, make it white. if hair found copy color from grayscale original
     hairOnWhite = (1 - hairPixelMask) * 255 + hairPixelMask * gray
-
-    # show('orig', orig)
-    # show('hairOnWhite', hairOnWhite)
-    # darker is more intense in this case
-
-    # average color of background
-    imediateBackground = cv2.dilate(edges, kernel, iterations=4)
-    imediateBackground = imediateBackground - hairPixels
-    imediateBackground = (1 - imediateBackground) * 0 + imediateBackground * gray
-    # count colors that are ligher than black
-    backGroundPixels = np.count_nonzero(imediateBackground > 0)
-    # print(backGroundPixels)
-    # average color = sum of colors / pixels
-    averageBackgroundColor = np.sum(imediateBackground) / backGroundPixels
-    print('backgroundcolor', averageBackgroundColor)
-
-    # average color of everything
-    avgColor = np.sum(gray) / np.size(gray)
-
-    hairOnAverage = gray.copy()
-    hairOnAverage = (1 - hairPixelMask) * int(avgColor) + hairPixelMask * gray
-    h_show('hair on Average background color', hairOnAverage)
-
-    # average hair color
-    sum = np.sum(hairOnBlack)
-    averageHairColor = sum / np.count_nonzero(hairPixels == 255)
-
-    # print('average hair color ', averageHairColor)
-
-    # if average hair color is lighter than the background, flip hair on average
+    h_show('hair on white', hairOnWhite)
     # brither is more intense
     intensity = hairOnWhite.copy()
     intensity = 255 - intensity

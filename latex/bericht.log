@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.12)  6 APR 2020 20:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.12)  7 APR 2020 14:35
 entering extended mode
 **./bericht.tex
 (bericht.tex
@@ -539,7 +539,14 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'german'.
- (bericht.aux)
+ (bericht.aux
+
+LaTeX Warning: Label `img:Crop' multiply defined.
+
+
+LaTeX Warning: Label `img:Crop' multiply defined.
+
+)
 \openout1 = `bericht.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 96.
@@ -675,40 +682,59 @@ Underfull \vbox (badness 6675) has occurred while \output is active []
  [5 <./fig64/00IMG_20200406_153354_12_g_15.jpg>] [6 <./fig64/01match res.png (P
 NG copy)>]
 [7 <./fig64/TemplateDot.jpg> <./fig64/03rectImg.png (PNG copy)>] [8 <./fig64/03
-crop image.png (PNG copy)>] [9]
-Overfull \hbox (3.60616pt too wide) in paragraph at lines 233--235
+crop image.png (PNG copy)>]
+<fig64/04edges.png, id=37, 413.545pt x 570.13pt>
+File: fig64/04edges.png Graphic file (type png)
+<use fig64/04edges.png>
+Package pdftex.def Info: fig64/04edges.png  used on input line 193.
+(pdftex.def)             Requested size: 312.40906pt x 430.71086pt.
+<01quellc.PNG, id=38, 519.44063pt x 80.55093pt>
+File: 01quellc.PNG Graphic file (type png)
+<use 01quellc.PNG>
+Package pdftex.def Info: 01quellc.PNG  used on input line 206.
+(pdftex.def)             Requested size: 381.838pt x 59.2122pt.
+
+Overfull \hbox (34.71446pt too wide) in paragraph at lines 206--207
+ [][] 
+ []
+
+[9] [10 <./fig64/04edges.png (PNG copy)> <./01quellc.PNG>]
+Overfull \hbox (3.60616pt too wide) in paragraph at lines 257--259
 \OT1/cmr/m/n/12 fre-quen-te ver-schwin-det bzw. ab-ge-schw[]acht wer-den. Hoch-
 fre-quent sind
  []
 
 
-Overfull \hbox (13.67412pt too wide) in paragraph at lines 242--243
+Overfull \hbox (13.67412pt too wide) in paragraph at lines 266--267
 \OT1/cmr/m/n/12 str[]ahnen von ei-nem Green-Screen Hin-ter-grund ge-trennt wer-
 den k[]onnen.
  []
 
-[10] [11]
-Overfull \hbox (1.24786pt too wide) in paragraph at lines 280--281
+[11] [12]
+Overfull \hbox (1.24786pt too wide) in paragraph at lines 304--305
 []\OT1/cmr/m/n/12 Eine Lang-zeit[]uberwachung be-ru-higt den Nut-zer bei sai-so
 na-lem Haar-
  []
 
-[12]
-Overfull \hbox (0.3163pt too wide) in paragraph at lines 303--303
+[13]
+Overfull \hbox (0.3163pt too wide) in paragraph at lines 327--327
 []\OT1/cmr/m/n/12 Howard Mai-bach und Ian Ya-ma-gu-chi. []  Che-mi-cal-ly In-du
 -ced Hair
  []
 
-[13] (bericht.aux)
+[14] (bericht.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package logreq Info: Writing requests to 'bericht.run.xml'.
 \openout1 = `bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 10167 strings out of 492452
- 182704 string characters out of 3119596
- 646772 words of memory out of 3000000
- 14409 multiletter control sequences out of 15000+200000
+ 10182 strings out of 492452
+ 182951 string characters out of 3119596
+ 646812 words of memory out of 3000000
+ 14421 multiletter control sequences out of 15000+200000
  9931 words of font info for 35 fonts, out of 3000000 for 9000
  1143 hyphenation exceptions out of 8191
  39i,5n,45p,819b,1641s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -722,9 +748,9 @@ s/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.
 pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmti12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/amsfonts/cm/cmtt12.pfb>
-Output written on bericht.pdf (13 pages, 4726739 bytes).
+Output written on bericht.pdf (14 pages, 4767223 bytes).
 PDF statistics:
- 82 PDF objects out of 1000 (max. 8388607)
+ 89 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 26 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
