@@ -228,13 +228,44 @@ def removeSmallRegions(intensity, img):
 
 def hairPixelIntensity(data, keys, orig, gray, edges):
     kernel = np.ones((3, 3), np.uint8)
-    hairPixels = cv2.dilate(edges, kernel, iterations=1)  # edges
+    img_dilation = cv2.dilate(edges, kernel, iterations=1)
+    hairPixels = img_dilation  # edges
+
     hairPixelMask = np.ones(orig.shape[:2], dtype="uint8")
     hairPixelMask[:, :] = (hairPixels != 0)  # 0 or 1 depending on wehter it is ==0
+
+    # average color of everything
+
+    # average color of background
+    imediateBackground = cv2.dilate(edges, kernel, iterations=20)
+    imediateBackground = imediateBackground - hairPixels
+    imediateBackgroundPixelMask = np.ones(orig.shape[:2],dtype="uint8")
+    imediateBackgroundPixelMask[:, :] = (imediateBackground != 0)  # 0 or 1 depending on wehter it is ==0
+    imediateBackground = (1 - imediateBackgroundPixelMask) * 0 + imediateBackgroundPixelMask * gray
+    h_show('imediateBackground',imediateBackground)
+    # count colors that are ligher than black
+    backGroundPixels = np.count_nonzero(imediateBackground > 0)
+    # print(backGroundPixels)
+    # average color = sum of colors / pixels
+    averageBackgroundColor = np.sum(imediateBackground) / backGroundPixels
+    print('backgroundcolor', averageBackgroundColor)
+
+    sureHairPixelMask = np.ones(orig.shape[:2], dtype="uint8")
+    sureHairPixelMask[:,:] = (cv2.erode(img_dilation, kernel, iterations=1) != 0)
+    sum = np.sum(sureHairPixelMask * gray)
+    h_show('sure hair',sureHairPixelMask * gray)
+    # average hair color
+    averageHairColor = sum / np.count_nonzero(sureHairPixelMask > 0)
+
+    avgColor = np.sum(gray) / np.size(gray)
+    #inverte hair if it's blond aka haircolor ligher than background.
     hairOnWhite = gray.copy()
-    # if no hair found, make it white. if hair found copy color from grayscale original
+    if averageHairColor>averageBackgroundColor:
+        gray = 255-gray
+    h_show('gray',gray)
+    h_show('inverted gray', 255-gray)
     hairOnWhite = (1 - hairPixelMask) * 255 + hairPixelMask * gray
-    h_show('hair on white', hairOnWhite)
+
     # brither is more intense
     intensity = hairOnWhite.copy()
     intensity = 255 - intensity
