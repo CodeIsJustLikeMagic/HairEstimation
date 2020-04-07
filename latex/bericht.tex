@@ -192,26 +192,46 @@ Weiße Pixel gelten als Haare, schwarze als Hintergrund.
 	\centering
 	\includegraphics[width=0.9\textwidth]{fig64/04edges.png}
 	\caption[]{Canny Kantendetektion}
-	\label{img:Crop}
+	\label{img:Edges}
 \end{figure}
 
 In der Methode hairPixelIntensity wird die detection verfeinert.
 Auf das Resultat der Katendetection wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
 
 Da Haare halb-transparent sind, wird ihre Farbe intensiver, wenn sie sich überlagern. Sie weisen eine höhere Intensität auf.
-Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten.
+Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten. Siehe Abbildung \ref{q:haironwhite}
 
 \begin{figure}
 	\centering
 	\includegraphics[width=1.1\textwidth]{01quellc.PNG}
 	\caption[]{Implementierung haare weiß, hintergrund schwarz}
-	\label{img:Crop}
+	\label{q:haironwhite}
 \end{figure}
 
+Die Inversion dieses Bildes ergibt ein Bild mit schwarzem Hintergrund und Haaren, die Heller sind an stellen wo sie sich Überlagern. Siehe Abbildung \ref{img:Intensity}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig64/05intenstiy.png}
+	\caption[]{Intensität-Abbildung der Haare}
+	\label{img:Intensity}
+\end{figure}
 
+Es werden kleine vereinzelte Gebiete des Hintergrundes in der Kantendetection erkannt und gelten somit als Haare.
+Um diese Gebiete zu erkennen und zu entfernen, wird der Watershed Algorithmus angewendet.   
+Dabei werden Marker in alle verbundenen Gebiete gesetzt, die nicht schwarz sind. Der Watershed Algorithmus lässt die Regionen wachsen. 
+Dann werden die Regionen entfernt, die im Verglich auf die Größe des Bildes sehr klein sind. Siehe Abbildung \ref{img:smallRegions}
 
+Die Summe aller Graustufenwerte werden als Intensität gespeichert. Dabei wird der Hintergrund außer acht gelassen, weil es schwarz ist, und somit den Graustufenwert 0 hat.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig64/06small regions removed.png}
+	\caption[]{Kleine Regionen Entfernt}
+	\label{img:smallRegions}
+\end{figure}
 
+Dann wird die Dichte der Haare Untersucht.
+Die Größe der Hintergrund Regionen, die durch die Haare getrennt sind
 
 \section{Implementation}
 
@@ -224,6 +244,8 @@ der vorgang davon...
 calibrierung
 ganzen ornder kalibrieren. einzelne bilder hinzufügen.
 \subsection{guess}
+
+
 
 
 
