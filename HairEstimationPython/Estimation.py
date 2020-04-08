@@ -497,6 +497,8 @@ def addCalibrationImage(path,amount):
     np.save(keyDatapath,keys)
 #endregion
 #region guess
+def manualGuess(datestr,numstr):
+    save('',int(float(numstr)),datestr)
 def guessTest():
     debugg(True)
     debugg(True)
@@ -851,6 +853,7 @@ def linregress(x,y):
 
 
 def model(x,y,datapoint,description,ignorelin,func):
+    np.set_printoptions(suppress=True, formatter={'float_kind': '{:0.2f}'.format})
     inds = x.argsort()
     x = x[inds]
     y = y[inds]
@@ -878,9 +881,9 @@ def model(x,y,datapoint,description,ignorelin,func):
         ax.legend(loc='best')
         plt.show()
     if ignorelin:
-        print('Guess by', description, '[ spl', splguess, ';func', funcguess, ']')
+        print('Guess by', description, '[ spl', "%.2f" % splguess, ';func', "%.2f" % funcguess, ']')
         return splguess,funcguess
-    print('Guess by', description, '[ spl',splguess,';func',funcguess, ';linguess', linguess,']')
+    print('Guess by', description, '[ spl',"%.2f" % splguess,';func',"%.2f" % funcguess, ';linguess', "%.2f" % linguess,']')
     return linguess, splguess, funcguess
 def findBestFunction(x, y):
     func = func_exp
@@ -906,12 +909,14 @@ def findBestFunction(x, y):
 
 def guessFolder(folder):
     #estimate every image in the folder
+    if folder == '':
+        folder = 'NewEstimationInput'
     folder = activeUserDirectory +'/'+folder
-    paths = os.listdir(folder)
-    paths = [folder+'/' + path for path in paths]
-    for path in paths:
+    files = os.listdir(folder)
+    paths = [folder+'/' + file for file in files]
+    for path,file in zip(paths,files):
         guess(path)
-
+        shutil.move(path, activeUserDirectory+"/estimationInput/"+file)
 
 duplicateHandelingMode = 'r'
 def saveDays(path,days,estRes):
@@ -943,7 +948,7 @@ def save(path, estRes,ymd):
                 print('ignoring new estimation')
                 return
             index = (np.where(oldData==ymd))[0]
-            index = index - 1  # index of est result.
+            index = index + 1  # index of est result.
             if duplicateHandelingMode =='r':
                 #replace old date.
                 oldData[index] = estRes
@@ -952,6 +957,8 @@ def save(path, estRes,ymd):
                 return
             if duplicateHandelingMode =='m':
                 oldest = oldData[index]
+                oldest = float(oldest)
+                oldest = int(oldest)
                 mean = np.mean(np.array([oldest,estRes]))
                 oldData[index] = mean
                 np.save(estimationResultDatapath, oldData)
@@ -959,6 +966,15 @@ def save(path, estRes,ymd):
                 return
             if duplicateHandelingMode =='k':
                 print('keeping duplicates')
+            if duplicateHandelingMode =='a':
+                oldest = oldData[index]
+                oldest = float(oldest)
+                oldest = int(oldest)
+                n = oldest + estRes
+                oldData[index] = n
+                np.save(estimationResultDatapath,oldData)
+                print('adding new datapoint to old datapoint',ymd, n, 'ImagePath:',path)
+                return
     newData = np.append(oldData, estimationResult)
     print('saving data point', ymd, estRes, 'ImagePath:', path)
     print()
@@ -1243,6 +1259,7 @@ def commandlinehandeling():
                     'setGuessFunctions':setFunctions,
                     'automaticGuessFunctions':automaticGuessFunctions,
                     'saveTag': saveTag,
+                    'manualGuess':manualGuess,
                     #checking result of calibration and debugging
                     'calibrationResult': guessTest,
                     'printFile': printFile,
@@ -1272,6 +1289,7 @@ def commandlinehandeling():
     group.add_argument("-m",action = 'store_true')#use mean
     group.add_argument("-i", action = 'store_true')#ignore second duplicate
     group.add_argument("-k",action ='store_true')#keep duplicate
+    group.add_argument("-a", action = 'store_true')
     parser.add_argument("-o","--useOldFunc", help="dont find new functions during calibration",action="store_true")
     args = parser.parse_args()
     global useOldFunc
@@ -1287,6 +1305,8 @@ def commandlinehandeling():
         duplicateHandelingMode = 'i'
     if args.k:
         duplicateHandelingMode ='k'
+    if args.a:
+        duplicateHandelingMode='a'
     if args.debug:
         debugg(True)
     if args.debug == False:
@@ -1306,8 +1326,7 @@ def commandlinehandeling():
                 guessWithDaysOrTag(args.arg1,args.arg2) #second argument is a tag
     elif func==guessFolder:
         if args.arg1 is None :
-            print('Error: guess needs a path to a folder as second positional argument.')
-            return
+            func('')
         else:
             func(args.arg1)
     elif func == addCalibrationImage:
@@ -1321,6 +1340,8 @@ def commandlinehandeling():
             print('Error: saveTag needs 2 positional arguments. tag date')
         else:
             func(args.arg1, args.arg2)
+    elif func == manualGuess:
+        func(args.arg1,args.arg2)
     elif (func == deleteUser) | (func == createUser) | (func == switchUser) | (func == printFile)\
             |(func == calculateError) |(func == fullTest) |(func == onlyGuessTest) |(func == setFunctions) | (func == testEdgeDetection):
         if args.arg1 is None :

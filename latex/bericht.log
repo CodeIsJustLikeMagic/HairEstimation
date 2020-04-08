@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.12)  7 APR 2020 14:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.12)  8 APR 2020 11:48
 entering extended mode
 **./bericht.tex
 (bericht.tex
@@ -688,6 +688,11 @@ File: fig64/04edges.png Graphic file (type png)
 <use fig64/04edges.png>
 Package pdftex.def Info: fig64/04edges.png  used on input line 193.
 (pdftex.def)             Requested size: 312.40906pt x 430.71086pt.
+
+
+LaTeX Warning: Reference `q:haironwhite' on page 9 undefined on input line 202.
+
+
 <01quellc.PNG, id=38, 519.44063pt x 80.55093pt>
 File: 01quellc.PNG Graphic file (type png)
 <use 01quellc.PNG>
@@ -698,31 +703,55 @@ Overfull \hbox (34.71446pt too wide) in paragraph at lines 206--207
  [][] 
  []
 
-[9] [10 <./fig64/04edges.png (PNG copy)> <./01quellc.PNG>]
-Overfull \hbox (3.60616pt too wide) in paragraph at lines 257--259
+
+LaTeX Warning: Reference `img:Intensity' on page 9 undefined on input line 211.
+
+
+<fig64/05intenstiy.png, id=40, 413.545pt x 570.13pt>
+File: fig64/05intenstiy.png Graphic file (type png)
+<use fig64/05intenstiy.png>
+Package pdftex.def Info: fig64/05intenstiy.png  used on input line 214.
+(pdftex.def)             Requested size: 312.40906pt x 430.71086pt.
+
+LaTeX Warning: Reference `img:smallRegions' on page 9 undefined on input line 2
+22.
+
+<fig64/06small regions removed.png, id=41, 413.545pt x 570.13pt>
+File: fig64/06small regions removed.png Graphic file (type png)
+<use fig64/06small regions removed.png>
+Package pdftex.def Info: fig64/06small regions removed.png  used on input line 
+228.
+(pdftex.def)             Requested size: 312.40906pt x 430.71086pt.
+[9] [10 <./fig64/04edges.png (PNG copy)> <./01quellc.PNG>] [11 <./fig64/05inten
+stiy.png (PNG copy)>] [12 <./fig64/06small regions removed.png (PNG copy)>]
+[13]
+Overfull \hbox (3.60616pt too wide) in paragraph at lines 279--281
 \OT1/cmr/m/n/12 fre-quen-te ver-schwin-det bzw. ab-ge-schw[]acht wer-den. Hoch-
 fre-quent sind
  []
 
 
-Overfull \hbox (13.67412pt too wide) in paragraph at lines 266--267
+Overfull \hbox (13.67412pt too wide) in paragraph at lines 288--289
 \OT1/cmr/m/n/12 str[]ahnen von ei-nem Green-Screen Hin-ter-grund ge-trennt wer-
 den k[]onnen.
  []
 
-[11] [12]
-Overfull \hbox (1.24786pt too wide) in paragraph at lines 304--305
+[14]
+Overfull \hbox (1.24786pt too wide) in paragraph at lines 326--327
 []\OT1/cmr/m/n/12 Eine Lang-zeit[]uberwachung be-ru-higt den Nut-zer bei sai-so
 na-lem Haar-
  []
 
-[13]
-Overfull \hbox (0.3163pt too wide) in paragraph at lines 327--327
+[15] [16]
+Overfull \hbox (0.3163pt too wide) in paragraph at lines 349--349
 []\OT1/cmr/m/n/12 Howard Mai-bach und Ian Ya-ma-gu-chi. []  Che-mi-cal-ly In-du
 -ced Hair
  []
 
-[14] (bericht.aux)
+[17] (bericht.aux)
+
+LaTeX Warning: There were undefined references.
+
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -731,13 +760,13 @@ Package logreq Info: Writing requests to 'bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 10182 strings out of 492452
- 182951 string characters out of 3119596
+ 10200 strings out of 492452
+ 183424 string characters out of 3119596
  646812 words of memory out of 3000000
- 14421 multiletter control sequences out of 15000+200000
+ 14437 multiletter control sequences out of 15000+200000
  9931 words of font info for 35 fonts, out of 3000000 for 9000
  1143 hyphenation exceptions out of 8191
- 39i,5n,45p,819b,1641s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 39i,6n,45p,819b,1641s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmbx12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
 public/amsfonts/cm/cmbx9.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9
@@ -748,9 +777,9 @@ s/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr9.
 pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmti12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/amsfonts/cm/cmtt12.pfb>
-Output written on bericht.pdf (14 pages, 4767223 bytes).
+Output written on bericht.pdf (17 pages, 4845366 bytes).
 PDF statistics:
- 89 PDF objects out of 1000 (max. 8388607)
+ 100 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 36 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 46 words of extra memory for PDF output out of 10000 (max. 10000000)
 
