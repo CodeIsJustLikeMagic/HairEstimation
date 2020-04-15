@@ -164,74 +164,75 @@ In dem Paper\blockquote{Improved Chromakey of Hair Strands via Orientation Filte
 mit python
 nutzt plugin open cv und plugins ....
 
-\section{Design}
+\section{Design und Implementation}
 
-Das Ziel ist es die Einschätzung eines Haarbüschels, mithilfe von Computervision, zu automatisieren. Es soll ein Kalibriervorgang geben, in dem der Nutzer abgezählte Haarbüschel-Bilder eingibt. Nach der Kalibrierung soll die Menge der Haare in nicht abgezählten Haarbüscheln automatisch geschätzt werden.
+Das Ziel ist es die Einschätzung eines Haarbüschels, mithilfe von Computervision, zu automatisieren. Zunächst wird ein Kalibriervorgang durchgeführt, in dem der Nutzer abgezählte Haarbpüschel-Bilder eingibt. Dann kann die Menge der Haare in nicht abgezählten Haarbüscheln automatisch geschätzt werden.
 
-Die Schätzungen werden zugehörig zum Datum gespeichert. 
-Zusätzlich zu den Schätzungen können für jedes Datum eine Marker angegeben werden, das regelmäßige Wiederholungen der Haarpflege, wie zum Beispiel eine Haarwäsche, notiert.
+Die Schätzungen werden zugehörig zum Datum gespeichert. Um einen Zeitlichen verlauf festzuhalten.
+Zusätzlich zu den Schätzungen kann für jedes Datum eine Marker angegeben werden. So können regelmäßige Wiederholungen der Haarpflege, wie zum Beispiel eine Haarwäsche, notiert werden. Desweiteren können gesundheitliche Veränderungen oder Einnahme von Medikamenten vermerkt werden.
 
-So wird eine Langzeitüberwachung der Menge des Haarausfalls möglichst detailliert und mit geringem Arbeitsaufwand für einen menschlichen Nutzer durchführbar.
+Das Programm wurde in Python implementiert und nutzt unter anderem das Plugin Open-cv.
+Der Nutzer steuert das Programm über die Kommandozeile. 
 
-detection
+Da die Haare jeder Person unterschiedlich sind, muss für jeden Nutzer eine eigene Kalibrierung durchgeführt werden. Um Vermischung von Daten unterschiedlicher Personen und häufige Neukalibrierungen zu vermeiden, kann das Programm beliebig viele Nutzer anlegen und verwalten. 
 
-gessfunctions
-Daten aus Bildern ziehen. In einem Calibrationsschritt daten aus mehreren unterschieldichen bildern nehmen und mithilfe von vordefinierten parametern korrelation zwischen haarmenge und daten zu finden.
-
-Calibration genauer. was wird da gemacht ? assume alle fachbegriffe und algorithmen sind bekannt.
-guess genauer. guessfunctions. 
-beschreibe das gespeichert wird
-beschreibe das es ein kommandozeilenprogramm ist
-mehrere user
 \section{Verarbeitung der Haar-Bilder}
 
-Mithilfe von Methoden der Bildverarbeitung wird eine Reihe an Daten über eingegebene Haarbüschel Bilder extrahiert und gespeichert.
-Dieser Schritt ist in der Methode detect implementiert.
+Sowohl für die Kalibrierung als auch für die schätzung von Haar-Mengen müssen die eingegebenen Bilder zunächst verarbeitet werden und Daten, mit dennen auf die Haar-Menge geschlossen werden kann herausgestellt werden. Dazu werden Methoden der Bildverarbeitung verwendet.
+
+Die Methode detect implementiert die Verarbeitung eines Bildes.
 Als Eingabe wird von einem Haarbüschel auf einem einfarbige Hintergrund ausgegangen. Dabei sollte ein möglichst guter Kontrast zu der Haarfarbe gewählt worden sein. Beispielsweise ein weißer Hintergrund für dunkele haare oder ein schwarzer Hintergrund für blondes oder hellbraunes Haar. Die Ecken des Hintergrundes sind durch ein Symbol markiert. Vergleich Abbildung \ref{img:input}.
 
-\begin{figure}
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/00IMG_20200406_153354_12_g_15.jpg}
+	\includegraphics[width=0.8\textwidth]{fig64/00IMG_20200406_153354_12_g_15.jpg}
 	\caption[]{Input}
 	\label{img:input}
 \end{figure}
 
-Im ersten schritt der Bildverarbeitung wird das Bild auf die Markierungen in den Ecken zugeschnitten. Das ist in der Methode cropDots implementiert.
-Über einen Aufruf der open cv methode matchTemplate wird nach vorkommen der Markierung zu suchen. Das Resultat ist ein Karte an Wahrscheinlichkeiten die für jedes Pixel angibt, zu welchen Wahrscheinlichkeit sich dort die Markierung befindet. Die 4 Stellen an denen die Wahrscheinlichkeit am höchsten ist, werden als Eckpunkte angesehen. 
-
-\begin{figure}
+Im ersten Schritt der Bildverarbeitung wird das Bild auf die Markierungen in den Ecken zugeschnitten. Das ist in der Methode cropDots implementiert.
+Über einen Aufruf der Open cv methode matchTemplate wird nach vorkommen der Markierung gesucht. Das Resultat ist ein Karte an Wahrscheinlichkeiten, die für jedes Pixel angibt, zu welcher Wahrscheinlichkeit sich dort die Markierung befindet. Die 4 Stellen an denen die Wahrscheinlichkeit am höchsten ist, werden als Eckpunkte angesehen. Siehe Abbildung \ref{img:cropDots}.
+\begin{figure*}
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/01match res.png}
-	\caption[]{Resultat von matchTemplate}
-	\label{img:matchTempate}
-\end{figure}
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=0.2\textwidth]{fig64/TemplateDot.jpg}
+		\caption[]{Das Aussehen der Markierung ist bekannt und wird über so ein Bild angegeben.}
+		\label{img:TemplateDot} 
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=\textwidth]{fig64/01match res.png}
+		\caption[]{Resultat von matchTemplate}
+		\label{img:matchTempate}
+	\end{subfigure}
+	\vskip\baselineskip
+	\begin{subfigure}[b]{0.475\textwidth}   
+		\centering
+		\includegraphics[width=\textwidth]{fig64/03rectImg.png}
+		\caption[]{Die 4 erkannten Markierungen im Bild}
+		\label{img:foundDots}
+	\end{subfigure}
+	\quad
+	\begin{subfigure}[b]{0.475\textwidth}   
+		\centering
+		\includegraphics[width=0.9\textwidth]{fig64/03crop image.png}
+		\caption[]{Resultat des Zuschneidens}
+		\label{img:Crop}
+	\end{subfigure}
+	\caption[ der Prozess des Zuschneidens auf Markierungen in den Ecken ]
+	{\small Der Prozess des Zuschneidens auf Markierungen in den Ecken} 
+	\label{img:cropDots}
+\end{figure*}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.2\textwidth]{fig64/TemplateDot.jpg}
-	\caption[]{Das Aussehen der Markierung ist bekannt und wird über so ein Bild angegeben.}
-	\label{img:TemplateDot}
-\end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/03rectImg.png}
-	\caption[]{Die 4 erkannten Markierungen im Bild}
-	\label{img:foundDots}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/03crop image.png}
-	\caption[]{Resultat des Zuschneidens}
-	\label{img:Crop}
-\end{figure}
+Durch das Zuschneiden der Bilder wird sichergestellt, das die Haare immer etwa einen gleichgroßen Hintergrund haben. So werden die Daten, die aus den Bildern gezogen werden, nicht verfälscht dadurch, das die Haare eventuell von unterschiedlichen Abständen fotografiert wurden. 
 
-Durch das Zuschneiden der Bilder wird sichergestellt, das die Haare immer etwa einen gleich großen Hintergrund haben. So werden die Daten die aus den Bildern gezogen werden nicht verfälscht dadurch, das die Haare eventuell von unterschiedlichen Abständen fotografiert wurden. 
-
-Nach dem Zuschneiden werde die Haare von dem Hintergrund getrennt.
+Nach dem Zuschneiden werden die Haare von dem Hintergrund getrennt.
 Das ist in der Methode edgeProcess implementiert. 
 Mithilfe von Canny Edge detection werden die Haare grob erkannt.
-Weiße Pixel gelten als Haare, schwarze als Hintergrund.
+Weiße Pixel gelten als Haare, schwarze als Hintergrund. Siehe Abbildung \ref{img:Edges}.
 
 \begin{figure}
 	\centering
@@ -240,11 +241,14 @@ Weiße Pixel gelten als Haare, schwarze als Hintergrund.
 	\label{img:Edges}
 \end{figure}
 
-In der Methode hairPixelIntensity wird die detection verfeinert.
-Auf das Resultat der Katendetection wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
+In der Methode hairPixelIntensity wird die Detektion verfeinert.
+Auf das Resultat der Katendetektion wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
 
 Da Haare halb-transparent sind, wird ihre Farbe intensiver, wenn sie sich überlagern. Sie weisen eine höhere Intensität auf.
-Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten. Siehe Abbildung \ref{q:haironwhite}
+Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten. Siehe Abbildung \ref{q:haironwhite}.
+
+Wenn die Haare heller sind als der Hintergrund, es sich beispielsweise um blondes Haar auf schwarzem Hintergrund handelt haben die Haare eine Höhere intensität, wenn sich heller sind. Bei dunkelem Haar auf hellem Hintergund ist es gegenteilig. Die Intensität ist höher, wenn das Haar dunkler ist.
+Damit beide Konstelationen zu einem ähnlichen Ergebnis kommen, werden die graustufenwerte invertiert, wenn die Haare hell sind. So ist auch bei ursprünglich hellem Haar, die Intensität höher, wenn die Graustufen dunkler sind.
 
 \begin{figure}
 	\centering
@@ -315,41 +319,41 @@ In der Methode denseAndLoosePerc wird die Haar-Intensität in den dichteren Regi
 Für das Bild werden 28 Datenpunkte extrahiert und abgespeichert: 
 
 \begin{itemize}
-	\item intensitySum 
-	\item intensityShare
-	\item hairpixels
-	\item imagepixels
-	\item hairpixel percentage
-	\item number of background sections
-	\item number of background sections inclosed by hair
-	\item outerSectionSum
-	\item outerSectionPercentage
-	\item innerSectionSum
-	\item innserSectionAvgSize
-	\item innerSectionAvgSize Percentage
-	\item innerSectionSizeVariance
-	\item innerSection standard deviation
-	\item number of dense background sections
-	\item number of background sections inclosed by dense hair
-	\item dense outerSectionSum
-	\item dense outerSectionPercentage
-	\item dense innerSectionSum
-	\item dense innserSectionAvgSize
-	\item dense innerSectionAvgSize Percentage
-	\item dense innerSectionSizeVariance
-	\item dense innerSection Size standard deviation
-	\item denseHairSum
-	\item looseHairSum
-	\item IntensitySum in Loose Section
-	\item IntensitySum in Dense Section
+	\item intensitySum - Summe der Graustufenwerte des Intensität-Bildes
+	\item intensityShare - Intensität pro HaarPixel
+	\item hairpixels - Anzahl der Pixel, die Haare darstellen
+	\item imagepixels - Gesammtanzahl der Pixel im Bild
+	\item hairpixel percentage - Prozentsatz der Haarpixel im Bild
+	\item number of sections - Anzahl an Hintergrund Regionen, die Watershed findet.
+	\item number of background sections - Anzahl an Regionen, die den Hintergrund darstelle. (2 weniger als number of section. Watershed zählt Haare und übergänge zwischen Regionen mit)
+	\item outerSectionSum - Summe an Pixeln, die sich in der Region befinden, die die Haare umschließt
+	\item outerSectionPercentage - outerSectionSum/imagepixels
+	\item innerSectionSum - Summa an Pixeln, die sich in Regionen befinden, die von Haaren umschlossen werden
+	\item innserSectionAvgSize - Druchschnittliche Pixelanzahl, die sich in den umschlossenen Regionen befinden
+	\item innerSectionAvgSize Percentage - innersectionAvgSize/imagepixels
+	\item innerSectionSizeVariance - statistische Varianz der Pixelmengen, die sich in umschlossenen Regionen befinden
+	\item innerSection standard deviation - Standardabweichung der Pixelmengen, die sich in umschlossenen Regionen befinden
+	\item number of sections only concidering dense hair - Anzahl der Regionen, die Watershed findet nachdem der input Skelettiert wurde. Regionen werden von dichteren Haaren unterteilt.
+	\item number of background sections inclosed by dense hair - Anzahl an Regionen, die den Hintergrund zwischen dichten Haaren darstellen
+	\item dense hair outerSectionSum - Summe an Pixeln, die die Regionen umschließen, die von dichten Haaren umschlossen werden
+	\item dense outerSectionPercentage - dense hair outerSectionSum / imagepixels
+	\item dense innerSectionSum - Summe an Pixeln, die sich in den Regionen befinden, die von dichten Haaren umschlossen werden
+	\item dense hair innserSectionAvgSize - Durschnittliche anzahl der Pixel, die sich in Regionen befinden, die von dichten Haaren umschlossen werden
+	\item dense hair innerSectionAvgSize Percentage - dense hair innerSectionAvgSize / imagepixels
+	\item dense innerSectionSizeVariance - statistische Varianz der Pixelmengen
+	\item dense innerSection Size standard deviation - Standardabweichung der Pixelmengen
+	\item denseHairSum - Summe an Pixeln, die als Dichte Haare angesehen werden
+	\item looseHairSum - Summe an Pixeln, die als Haare angesehen werden, jedoch nicht als Dicht gelten
+	\item IntensitySum in Loose Section - Summe der Graustufenwerte in nicht-dichten Regionen
+	\item IntensitySum in Dense Section - Summe der Graustufenwerte in dichten Regionen
 \end{itemize}
 
 \subsection{Kalibrieren}
 
 Die Kalibrierung ist in der Methode calibration impementiert.
-Für die Calibrierung werden mehrere Bilder als Input angegeben. Für jedes der Bilder wird die Menge der Haare in dem Titel des Bildes angegeben. 
+Für die Kalibrierung werden mehrere Bilder als Input angegeben. Für jedes der Bilder wird die Menge der Haare in dem Titel des Bildes angegeben. 
 Die Bilder werden alle mit detect Untersucht. Die Daten aus den Untersuchungen, sowie die Haar-Mengen werden abgespeichert.
-ganzen ornder kalibrieren. einzelne bilder hinzufügen.
+ganzen Ordner kalibrieren. einzelne Bilder hinzufügen.
 
 \subsection{Relation Daten zu Haar Menge}
 
@@ -358,12 +362,12 @@ ganzen ornder kalibrieren. einzelne bilder hinzufügen.
 \subsection{Schätzen eines Haar-Bildes}
 
 Nachdem eine Kalibrierung durchgeführt wurde. Kann die Haar-Menge auf beliebigen Bildern geschätzt werden.
-das Schätzen ist in der Methode readFilesAndGuess implementiert.
+Das Schätzen ist in der Methode readFilesAndGuess implementiert.
 
 Zuerst wird das zu schätzende Bild mithilfe von detect Untersucht.
 Dann werden die Daten aus der Kalibrierung geladen. 
 Die Daten werden teilweise miteinander verrechnet und dann auf die dazugehörigen Haar-Mengen abgebildet.
-So entstehen eine menge an Graphen, bei denen die Haar-Menge jeweils auf der y Achse liegt. Siehe Abbildung \ref{fig:mapping}. 
+So entstehen eine Menge an Graphen, bei denen die Haar-Menge jeweils auf der y Achse liegt. Siehe Abbildung \ref{fig:mapping}. 
 
 \begin{figure}
 	\centering
@@ -375,7 +379,7 @@ So entstehen eine menge an Graphen, bei denen die Haar-Menge jeweils auf der y A
 Die Punkte in den Graphen werden durch Funktionen Approximiert. Die Funktionen können dann genutzt werden um Haar-Mengen zu schätzen.
 Für jeden Graph werden 3 Funktionen berechnet. Eine Lineare Regression, eine Spline-Interpolation, und eine benutzerdefinierte Funktion.
 Der Benutzer kann aus linear, logarithmisch und exponentiell aussuchen.
-Siehe Abbildung \ref{fig:func}
+Siehe Abbildung \ref{fig:func}.
 
 \begin{figure}
 	\centering
@@ -384,13 +388,45 @@ Siehe Abbildung \ref{fig:func}
 	\label{fig:func}
 \end{figure} 
 
+Von den 28 Datenpunkten die aus den Bildern ausgewertet werden, werden 17 Genutzt um 12 Modelle zu erstellt. Diese Modelle wurden als aussagekräftig gefunden, um die Haarmenge schätzen zu können. Die folgenden x Werte werden verwendet:
 
+\begin{itemize}
+	\item hairpercent 
+	\begin{itemize}
+		\item Prozentsatz der Haarpixel im Bild
+	\end{itemize}
+	\item (hairpixels / hairSectionSize) * (1 - outerSectionPerc)
+	HaarPixel dichte in der Region, in der sich Haare Befinden. Gibt dasselbe Ergebnis wie hairpercent.
+	\item (hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc
+	Dichte 
+	
+	\item (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc))) = denseDensity
+	\item denseDensity / looseDensity
+	\item backgroundSectionNum*(1-outerSectionPerc)
+	\item denseSectionNum*(1-outerSectionPerc)
+	\item intensitySum*hairpixels*(1-outerSectionPerc)
+	\item denseSectionAVGSize/(1-denseSectionperc)
+	\item (denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc)
+	\item (denseIntensity/intensitySum)*(1-denseSectionperc)
+	\item (denseIntensity/denseHairSum)*(1-denseSectionperc)
+\end{itemize}
 
-\subsection{Genauigkeit/Fehler}
+Siehe den Anhang für die graphische Darstellung der Modelle.
 
+Für jedes der Modelle werden 3 Funktionen approximiert. Mit den Funktionen werden jeweils 3 Schätzungen für das zu s
+chätzdene Bild berechnet. 
 
-\section{Tags}
-\section{Users}
+Ausreißer werden entfernt. Dazu werden zunächst alle Schätzungen von weniger als 0 Haaren entfernt. Zusätzlich werden statistische Ausreißer mithilfe eines Algorithmus basierend auf dem tschebyschef theorem entfernt. 
+
+Der Mittelwert der übrig geblibenen Schätzungen ist das Endergebnis. 
+Siehe Abbildung \ref{img:guess} für den Verlauf einer Schätzung auf der Kommandozeile.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1.2\textwidth]{fig64/commandlineGuessProcess.PNG}
+  \caption[]{Kommandozeilenaufruf und Verlauf einer Schätzung}
+  \label{img:guess}
+\end{figure} 
 
 \subsection{Tests}
 
@@ -404,6 +440,8 @@ Getestet wird an:
 	\item Den Bildern aus dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} 
 \end{itemize}
 
+
+\subsection{Genauigkeit/Fehler}
 
 
 \section{Fazit}

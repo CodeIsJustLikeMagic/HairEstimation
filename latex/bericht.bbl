@@ -108,40 +108,6 @@
       \verb 10.1111/bjd.16075
       \endverb
     \endentry
-    \entry{chemicalAlopecia}{inbook}{}
-      \name{author}{2}{}{%
-        {{hash=0d6b455ff20daf6130c5ff164534ee28}{%
-           family={Maibach},
-           familyi={M\bibinitperiod},
-           given={Howard},
-           giveni={H\bibinitperiod}}}%
-        {{hash=c2a94144e40dc3796500549a57cc1245}{%
-           family={Yamaguchi},
-           familyi={Y\bibinitperiod},
-           given={Ian},
-           giveni={I\bibinitperiod}}}%
-      }
-      \strng{namehash}{be6671954a14fc0ed42430ee70cac41a}
-      \strng{fullhash}{be6671954a14fc0ed42430ee70cac41a}
-      \strng{bibnamehash}{be6671954a14fc0ed42430ee70cac41a}
-      \strng{authorbibnamehash}{be6671954a14fc0ed42430ee70cac41a}
-      \strng{authornamehash}{be6671954a14fc0ed42430ee70cac41a}
-      \strng{authorfullhash}{be6671954a14fc0ed42430ee70cac41a}
-      \field{sortinit}{3}
-      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{isbn}{978-3-642-02034-6}
-      \field{journaltitle}{Kanerva's Occupational Dermatology, Second Edition}
-      \field{month}{01}
-      \field{title}{Chemically Induced Hair Loss/Alopecia}
-      \field{year}{2012}
-      \field{pages}{1935\bibrangedash 1942}
-      \range{pages}{8}
-      \verb{doi}
-      \verb 10.1007/978-3-642-02035-3_205
-      \endverb
-    \endentry
     \entry{ironDeficiency}{article}{}
       \name{author}{3}{}{%
         {{hash=aeb6516025d21e791aacd159cfc58e44}{%
@@ -166,8 +132,8 @@
       \strng{authorbibnamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
       \strng{authornamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
       \strng{authorfullhash}{f528bdd686dc0e23e59e6bf42e8276bc}
-      \field{sortinit}{3}
-      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
+      \field{sortinit}{4}
+      \field{sortinithash}{e071e0bcb44634fab398d68ad04e69f4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of the American Academy of Dermatology}
@@ -205,8 +171,8 @@
       \strng{authorbibnamehash}{864e7d74d442c3cd2b53c9978061365c}
       \strng{authornamehash}{864e7d74d442c3cd2b53c9978061365c}
       \strng{authorfullhash}{864e7d74d442c3cd2b53c9978061365c}
-      \field{sortinit}{7}
-      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{sortinit}{5}
+      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-1-4503-5015-0}

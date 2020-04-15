@@ -326,7 +326,6 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     # Now, mark the region of unknown with zero
     markers[unknown == 255] = 0
     markers = cv2.watershed(img, markers)
-    backgroundSum = 0
 
     allPixelSum = img.shape[0] * img.shape[1]
     data, keys = h_add(data, keys, 'all pixels', allPixelSum)
