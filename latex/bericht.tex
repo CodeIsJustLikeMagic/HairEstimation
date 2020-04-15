@@ -9,6 +9,8 @@
 \usepackage{csquotes}
 \usepackage{graphicx}
 \usepackage{babel}
+\usepackage{subcaption}
+\usepackage{mwe}
 
 \usepackage{parskip}
 \usepackage{float}
@@ -119,6 +121,49 @@ In dieser Arbeit wird ein verfahren vorgestellt mit dem eine langzeitüberwachun
 
 \section{Grundlagen}
 
+\subsection{Haarausfall}
+Wie in dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} beschrieben, kann man den täglichen Haarausfall als Indikation des gesamten Haarausfalls nehmen.\cite{visualScale}
+
+Haarausfall wird von mehrere Faktoren bestimmt und ist grundlegend gesund. Haarausfall ist nicht uniform. Er kann sich abhängig von dem Haartyp, der Haarlänge und der Haarpflege-Methode jeden Tag ändern und Muster aufweisen. 
+
+Eine Person die ihre Haare einmal in der Woche kämmt kann zum Zeitpunkt des Kämmens mehr Haarausfall erwarten, als eine Person die ihre Haare jeden Tag kämmt. 
+
+Hinzukommen saisonale Unterschiede in dem Haarverlust.\cite{seasoalShedding}
+
+Jeder Mensch hat ein eigenes Haarausfall-Muster. Abweichungen von diesem Muster können Anzeichen von Krankheiten und Mangelerscheinungen sein. Beispielsweise ist erhöhter Haarausfall ein Symptom von Eisenmangel.\cite{ironDeficiency}
+
+\subsection{Computervision}
+In dem Bereich der Bildverarbeitung gibt es viele Algorithmen, die es ermöglichen Objekte in einem Bild erkennbar zu machen und zu verarbeiten.
+
+\subsubsection{Region Growth}
+ist ein Verfahren, bei dem ein Bild in Regionen unterteilt wird. So werden zum Beispiel Sektionen mit ähnlicher Farbe herausgestellt. 
+
+\subsubsection{Skelettierung}
+reduziert Objekte in einem Bild auf eine Pixelbreite. So können Linien auf eine Pixelbreite geschrumpft werden.
+
+\subsubsection{Dynamischer Schwellwert}
+kann genutzt werden, um Schatten aus einem Bild zu entfernen. Ein dynamischer Schwellwert ist geeignet für kompliziertere Bildern und Belichtungssituationen.
+
+
+\subsubsection{Hochpassfilter}
+erhält hochfrequente Bildanteile, während Niederfrequente verschwindet bzw. abgeschwächt werden. 
+Hochfrequent sind Bereiche mit schnellen Farb- und Helligkeitsveränderungen. Das tritt beispielsweise bei Linien und Kanten auf.
+
+\subsubsection{Kantendetektion}
+
+nutzt Hochpassfilter, um Kanten in einem Bild zu erkennen. 
+
+\subsection{Erkennung von Haaren in Green-Screen Bildern}
+
+In dem Paper\blockquote{Improved Chromakey of Hair Strands via Orientation Filter Convolution} wird eine Methode beschrieben wie Haarsträhnen von einem Green-Screen Hintergrund getrennt werden können. Dazu wird die Kontinuität der Haarsträhnen ausgenutzt. \cite{GreenScreenHair}
+
+\section{Methode}
+
+\section{Implementation}
+
+mit python
+nutzt plugin open cv und plugins ....
+
 \section{Design}
 
 Das Ziel ist es die Einschätzung eines Haarbüschels, mithilfe von Computervision, zu automatisieren. Es soll ein Kalibriervorgang geben, in dem der Nutzer abgezählte Haarbüschel-Bilder eingibt. Nach der Kalibrierung soll die Menge der Haare in nicht abgezählten Haarbüscheln automatisch geschätzt werden.
@@ -138,9 +183,9 @@ guess genauer. guessfunctions.
 beschreibe das gespeichert wird
 beschreibe das es ein kommandozeilenprogramm ist
 mehrere user
-\section{Bildverarbeitung}
+\section{Verarbeitung der Haar-Bilder}
 
-Mithilfe von Methoden der Bildverarbeitung wird eine Reihe an Daten über eingegebene Haarbüschel Bilder extrahiert.
+Mithilfe von Methoden der Bildverarbeitung wird eine Reihe an Daten über eingegebene Haarbüschel Bilder extrahiert und gespeichert.
 Dieser Schritt ist in der Methode detect implementiert.
 Als Eingabe wird von einem Haarbüschel auf einem einfarbige Hintergrund ausgegangen. Dabei sollte ein möglichst guter Kontrast zu der Haarfarbe gewählt worden sein. Beispielsweise ein weißer Hintergrund für dunkele haare oder ein schwarzer Hintergrund für blondes oder hellbraunes Haar. Die Ecken des Hintergrundes sind durch ein Symbol markiert. Vergleich Abbildung \ref{img:input}.
 
@@ -230,81 +275,124 @@ Die Summe aller Graustufenwerte werden als Intensität gespeichert. Dabei wird d
 	\label{img:smallRegions}
 \end{figure}
 
-Dann wird die Dichte der Haare Untersucht.
-Die Größe der Hintergrund Regionen, die durch die Haare getrennt sind
+In der Methode hairPixelPercentage werden die Pixel gezählt die als Haare gelten. Zusätzlich wird der Prozentsatz an Haar Pixeln und die Intensität des Bildes im Vergleich zur Bildgröße gespeichert. 
 
-\section{Implementation}
+Dann wird die Dichte der Haare Untersucht. In der Methode 
+Dafür werden die Hintergrund Regionen bestimmt, die durch Haare getrennt werden. Dafür wird der Watershed Algorithmus angewendet.
+Die Marker werden in alle zusammenhängenden Hintergrundgebiete gesetzt.
+Dabei wird die Größe der Region, die die Haare umschließt gespeichert. Abbildung \ref{img:outerSection}.
+Zusätzlich wird die Anzahl der Regionen die von Haaren umschlossen wird und deren Durchschnittliche Größe gespeichert.
 
-mit python
-nutzt plugin open cv und plugins ....
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig64/08outer section.png}
+	\caption[]{Äußerte Region Isoliert und in weiß dargestellt.}
+	\label{img:outerSection}
+\end{figure}  
 
-\subsection{Daten aus Bildern ziehen.}
-der vorgang davon...
-\subsection{Calibrierung}
-calibrierung
+Als nächstes werden die Gebiete des Bildes untersucht, die eine erhöhte Haar-Dichte aufweisen.
+Dafür wird das Intesität-Bild skelettiert. Siehe Abbildung \ref{img:skel}.
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig64/09input intensity.png}
+	\caption[]{Skelett des Intensität-Bildes}
+	\label{img:skel}
+\end{figure}
+
+Die Hintergrund Regionen werden wie zuvor untersucht.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.9\textwidth]{fig64/09outer section.png}
+	\caption[]{Äußerte Region des skelettierten Bildes}
+	\label{img:skel}
+\end{figure}
+
+In der Methode denseAndLoosePerc wird die Haar-Intensität in den dichteren Regionen und in den weniger dichten Regionen berechnet und abgespeichert.
+
+Für das Bild werden 28 Datenpunkte extrahiert und abgespeichert: 
+
+\begin{itemize}
+	\item intensitySum 
+	\item intensityShare
+	\item hairpixels
+	\item imagepixels
+	\item hairpixel percentage
+	\item number of background sections
+	\item number of background sections inclosed by hair
+	\item outerSectionSum
+	\item outerSectionPercentage
+	\item innerSectionSum
+	\item innserSectionAvgSize
+	\item innerSectionAvgSize Percentage
+	\item innerSectionSizeVariance
+	\item innerSection standard deviation
+	\item number of dense background sections
+	\item number of background sections inclosed by dense hair
+	\item dense outerSectionSum
+	\item dense outerSectionPercentage
+	\item dense innerSectionSum
+	\item dense innserSectionAvgSize
+	\item dense innerSectionAvgSize Percentage
+	\item dense innerSectionSizeVariance
+	\item dense innerSection Size standard deviation
+	\item denseHairSum
+	\item looseHairSum
+	\item IntensitySum in Loose Section
+	\item IntensitySum in Dense Section
+\end{itemize}
+
+\subsection{Kalibrieren}
+
+Die Kalibrierung ist in der Methode calibration impementiert.
+Für die Calibrierung werden mehrere Bilder als Input angegeben. Für jedes der Bilder wird die Menge der Haare in dem Titel des Bildes angegeben. 
+Die Bilder werden alle mit detect Untersucht. Die Daten aus den Untersuchungen, sowie die Haar-Mengen werden abgespeichert.
 ganzen ornder kalibrieren. einzelne bilder hinzufügen.
-\subsection{guess}
+
+\subsection{Relation Daten zu Haar Menge}
 
 
 
+\subsection{Schätzen eines Haar-Bildes}
+
+Nachdem eine Kalibrierung durchgeführt wurde. Kann die Haar-Menge auf beliebigen Bildern geschätzt werden.
+das Schätzen ist in der Methode readFilesAndGuess implementiert.
+
+Zuerst wird das zu schätzende Bild mithilfe von detect Untersucht.
+Dann werden die Daten aus der Kalibrierung geladen. 
+Die Daten werden teilweise miteinander verrechnet und dann auf die dazugehörigen Haar-Mengen abgebildet.
+So entstehen eine menge an Graphen, bei denen die Haar-Menge jeweils auf der y Achse liegt. Siehe Abbildung \ref{fig:mapping}. 
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.2\textwidth]{fig64/gh4.PNG}
+	\caption[]{Haar-Menge in Relation zur Intensität in dichten Regionen normalisiert durch gesamte Intensität und Region-Größe}
+	\label{fig:mapping}
+\end{figure}
+
+Die Punkte in den Graphen werden durch Funktionen Approximiert. Die Funktionen können dann genutzt werden um Haar-Mengen zu schätzen.
+Für jeden Graph werden 3 Funktionen berechnet. Eine Lineare Regression, eine Spline-Interpolation, und eine benutzerdefinierte Funktion.
+Der Benutzer kann aus linear, logarithmisch und exponentiell aussuchen.
+Siehe Abbildung \ref{fig:func}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=1.2\textwidth]{fig64/g11_denseIntensitynorm.png}
+	\caption[]{Funktionen, die Datenpunkte Approximieren. Spline-Interpolation, lineare Regression und exponentielle Funktion.}
+	\label{fig:func}
+\end{figure} 
 
 
 
-
-\subsection{Haarausfall}
-Wie in dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} beschrieben, kann man den täglichen Haarausfall als Indikation des gesamten Haarausfalls nehmen.\cite{visualScale}
-
-Haarausfall wird von mehrere Faktoren bestimmt und ist grundlegend gesund. Haarausfall ist nicht uniform. Er kann sich abhängig von dem Haartyp, der Haarlänge und der Haarpflege-Methode jeden Tag ändern und Muster aufweisen. 
-
-Eine Person die ihre Haare einmal in der Woche kämmt kann zum Zeitpunkt des Kämmens mehr Haarausfall erwarten, als eine Person die ihre Haare jeden Tag kämmt. 
-
-Hinzukommen saisonale Unterschiede in dem Haarverlust.\cite{seasoalShedding}
-
-Jeder Mensch hat ein eigenes Haarausfall-Muster. Abweichungen von diesem Muster können Anzeichen von Krankheiten und Mangelerscheinungen sein. Beispielsweise ist erhöhter Haarausfall ein Symptom von Eisenmangel.\cite{ironDeficiency}
-
-\subsection{Computervision}
-In dem Bereich der Bildverarbeitung gibt es viele Algorithmen, die es ermöglichen Objekte in einem Bild erkennbar zu machen und zu verarbeiten.
-
-\subsubsection{Region Growth}
-ist ein Verfahren, bei dem ein Bild in Regionen unterteilt wird. So werden zum Beispiel Sektionen mit ähnlicher Farbe herausgestellt. 
-
-\subsubsection{Skelettierung}
-reduziert Objekte in einem Bild auf eine Pixelbreite. So können Linien auf eine Pixelbreite geschrumpft werden.
-
-\subsubsection{Dynamischer Schwellwert}
-kann genutzt werden, um Schatten aus einem Bild zu entfernen. Ein dynamischer Schwellwert ist geeignet für kompliziertere Bildern und Belichtungssituationen.
+\subsection{Genauigkeit/Fehler}
 
 
-\subsubsection{Hochpassfilter}
-erhält hochfrequente Bildanteile, während Niederfrequente verschwindet bzw. abgeschwächt werden. 
-Hochfrequent sind Bereiche mit schnellen Farb- und Helligkeitsveränderungen. Das tritt beispielsweise bei Linien und Kanten auf.
+\section{Tags}
+\section{Users}
 
-\subsubsection{Kantendetektion}
-
-nutzt Hochpassfilter, um Kanten in einem Bild zu erkennen. 
-
-\subsection{Erkennung von Haaren in Green-Screen Bildern}
-
-In dem Paper\blockquote{Improved Chromakey of Hair Strands via Orientation Filter Convolution} wird eine Methode beschrieben wie Haarsträhnen von einem Green-Screen Hintergrund getrennt werden können. Dazu wird die Kontinuität der Haarsträhnen ausgenutzt. \cite{GreenScreenHair}
-
-\section{Methode}
-Dem Programm werden Bilder von abgezählten Haarbüscheln zur Kalibrierung gegeben. Die Anzahl der Haare in dem Büschel werden angegeben. 
-
-Nach der Kalibrierung wird die Haarmenge auf Bildern mit nicht abgezählten Haarbüscheln geschätzt.
-
-Ein Ansatz dafür, ist die Pixel, auf denen Haare zu sehen sind, zu zählen. Der Prozentsatz der Haarpixel wird während der Kalibrierung mit Haarmengen korreliert. Diese Korrelation wird für die Schätzung verwendet.
- 
-Die Haarfarbe, und Unterschiede in der Helligkeit zum Hintergrund können helfen um Haar-Pixel zu isolieren. 
-
-Kantendetektion kann genutzt werden, um Haare zu erkennen und gleichzeitig weiche Schatten auszuschließen.  
-
-Region Growth kann genutzt werden um die Dichte der Haarbüschel zu erkennen. Diese könnte ebenfalls mit der Haarmenge korreliert werden. Ein Ansatz der Dichte ist: Je mehr Regionen in Region Growth gefunden wurden, umso dichter liegen die Haare beieinander in dem Haarbüschel. Kleine Regionen, mit wenigen Pixeln, deuten ebenfalls auf eine höhere Dichte hin. 
-
-Weiche Schatten können mit einem adaptivem Schwellwert entfernt werden. So lassen sich Unterschiede in der Belichtung der Bilder ausgleichen. 
-
-Skelettierung und Hochpassfilter können genutzt werden, um die Breite der Haare irrelevant zu machen. Dadurch kann der Einfluss von Verunreinigungen in den Haaren minimiert werden. Bei Verunreinigungen kann es sich zum Beispiel um kleine Mengen von Fusseln handeln.
-
-\subsection{Testhaare}
+\subsection{Tests}
 
 Primär wird mit meinen eigenen Haaren getestet. Weiter Haare werden von Freunden und Familie bereitgestellt.
 

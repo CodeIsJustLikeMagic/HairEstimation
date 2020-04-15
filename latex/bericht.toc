@@ -11,36 +11,42 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {2}Grundlagen}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Design}{4}% 
+\contentsline {subsection}{\numberline {2.1}Haarausfall}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Bildverarbeitung}{4}% 
+\contentsline {subsection}{\numberline {2.2}Computervision}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Implementation}{9}% 
+\contentsline {subsubsection}{Region Growth}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.1}Daten aus Bildern ziehen.}{9}% 
+\contentsline {subsubsection}{Skelettierung}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.2}Calibrierung}{13}% 
+\contentsline {subsubsection}{Dynamischer Schwellwert}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.3}guess}{13}% 
+\contentsline {subsubsection}{Hochpassfilter}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.4}Haarausfall}{13}% 
+\contentsline {subsubsection}{Kantendetektion}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.5}Computervision}{13}% 
+\contentsline {subsection}{\numberline {2.3}Erkennung von Haaren in Green-Screen Bildern}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Region Growth}{13}% 
+\contentsline {section}{\numberline {3}Methode}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Skelettierung}{13}% 
+\contentsline {section}{\numberline {4}Implementation}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Dynamischer Schwellwert}{14}% 
+\contentsline {section}{\numberline {5}Design}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Hochpassfilter}{14}% 
+\contentsline {section}{\numberline {6}Verarbeitung der Haar-Bilder}{6}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Kantendetektion}{14}% 
+\contentsline {subsection}{\numberline {6.1}Kalibrieren}{19}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {5.6}Erkennung von Haaren in Green-Screen Bildern}{14}% 
+\contentsline {subsection}{\numberline {6.2}Relation Daten zu Haar Menge}{19}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {6}Methode}{14}% 
+\contentsline {subsection}{\numberline {6.3}Schätzen eines Haar-Bildes}{19}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {6.1}Testhaare}{15}% 
+\contentsline {subsection}{\numberline {6.4}Genauigkeit/Fehler}{22}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {7}Fazit}{15}% 
+\contentsline {section}{\numberline {7}Tags}{22}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {8}Users}{22}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {subsection}{\numberline {8.1}Tests}{22}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {9}Fazit}{22}% 

@@ -293,9 +293,8 @@ def h_showMissed(intensity, gray, orig):
     h_show('orig', orig)
 
 
-def edgeProcess(data, keys, orig, blur):
+def edgeProcess(data,gray, keys, blur):
     print('detecting Hair via edge detection')
-    gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
     if blur:
         gray = cv2.medianBlur(gray, 5)
     kernel = np.ones((3, 3), np.uint8)
@@ -303,9 +302,7 @@ def edgeProcess(data, keys, orig, blur):
     h_show('edges', edges)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
-    data, keys, intensity = hairPixelIntensity(data, keys, orig, gray, edges)
-    data, keys = hairPixelPercentage(data, keys, intensity)
-    return data, keys, edges, intensity
+    return data, keys, edges
 
 
 def backgroundRegions(data, keys, intensity):  # only uses intensity image. background black, hair white
@@ -317,15 +314,11 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     # noise removal
     kernel = np.ones((3, 3), np.uint8)
     opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
-    # show('opening', opening)
     # sure background area
     sure_bg = cv2.dilate(opening, kernel, iterations=1)
-    # show('sure_bg',sure_bg)
     sure_fg = opening.copy() # Finding sure foreground area
-    # show('sure_fg', sure_fg)
     sure_fg = np.uint8(sure_fg) # Finding unknown region
     unknown = cv2.subtract(sure_bg, sure_fg)
-    # show('unknown',unknown)
     ret, markers = cv2.connectedComponents(sure_fg) # Marker labelling
     # ok that looks like it worked. hair(black) is now 2. and all the white parts(background) are labelded 1+
     # Add one to all labels so that sure background is not 0, but 1
@@ -390,7 +383,7 @@ def denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr):
     looseHairSum = np.count_nonzero(loosehair> 0)
     data, keys = h_add(data, keys, 'denseHairSum', denseHairSum)
     data, keys = h_add(data, keys, 'looseHairSum', looseHairSum)
-    #intensity per section
+    # intensity per section
     looseintensity = looseMask * intensity
     denseintensity = densemaskoutr * intensity
     data, keys = h_add(data, keys, 'IntensitySum in Loose Section', np.sum(looseintensity))
@@ -399,18 +392,24 @@ def denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr):
 
 def detect(path):
     print('image path',path)
+    # loading image
     blur = False
-    img_rgb = cv2.imread(path)
+    orig = cv2.imread(path)
     data = np.array([])
     keys = np.array([])
-    if img_rgb is None:
+    if orig is None:
         print('no image with that path found')
         return data,keys
-    croped = cropDots(img_rgb)
-    data, keys, edges, intensity = edgeProcess(data, keys, croped, blur)
-    data, keys,maskoutr = backgroundRegions(data, keys, intensity)
-    data,keys,densemaskoutr = backgroundRegions(data,keys,skeletonize(intensity))
-    data,keys = denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr)
+
+    gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
+
+    croped = cropDots(orig)
+    data, keys, edges         = edgeProcess(data, keys, croped, blur)
+    data, keys, intensity     = hairPixelIntensity(data, keys, orig, gray, edges)
+    data, keys                = hairPixelPercentage(data, keys, intensity)
+    data, keys, maskoutr      = backgroundRegions(data, keys, intensity)
+    data, keys, densemaskoutr = backgroundRegions(data,keys,skeletonize(intensity))
+    data, keys                = denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr)
     # showstats( data,keys)
     return data, keys
 
