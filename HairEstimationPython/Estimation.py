@@ -919,17 +919,18 @@ def guessFolder(folder):
 duplicateHandelingMode = 'r'
 def saveDays(path,days,estRes):
     #save for the day in path and the number of days before that date.
-    ymd = h_ymd(path)
+    origymd = h_ymd(path)
     days =  int(days)
     res = estRes / (days+0.0)
-    save(path,estRes/days,ymd)
     days = days-1
     DAY = datetime.timedelta(1)
-    ymd = datetime.datetime.strptime(ymd, "%Y-%m-%d").date()
+    ymd = datetime.datetime.strptime(origymd, "%Y-%m-%d").date()
+    ymd = ymd - (days*DAY)
     for i in range(days):
-        ymd = ymd - DAY
         dayStr = ymd.strftime("%Y-%m-%d")
         save(path,res,dayStr)
+        ymd = ymd + DAY
+    save(path, res, origymd)
 
 def save(path, estRes,ymd):
 
