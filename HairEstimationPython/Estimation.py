@@ -293,7 +293,7 @@ def h_showMissed(intensity, gray, orig):
     h_show('orig', orig)
 
 
-def edgeProcess(data,gray, keys, blur):
+def edgeProcess(data,keys, gray, blur):
     print('detecting Hair via edge detection')
     if blur:
         gray = cv2.medianBlur(gray, 5)
@@ -400,10 +400,10 @@ def detect(path):
         print('no image with that path found')
         return data,keys
 
-    gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
 
-    croped = cropDots(orig)
-    data, keys, edges         = edgeProcess(data, keys, croped, blur)
+    orig = cropDots(orig)
+    gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
+    data, keys, edges         = edgeProcess(data, keys, gray, blur)
     data, keys, intensity     = hairPixelIntensity(data, keys, orig, gray, edges)
     data, keys                = hairPixelPercentage(data, keys, intensity)
     data, keys, maskoutr      = backgroundRegions(data, keys, intensity)

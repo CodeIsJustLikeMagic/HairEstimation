@@ -1,15 +1,15 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.2.7)  15 APR 2020 16:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.12)  16 APR 2020 14:01
 entering extended mode
 **./bericht.tex
 (bericht.tex
-LaTeX2e <2019-10-01> patch level 3
+LaTeX2e <2019-10-01>
 (llncs.cls
 Document Class: llncs 2013/09/27 v2.18 
  LaTeX document class for Lecture Notes in Computer Science
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\article.cls"
-Document Class: article 2019/10/25 v1.4k Standard LaTeX document class
+Document Class: article 2019/08/27 v1.4j Standard LaTeX document class
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\size12.clo"
-File: size12.clo 2019/10/25 v1.4k Standard LaTeX file (size option)
+File: size12.clo 2019/08/27 v1.4j Standard LaTeX file (size option)
 )
 \c@part=\count80
 \c@section=\count81
@@ -139,23 +139,29 @@ Package: inputenc 2018/08/11 v1.3c Input encoding file
 .sty"
 Package: biblatex 2019/08/31 v3.13a programmable bibliographies (PK/MW)
 
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/pdftexcmds\pdftex
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\pdftex
 cmds.sty"
-Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
+Package: pdftexcmds 2019/07/25 v0.30 Utility functions of pdfTeX for LuaTeX (HO
 )
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\infwar
 err.sty"
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\iftex.sty
-"
-Package: iftex 2019/11/07 v1.0c TeX engine tests
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifluat
+ex.sty"
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ltxcmd
 s.sty"
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifpdf.
+sty"
+Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
+)
+Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
@@ -181,11 +187,7 @@ Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\etexcm
 ds.sty"
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\ifluatex.
-sty"
-Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
-))))
+)))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/logreq\logreq.sty
 "
 Package: logreq 2010/08/04 v1.0 xml request logger
@@ -252,7 +254,7 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 \bibhang=\skip52
 \blx@bcfin=\read1
 \blx@bcfout=\write3
-\blx@langwohyphens=\language78
+\blx@langwohyphens=\language82
 \c@mincomprange=\count161
 \c@maxcomprange=\count162
 \c@mincompwidth=\count163
@@ -416,7 +418,7 @@ File: biblatex.cfg
 ))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes
 .sty"
-Package: csquotes 2019-12-06 v5.2j context-sensitive quotations (JAW)
+Package: csquotes 2019/05/10 v5.2e context-sensitive quotations (JAW)
 \csq@reset=\count309
 \csq@gtype=\count310
 \csq@glevel=\count311
@@ -427,7 +429,7 @@ Package: csquotes 2019-12-06 v5.2j context-sensitive quotations (JAW)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes
 .def"
-File: csquotes.def 2019-12-06 v5.2j csquotes generic definitions (JAW)
+File: csquotes.def 2019/05/10 v5.2e csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
@@ -442,7 +444,7 @@ Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphics
 .sty"
-Package: graphics 2019/11/01 v1.3d Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2019/07/20 v1.3b Standard LaTeX Graphics (DPC,SPQR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\trig.sty
 "
@@ -463,11 +465,11 @@ File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\babel.sty
 "
-Package: babel 2019/11/14 3.36 The Babel package
+Package: babel 2019/09/27 3.34 The Babel package
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\switch.de
 f"
-File: switch.def 2019/11/14 3.36 Babel switching mechanism
+File: switch.def 2019/09/27 3.34 Babel switching mechanism
 )
 *************************************
 * Local config file bblopts.cfg used
@@ -489,7 +491,7 @@ hy)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\babel.def
 "
-File: babel.def 2019/11/14 3.36 Babel common definitions
+File: babel.def 2019/09/27 3.34 Babel common definitions
 \babel@savecnt=\count315
 \U@D=\dimen127
 
@@ -501,16 +503,16 @@ Package babel Info: Making " an active character on input line 135.
 )))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\subcaptio
 n.sty"
-Package: subcaption 2020/01/22 v1.3d Sub-captions (AR)
+Package: subcaption 2019/09/01 v1.3a Sub-captions (AR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\caption.s
 ty"
-Package: caption 2020/01/03 v3.4h Customizing captions (AR)
+Package: caption 2019/10/18 v3.4a Customizing captions (AR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\caption3.
 sty"
-Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 61.
+Package: caption3 2019/09/09 v1.8e caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 64.
 \captionmargin=\dimen128
 \captionmargin@=\dimen129
 \captionwidth=\dimen130
@@ -523,7 +525,7 @@ Package caption Info: Unknown document class (or package),
 Package caption Info: \@makecaption = \long macro:#1#2->\small \vskip \abovecap
 tionskip \sbox \@tempboxa {{\bfseries #1.} #2}\ifdim \wd \@tempboxa >\hsize {\b
 fseries #1.} #2\par \else \global \@minipagefalse \hb@xt@ \hsize {\hfil \box \@
-tempboxa \hfil }\fi \vskip \belowcaptionskip  on input line 1082.
+tempboxa \hfil }\fi \vskip \belowcaptionskip  on input line 1069.
 )
 
 Package caption Warning: Unknown document class (or package),
@@ -750,7 +752,7 @@ Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 ))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/parskip\parskip.s
 ty"
-Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
+Package: parskip 2019-01-16 v2.0c non-zero parskip adjustments
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
@@ -831,9 +833,9 @@ pdf.mkii"
 \makeMPintoPDFobject=\count437
 \everyMPtoPDFconversion=\toks25
 )
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/epstopdf-pkg\epst
-opdf-base.sty"
-Package: epstopdf-base 2019/11/24 v2.7 Base part for package epstopdf
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf
+-base.sty"
+Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\grfext.s
 ty"
@@ -844,11 +846,11 @@ nekeys.sty"
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 ))
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-42.
+38.
 Package grfext Info: Graphics extension search list:
 (grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 460.
+(grfext)             \AppendGraphicsExtensions on input line 456.
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
@@ -999,25 +1001,49 @@ Underfull \hbox (badness 2318) in paragraph at lines 387--387
 Spline-
  []
 
+
+Overfull \hbox (2.35915pt too wide) in paragraph at lines 400--402
+[]\OT1/cmr/m/n/12 (hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc Di
+ch-
+ []
+
 [18] [19 <./fig64/gh4.PNG>] [20 <./fig64/g11_denseIntensitynorm.png>]
-Overfull \hbox (14.9757pt too wide) in paragraph at lines 408--409
+Overfull \hbox (14.9757pt too wide) in paragraph at lines 409--410
 []\OT1/cmr/m/n/12 (denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc
 ) 
  []
 
+<fig64/commandlineGuessProcess.PNG, id=89, 956.07187pt x 456.20438pt>
+File: fig64/commandlineGuessProcess.PNG Graphic file (type png)
+<use fig64/commandlineGuessProcess.PNG>
+Package pdftex.def Info: fig64/commandlineGuessProcess.PNG  used on input line 
+426.
+(pdftex.def)             Requested size: 416.54718pt x 198.76054pt.
 
-Overfull \hbox (2.4923pt too wide) in paragraph at lines 413--415
-[]\OT1/cmr/m/n/12 guessfunctions Da-ten aus Bil-dern zie-hen. In ei-nem Ca-li-b
-ra-ti-ons-schritt
+Overfull \hbox (69.42365pt too wide) in paragraph at lines 426--427
+ [][] 
  []
 
-[21]
-Overfull \hbox (1.24786pt too wide) in paragraph at lines 441--442
+<testFig/M_IMG_20200308_142449_25.jpg, id=90, 4047.12pt x 3035.34pt>
+File: testFig/M_IMG_20200308_142449_25.jpg Graphic file (type jpg)
+<use testFig/M_IMG_20200308_142449_25.jpg>
+Package pdftex.def Info: testFig/M_IMG_20200308_142449_25.jpg  used on input li
+ne 440.
+(pdftex.def)             Requested size: 164.88579pt x 123.66238pt.
+<testFig/M_IMG_20200327_132125_95.jpg, id=91, 4047.12pt x 3035.34pt>
+File: testFig/M_IMG_20200327_132125_95.jpg Graphic file (type jpg)
+<use testFig/M_IMG_20200327_132125_95.jpg>
+Package pdftex.def Info: testFig/M_IMG_20200327_132125_95.jpg  used on input li
+ne 447.
+(pdftex.def)             Requested size: 164.88579pt x 123.66238pt.
+[21] [22 <./fig64/commandlineGuessProcess.PNG> <./testFig/M_IMG_20200308_142449
+_25.jpg> <./testFig/M_IMG_20200327_132125_95.jpg>]
+Overfull \hbox (1.24786pt too wide) in paragraph at lines 485--486
 []\OT1/cmr/m/n/12 Eine Lang-zeit[]uberwachung be-ru-higt den Nut-zer bei sai-so
 na-lem Haar-
  []
 
-[22] [23] (bericht.aux)
+[23] [24] (bericht.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
@@ -1026,13 +1052,13 @@ Package logreq Info: Writing requests to 'bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21879 strings out of 492484
- 414884 string characters out of 3121149
- 947754 words of memory out of 3000000
- 26047 multiletter control sequences out of 15000+200000
+ 21825 strings out of 492452
+ 414385 string characters out of 3119596
+ 945765 words of memory out of 3000000
+ 26005 multiletter control sequences out of 15000+200000
  538629 words of font info for 45 fonts, out of 3000000 for 9000
  1143 hyphenation exceptions out of 8191
- 52i,8n,71p,819b,1655s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,8n,71p,819b,1657s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmbx12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
 public/amsfonts/cm/cmbx9.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9
@@ -1044,9 +1070,9 @@ pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmsy10.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/amsfonts/cm/cmti12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 
 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on bericht.pdf (23 pages, 4968304 bytes).
+Output written on bericht.pdf (24 pages, 11642952 bytes).
 PDF statistics:
- 130 PDF objects out of 1000 (max. 8388607)
+ 137 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 86 words of extra memory for PDF output out of 10000 (max. 10000000)
 
