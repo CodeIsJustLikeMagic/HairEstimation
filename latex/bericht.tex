@@ -112,16 +112,14 @@ https://numpy.org/
 \section{Einleitung}
 %Die Einleitung ist mit der wichtigste Teil der Arbeit, da sie den Leser motivieren soll die vorliegende Arbeit weiter z lesen. Sie sollte neben einer Motivation bzw Problembeschreibung auch das Ziel der Arbeit beschreiben.Zusätzlich sollten die Fabgebiete die die arbeit betreffen und deren Bedeutung genannt werden. Wichtig ist eine klare Formulierung der Zielstellung und des Lösungsansatzes so wie abschließend eine Beschreibung der Gliederung der Arbeit.
 
-Das Ausfallen von Haarsträhnen ist ein natürlicher Teil des Haarwachstum Zyklus. Durchschnittlich verliert der Mensch 50 bis 100 Haarsträhnen am Tag. Vermehrter Haarverlust kann ein Indikator von Krankheit oder anderen Problemen sein. Da ist es von Vorteil das früher zu erfahren.
+Das Ausfallen von Haarsträhnen ist ein natürlicher Teil des Haarwachstum Zyklus. Durchschnittlich verliert der Mensch 50 bis 100 Haarsträhnen am Tag. Vermehrter Haarverlust kann ein Anzeichen von Krankheiten oder Mangelerscheinungen sein. Daher ist es von Vorteil das früher darauf reagieren zu können.
 
-Der Haarverlust wird von unterschielidchen faktoren beeinflusst. So gibt es seasonale unterschiede. Haartextur und länge verändert den eindruck den eine person. so ist es nicht leicht den normalen haarverlust für eine person festzustellen .
+Haarausfall ist sehr variabel und wird durch viele Faktoren beeinflusst. Er kann sich abhängig von dem Haartyp, der Haarlänge und der Haarpflege-Methode jeden Tag ändern und Muster aufweisen. Jeder Mensch hat ein eigenes Haarausfall-Muster. Eine langzeitunersuchung gibt die möglichkeit diese Muster zu erkennen und Abweichungen herauszustellen. \cite{chemicalAlopecia,ironDeficiency,seasoalShedding}
 
-das paper gibt einstig in haar estimation mit computer vision. In dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} wird eine Methode beschrieben, in der Frauen anhand von Bildern den Umfang ihres täglichen Haarausfalls bestimmen können. Dabei werden den Frauen Bilder von abgezählten, ausgefallenen Haarbüscheln gezeigt, die ihrer eigenen Haarlänge entsprechen. Die Frauen wählen das Foto aus, welches ihrem persönlichen täglichen Haarausfall entspricht. Es wurde eine Korrelation festgestellt zwischen Frauen, die klinisch bestätigt Haarverlust erfahren und den Bildern, die sie ausgewählt haben.\cite{visualScale}
+In dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} wird eine Methode beschrieben, in der Frauen anhand von Bildern den Umfang ihres täglichen Haarausfalls bestimmen können. Dabei werden den Frauen Bilder von abgezählten, ausgefallenen Haarbüscheln gezeigt, die ihrer eigenen Haarlänge entsprechen. Die Frauen wählen das Foto aus, welches ihrem persönlichen täglichen Haarausfall entspricht. Es wurde eine Korrelation festgestellt zwischen Frauen, die klinisch bestätigt Haarverlust erfahren und den Bildern, die sie ausgewählt haben.
+Der Haarausfall wird visuell, anhand von Bildern festgestellt.\cite{visualScale}
 
-In dieser Arbeit wird ein verfahren vorgestellt mit dem eine langzeitüberwachung des täglichen Haarverlustes durchgeführt werden kann.
-
-computer vision statistik und 
-
+In dieser Arbeit wird ein Verfahren vorgestellt, mit dem der tägliche Haarausfall mithilfe von Methoden der Bildverarbeitung und statistischer Auswertung geschätzt werden kann. So wird eine Langzeitüberwachung möglichst effizient durchführbar.
 \section{Grundlagen}
 \subsection{Computervision}
 In dem Bereich der Bildverarbeitung gibt es viele Algorithmen, die es ermöglichen Objekte in einem Bild erkennbar zu machen und zu verarbeiten.
@@ -166,16 +164,6 @@ ist ein Verfahren, bei dem ein Bild in Regionen unterteilt wird. So werden zum B
 reduziert Objekte in einem Bild auf eine Pixelbreite. So können Linien auf eine Pixelbreite geschrumpft werden.
 \subsection{outlier removal ?}
 \subsection{fitted curve, lineare regression, spline}
-\subsection{Haarausfall}
-Wie in dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} beschrieben, kann man den täglichen Haarausfall als Indikation des gesamten Haarausfalls nehmen.\cite{visualScale}
-
-Haarausfall wird von mehrere Faktoren bestimmt und ist grundlegend gesund. Haarausfall ist nicht uniform. Er kann sich abhängig von dem Haartyp, der Haarlänge und der Haarpflege-Methode jeden Tag ändern und Muster aufweisen. 
-
-Eine Person die ihre Haare einmal in der Woche kämmt kann zum Zeitpunkt des Kämmens mehr Haarausfall erwarten, als eine Person die ihre Haare jeden Tag kämmt. 
-
-Hinzukommen saisonale Unterschiede in dem Haarverlust.\cite{seasoalShedding}
-
-Jeder Mensch hat ein eigenes Haarausfall-Muster. Abweichungen von diesem Muster können Anzeichen von Krankheiten und Mangelerscheinungen sein. Beispielsweise ist erhöhter Haarausfall ein Symptom von Eisenmangel.\cite{ironDeficiency}
 
 \section{Design und Implementation}
 
