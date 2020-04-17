@@ -2133,9 +2133,6 @@
     <bcf:citekey order="1">ironDeficiency</bcf:citekey>
     <bcf:citekey order="1">seasoalShedding</bcf:citekey>
     <bcf:citekey order="2">visualScale</bcf:citekey>
-    <bcf:citekey order="3">visualScale</bcf:citekey>
-    <bcf:citekey order="4">seasoalShedding</bcf:citekey>
-    <bcf:citekey order="5">ironDeficiency</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

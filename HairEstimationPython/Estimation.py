@@ -242,7 +242,7 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     imediateBackgroundPixelMask = np.ones(orig.shape[:2],dtype="uint8")
     imediateBackgroundPixelMask[:, :] = (imediateBackground != 0)  # 0 or 1 depending on wehter it is ==0
     imediateBackground = (1 - imediateBackgroundPixelMask) * 0 + imediateBackgroundPixelMask * gray
-    h_show('imediateBackground',imediateBackground)
+    #h_show('imediateBackground',imediateBackground)
     # count colors that are ligher than black
     backGroundPixels = np.count_nonzero(imediateBackground > 0)
     # print(backGroundPixels)
@@ -253,7 +253,7 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     sureHairPixelMask = np.ones(orig.shape[:2], dtype="uint8")
     sureHairPixelMask[:,:] = (cv2.erode(img_dilation, kernel, iterations=1) != 0)
     sum = np.sum(sureHairPixelMask * gray)
-    h_show('sure hair',sureHairPixelMask * gray)
+    #h_show('sure hair',sureHairPixelMask * gray)
     # average hair color
     averageHairColor = sum / np.count_nonzero(sureHairPixelMask > 0)
 
@@ -263,7 +263,7 @@ def hairPixelIntensity(data, keys, orig, gray, edges):
     if averageHairColor>averageBackgroundColor:
         gray = 255-gray
     h_show('gray',gray)
-    h_show('inverted gray', 255-gray)
+    #h_show('inverted gray', 255-gray)
     hairOnWhite = (1 - hairPixelMask) * 255 + hairPixelMask * gray
 
     # brither is more intense
