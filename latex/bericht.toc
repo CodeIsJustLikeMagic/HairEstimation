@@ -1,56 +1,58 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {german}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {title}{Exposee}{1}% 
+\contentsline {title}{Exposee}{1}%
 \defcounter {refsection}{0}\relax 
 \authcount {1}
 \defcounter {refsection}{0}\relax 
-\contentsline {author}{\parbox {.9\textwidth }{\centering \large Janelle Pfeifer \unskip \ \ignorespaces \relax \fontsize {9}{11}\selectfont \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \topsep \z@ \parsep \parskip \itemsep \z@ {\leftmargin \leftmargini \parsep 0\p@ plus1\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 0\p@ }\belowdisplayskip \abovedisplayskip Delpstraße 28\unskip \ \ignorespaces 53359 Rheinbach \unskip \ \ignorespaces janelle.pfeifer@smail.inf.h-brs.de}}{1}% 
+\contentsline {author}{\parbox {.9\textwidth }{\centering \large Janelle Pfeifer \unskip \ \ignorespaces \relax \fontsize {9}{11}\selectfont \abovedisplayskip 8.5\p@ plus3\p@ minus4\p@ \abovedisplayshortskip \z@ plus2\p@ \belowdisplayshortskip 4\p@ plus2\p@ minus2\p@ \def \leftmargin \leftmargini \topsep \z@ \parsep \parskip \itemsep \z@ {\leftmargin \leftmargini \parsep 0\p@ plus1\p@ minus\p@ \topsep 8\p@ plus2\p@ minus4\p@ \itemsep 0\p@ }\belowdisplayskip \abovedisplayskip Delpstraße 28\unskip \ \ignorespaces 53359 Rheinbach \unskip \ \ignorespaces janelle.pfeifer@smail.inf.h-brs.de}}{1}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1}Einleitung}{3}% 
+\contentsline {section}{\numberline {1}Einleitung}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Grundlagen}{3}% 
+\contentsline {section}{\numberline {2}Grundlagen}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Computervision}{3}% 
+\contentsline {subsection}{\numberline {2.1}Computervision}{3}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}matchTemplate}{4}% 
+\contentsline {subsection}{\numberline {2.2}matchTemplate}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Canny Edge Detection}{4}% 
+\contentsline {subsection}{\numberline {2.3}Canny Edge Detection}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.4}Dilatation}{4}% 
+\contentsline {subsection}{\numberline {2.4}Dilatation}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.5}Inversion eines Graustufenbildes}{4}% 
+\contentsline {subsection}{\numberline {2.5}Inversion eines Graustufenbildes}{4}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.6}watershed Algorithmus}{5}% 
+\contentsline {subsection}{\numberline {2.6}watershed Algorithmus}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{Region Growth}{5}% 
+\contentsline {subsubsection}{Region Growth}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.7}Connected Components}{5}% 
+\contentsline {subsection}{\numberline {2.7}Connected Components}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.8}Skelettierung}{5}% 
+\contentsline {subsection}{\numberline {2.8}Skelettierung}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.9}outlier removal ?}{5}% 
+\contentsline {subsection}{\numberline {2.9}outlier removal ?}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.10}fitted curve, lineare regression, spline}{5}% 
+\contentsline {subsection}{\numberline {2.10}fitted curve, lineare regression, spline}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Design und Implementation}{5}% 
+\contentsline {section}{\numberline {3}Design und Implementation}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Verarbeitung der Haar-Bilder}{6}% 
+\contentsline {subsection}{\numberline {3.1}Verarbeitung der Haar-Bilder}{6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Kalibrieren}{17}% 
+\contentsline {subsection}{\numberline {3.2}Kalibrieren}{13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Relation Daten zu Haar Menge}{18}% 
+\contentsline {subsection}{\numberline {3.3}Relation Daten zu Haar Menge}{13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3}Schätzen eines Haar-Bildes}{18}% 
+\contentsline {subsection}{\numberline {3.4}Schätzen eines Haar-Bildes}{13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.4}Tests}{21}% 
+\contentsline {subsection}{\numberline {3.5}Tests}{17}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.5}Test: Knielange, dunkelrote Haare}{21}% 
+\contentsline {subsection}{\numberline {3.6}Test: Knielange, dunkelrote Haare}{17}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.6}Test: Hüftlange, feine, blonde Haare}{23}% 
+\contentsline {subsection}{\numberline {3.7}Test: Hüftlange, feine, blonde Haare}{18}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.7}Test: kurze Hellbraune Haare}{24}% 
+\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{19}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.8}benutzung?}{25}% 
+\contentsline {subsection}{\numberline {3.9}benutzung?}{19}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Fazit}{25}% 
+\contentsline {section}{\numberline {4}Fazit}{19}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {A}}{21}%

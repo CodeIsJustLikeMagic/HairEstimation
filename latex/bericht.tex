@@ -11,6 +11,7 @@
 \usepackage{babel}
 \usepackage{subcaption}
 \usepackage{mwe}
+\usepackage[toc, page]{appendix}
 
 \usepackage{parskip}
 \usepackage{float}
@@ -175,16 +176,16 @@ Der Nutzer steuert das Programm über die Kommandozeile.
 
 Da die Haare jeder Person unterschiedlich sind, muss für jeden Nutzer eine eigene Kalibrierung durchgeführt werden. Um Vermischung von Daten unterschiedlicher Personen und häufige Neukalibrierungen zu vermeiden, kann das Programm beliebig viele Nutzer anlegen und verwalten. 
 
-\section{Verarbeitung der Haar-Bilder}
+\subsection{Verarbeitung der Haar-Bilder}
 
-Sowohl für die Kalibrierung als auch für die schätzung von Haar-Mengen müssen die eingegebenen Bilder zunächst verarbeitet werden und Daten, mit dennen auf die Haar-Menge geschlossen werden kann herausgestellt werden. Dazu werden Methoden der Bildverarbeitung verwendet.
+Sowohl für die Kalibrierung als auch für die Schätzung von Haar-Mengen müssen die eingegebenen Bilder zunächst verarbeitet werden und Daten, mit denen auf die Haar-Menge geschlossen werden kann herausgestellt werden. Dazu werden Methoden der Bildverarbeitung verwendet.
 
 Die Methode detect implementiert die Verarbeitung eines Bildes.
 Als Eingabe wird von einem Haarbüschel auf einem einfarbige Hintergrund ausgegangen. Dabei sollte ein möglichst guter Kontrast zu der Haarfarbe gewählt worden sein. Beispielsweise ein weißer Hintergrund für dunkele haare oder ein schwarzer Hintergrund für blondes oder hellbraunes Haar. Die Ecken des Hintergrundes sind durch ein Symbol markiert. Vergleich Abbildung \ref{img:input}.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{fig64/00IMG_20200406_153354_12_g_15.jpg}
+	\includegraphics[width=0.6\textwidth]{fig64/00IMG_20200406_153354_12_g_15.jpg}
 	\caption[]{Input}
 	\label{img:input}
 \end{figure}
@@ -193,20 +194,6 @@ Im ersten Schritt der Bildverarbeitung wird das Bild auf die Markierungen in den
 Über einen Aufruf der Open cv methode matchTemplate wird nach vorkommen der Markierung gesucht. Das Resultat ist ein Karte an Wahrscheinlichkeiten, die für jedes Pixel angibt, zu welcher Wahrscheinlichkeit sich dort die Markierung befindet. Die 4 Stellen an denen die Wahrscheinlichkeit am höchsten ist, werden als Eckpunkte angesehen. Siehe Abbildung \ref{img:cropDots}.
 \begin{figure*}
 	\centering
-	\begin{subfigure}[b]{0.475\textwidth}
-		\centering
-		\includegraphics[width=0.2\textwidth]{fig64/TemplateDot.jpg}
-		\caption[]{Das Aussehen der Markierung ist bekannt und wird über so ein Bild angegeben.}
-		\label{img:TemplateDot} 
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.475\textwidth} 
-		\centering
-		\includegraphics[width=\textwidth]{fig64/01match res.png}
-		\caption[]{Resultat von matchTemplate}
-		\label{img:matchTempate}
-	\end{subfigure}
-	\vskip\baselineskip
 	\begin{subfigure}[b]{0.475\textwidth}   
 		\centering
 		\includegraphics[width=\textwidth]{fig64/03rectImg.png}
@@ -232,13 +219,26 @@ Nach dem Zuschneiden werden die Haare von dem Hintergrund getrennt.
 Das ist in der Methode edgeProcess implementiert. 
 Mithilfe von Canny Edge detection werden die Haare grob erkannt.
 Weiße Pixel gelten als Haare, schwarze als Hintergrund. Siehe Abbildung \ref{img:Edges}.
-
-\begin{figure}
+\begin{figure*}
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/04edges.png}
-	\caption[]{Canny Kantendetektion}
-	\label{img:Edges}
-\end{figure}
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig64/04edges.png}
+		\caption[]{Canny Kantendetektion}
+		\label{img:Edges} 
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=\textwidth]{fig64/05intenstiy.png}
+		\caption[]{Intensität-Abbildung der Haare}
+		\label{img:Intensity}
+	\end{subfigure}
+	\caption[  ]
+	{\small Beispiel input von knielangen dunkelroten Haare} 
+	\label{img:tstM}
+\end{figure*}
+
 
 In der Methode hairPixelIntensity wird die Detektion verfeinert.
 Auf das Resultat der Katendetektion wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
@@ -249,34 +249,36 @@ Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem 
 Wenn die Haare heller sind als der Hintergrund, es sich beispielsweise um blondes Haar auf schwarzem Hintergrund handelt haben die Haare eine Höhere intensität, wenn sich heller sind. Bei dunkelem Haar auf hellem Hintergund ist es gegenteilig. Die Intensität ist höher, wenn das Haar dunkler ist.
 Damit beide Konstelationen zu einem ähnlichen Ergebnis kommen, werden die graustufenwerte invertiert, wenn die Haare hell sind. So ist auch bei ursprünglich hellem Haar, die Intensität höher, wenn die Graustufen dunkler sind.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=1.1\textwidth]{01quellc.PNG}
-	\caption[]{Implementierung haare weiß, hintergrund schwarz}
-	\label{q:haironwhite}
-\end{figure}
 
-Die Inversion dieses Bildes ergibt ein Bild mit schwarzem Hintergrund und Haaren, die Heller sind an stellen wo sie sich Überlagern. Siehe Abbildung \ref{img:Intensity}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/05intenstiy.png}
-	\caption[]{Intensität-Abbildung der Haare}
-	\label{img:Intensity}
-\end{figure}
+
+Die Inversion dieses Bildes ergibt ein Bild mit schwarzem Hintergrund und Haaren, die Heller sind an stellen wo sie sich Überlagern. Siehe Abbildung \ref{img:Intensity}.
+
 
 Es werden kleine vereinzelte Gebiete des Hintergrundes in der Kantendetection erkannt und gelten somit als Haare.
 Um diese Gebiete zu erkennen und zu entfernen, wird der Watershed Algorithmus angewendet.   
 Dabei werden Marker in alle verbundenen Gebiete gesetzt, die nicht schwarz sind. Der Watershed Algorithmus lässt die Regionen wachsen. 
-Dann werden die Regionen entfernt, die im Verglich auf die Größe des Bildes sehr klein sind. Siehe Abbildung \ref{img:smallRegions}
+Dann werden die Regionen entfernt, die im Verglich auf die Größe des Bildes sehr klein sind. Siehe Abbildung \ref{img:smallRegions}.
 
 Die Summe aller Graustufenwerte werden als Intensität gespeichert. Dabei wird der Hintergrund außer acht gelassen, weil es schwarz ist, und somit den Graustufenwert 0 hat.
-
-\begin{figure}
+\begin{figure*}
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/06small regions removed.png}
-	\caption[]{Kleine Regionen Entfernt}
-	\label{img:smallRegions}
-\end{figure}
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig64/05intenstiy.png}
+		\caption[]{Intensität-Abbildung der Haare}
+		\label{img:Intensity}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=\textwidth]{fig64/06small regions removed.png}
+		\caption[]{Kleine Regionen Entfernt}
+		\label{img:smallRegion}
+	\end{subfigure}
+	\caption[  ]
+	{\small Enternen von kleinen Regionen, vorher nachher} 
+	\label{img:tstM}
+\end{figure*}
 
 In der Methode hairPixelPercentage werden die Pixel gezählt die als Haare gelten. Zusätzlich wird der Prozentsatz an Haar Pixeln und die Intensität des Bildes im Vergleich zur Bildgröße gespeichert. 
 
@@ -285,33 +287,49 @@ Dafür werden die Hintergrund Regionen bestimmt, die durch Haare getrennt werden
 Die Marker werden in alle zusammenhängenden Hintergrundgebiete gesetzt.
 Dabei wird die Größe der Region, die die Haare umschließt gespeichert. Abbildung \ref{img:outerSection}.
 Zusätzlich wird die Anzahl der Regionen die von Haaren umschlossen wird und deren Durchschnittliche Größe gespeichert.
-
-\begin{figure}
+\begin{figure*}
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/08outer section.png}
-	\caption[]{Äußerte Region Isoliert und in weiß dargestellt.}
-	\label{img:outerSection}
-\end{figure}  
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig64/06small regions removed.png}
+		\caption[]{watershed input}
+		\label{img:smallRegion}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=\textwidth]{fig64/08outer section.png}
+		\caption[]{Äußerte Region Isoliert und in weiß dargestellt.}
+		\label{img:outerSection}
+	\end{subfigure}
+	\caption[  ]
+	{\small Anwendug von watershed} 
+	\label{img:tstM}
+\end{figure*}
 
 Als nächstes werden die Gebiete des Bildes untersucht, die eine erhöhte Haar-Dichte aufweisen.
 Dafür wird das Intesität-Bild skelettiert. Siehe Abbildung \ref{img:skel}.
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/09input intensity.png}
-	\caption[]{Skelett des Intensität-Bildes}
-	\label{img:skel}
-\end{figure}
-
 Die Hintergrund Regionen werden wie zuvor untersucht.
 
-\begin{figure}
+\begin{figure*}
 	\centering
-	\includegraphics[width=0.9\textwidth]{fig64/09outer section.png}
-	\caption[]{Äußerte Region des skelettierten Bildes}
-	\label{img:skel}
-\end{figure}
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{fig64/09input intensity.png}
+		\caption[]{Skelett des Intensität-Bildes}
+		\label{img:skel}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=\textwidth]{fig64/09outer section.png}
+		\caption[]{Äußerte Region des skelettierten Bildes}
+		\label{img:skel}
+	\end{subfigure}
+	\caption[  ]
+	{\small Dichtere Regionen untersuchen} 
+	\label{img:tstM}
+\end{figure*}
 
 In der Methode denseAndLoosePerc wird die Haar-Intensität in den dichteren Regionen und in den weniger dichten Regionen berechnet und abgespeichert.
 
@@ -432,25 +450,8 @@ Siehe Abbildung \ref{img:guess} für den Verlauf einer Schätzung auf der Komman
 
 Knielange dunkelroten Haare wurden auf einem weißem Hintergrund aufgenommen. Die Ecken wurden mit dunkeln Punkten markiert. Siehe Abbildung \ref{img:tstM}.
 
-\begin{figure*}
-	\centering
-	\begin{subfigure}[b]{0.475\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{testFig/M_IMG_20200308_142449_25.jpg}
-		\caption[]{Geschätzt auf 23 Haare. Tatsächlich 25 Haare}
-		\label{img:tstM1} 
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.475\textwidth} 
-		\centering
-		\includegraphics[width=\textwidth]{testFig/M_IMG_20200327_132125_95.jpg}
-		\caption[]{Geschätzt auf 89 Haare. Tatsächlich 95.}
-		\label{img:tstM2}
-	\end{subfigure}
-	\caption[  ]
-	{\small Beispiel input von knielangen dunkelroten Haare} 
-	\label{img:tstM}
-\end{figure*}
+
+
 
 
 es wurde eine Untersuchung in einem Zeitraum von 7 Wochen von dem tägliche Haarausfall angestellt. 
@@ -494,7 +495,7 @@ Blonde Haare wurden vor einem Schwarzen Hintergrund aufgenommen.
 		\label{img:tstM2}
 	\end{subfigure}
 	\caption[  ]
-	{\small Beispiel input von knielangen dunkelroten Haare} 
+	{\small Beispiel input von blonden langen Haaren} 
 	\label{img:tstM}
 \end{figure*}
 Für den schwarzen Hintergrund wurde besonders matte schwarze Pappe verwendet. Wenn die struktur der Pappe zu grob ist, oder durch einen glaz der pappe sichbar wird, wir sie von der Canny Edge detection erkannt. 
@@ -549,9 +550,9 @@ Die Langzeitüberwachung macht den Haarausfall transparenter und berechenbarer. 
 
 %\nocite{reaper}
 \newpage
-
 \appendix
-
+\section{}
+hoi
 
 \printbibliography
 
