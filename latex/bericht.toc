@@ -55,4 +55,6 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {4}Fazit}{19}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}}{21}%
+\contentsline {section}{\numberline {A}Schätzungs Modelle}{21}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {B}Anhang blondes Haar}{21}%

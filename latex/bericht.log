@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.2.7)  20 APR 2020 15:38
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.2.7)  20 APR 2020 16:37
 entering extended mode
 **./bericht.tex
 (bericht.tex
@@ -827,6 +827,45 @@ LaTeX Warning: Label `img:guess' multiply defined.
 
 LaTeX Warning: Label `img:tstM' multiply defined.
 
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
 )
 \openout1 = `bericht.aux'.
 
@@ -1075,12 +1114,96 @@ na-lem Haar-
  []
 
 [20]
-Overfull \hbox (0.3163pt too wide) in paragraph at lines 558--558
+<fig64/g01_hairpercent.png, id=91, 722.7pt x 578.16pt>
+File: fig64/g01_hairpercent.png Graphic file (type png)
+<use fig64/g01_hairpercent.png>
+Package pdftex.def Info: fig64/g01_hairpercent.png  used on input line 557.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g02_densitynorm.png, id=92, 722.7pt x 578.16pt>
+File: fig64/g02_densitynorm.png Graphic file (type png)
+<use fig64/g02_densitynorm.png>
+Package pdftex.def Info: fig64/g02_densitynorm.png  used on input line 563.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g03_densitynorm2.png, id=93, 722.7pt x 578.16pt>
+File: fig64/g03_densitynorm2.png Graphic file (type png)
+<use fig64/g03_densitynorm2.png>
+Package pdftex.def Info: fig64/g03_densitynorm2.png  used on input line 569.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g04_densityDenseSections.png, id=94, 722.7pt x 578.16pt>
+File: fig64/g04_densityDenseSections.png Graphic file (type png)
+<use fig64/g04_densityDenseSections.png>
+Package pdftex.def Info: fig64/g04_densityDenseSections.png  used on input line
+ 575.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g05_denseDensitytolooseDensity.png, id=95, 722.7pt x 578.16pt>
+File: fig64/g05_denseDensitytolooseDensity.png Graphic file (type png)
+<use fig64/g05_denseDensitytolooseDensity.png>
+Package pdftex.def Info: fig64/g05_denseDensitytolooseDensity.png  used on inpu
+t line 581.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g06_densitybybackgorundsections.png, id=96, 722.7pt x 578.16pt>
+File: fig64/g06_densitybybackgorundsections.png Graphic file (type png)
+<use fig64/g06_densitybybackgorundsections.png>
+Package pdftex.def Info: fig64/g06_densitybybackgorundsections.png  used on inp
+ut line 587.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g07_denseDensitybyBackgroundSections.png, id=97, 722.7pt x 578.16pt>
+File: fig64/g07_denseDensitybyBackgroundSections.png Graphic file (type png)
+<use fig64/g07_denseDensitybyBackgroundSections.png>
+Package pdftex.def Info: fig64/g07_denseDensitybyBackgroundSections.png  used o
+n input line 593.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g08_intensitynorm.png, id=98, 722.7pt x 578.16pt>
+File: fig64/g08_intensitynorm.png Graphic file (type png)
+<use fig64/g08_intensitynorm.png>
+Package pdftex.def Info: fig64/g08_intensitynorm.png  used on input line 599.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g09_avgbackgroundsectionsizes.png, id=99, 722.7pt x 578.16pt>
+File: fig64/g09_avgbackgroundsectionsizes.png Graphic file (type png)
+<use fig64/g09_avgbackgroundsectionsizes.png>
+Package pdftex.def Info: fig64/g09_avgbackgroundsectionsizes.png  used on input
+ line 605.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g10_denseavgbackgroundsizeVSlooseavg.png, id=100, 722.7pt x 578.16pt>
+File: fig64/g10_denseavgbackgroundsizeVSlooseavg.png Graphic file (type png)
+<use fig64/g10_denseavgbackgroundsizeVSlooseavg.png>
+Package pdftex.def Info: fig64/g10_denseavgbackgroundsizeVSlooseavg.png  used o
+n input line 611.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+File: fig64/g11_denseIntensitynorm.png Graphic file (type png)
+<use fig64/g11_denseIntensitynorm.png>
+Package pdftex.def Info: fig64/g11_denseIntensitynorm.png  used on input line 6
+17.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+<fig64/g12_denseIntensitynorm2.png, id=101, 722.7pt x 578.16pt>
+File: fig64/g12_denseIntensitynorm2.png Graphic file (type png)
+<use fig64/g12_denseIntensitynorm2.png>
+Package pdftex.def Info: fig64/g12_denseIntensitynorm2.png  used on input line 
+623.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+File: fig64/g05_denseDensitytolooseDensity.png Graphic file (type png)
+<use fig64/g05_denseDensitytolooseDensity.png>
+Package pdftex.def Info: fig64/g05_denseDensitytolooseDensity.png  used on inpu
+t line 632.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+File: fig64/g05_denseDensitytolooseDensity.png Graphic file (type png)
+<use fig64/g05_denseDensitytolooseDensity.png>
+Package pdftex.def Info: fig64/g05_denseDensitytolooseDensity.png  used on inpu
+t line 638.
+(pdftex.def)             Requested size: 242.98541pt x 194.38394pt.
+
+Overfull \hbox (0.3163pt too wide) in paragraph at lines 644--644
 []\OT1/cmr/m/n/12 Howard Mai-bach und Ian Ya-ma-gu-chi. []  Che-mi-cal-ly In-du
 -ced Hair
  []
 
-[21] (bericht.aux)
+[21 <./fig64/g01_hairpercent.png>] [22 <./fig64/g02_densitynorm.png> <./fig64/g
+03_densitynorm2.png>] [23 <./fig64/g04_densityDenseSections.png> <./fig64/g05_d
+enseDensitytolooseDensity.png>] [24 <./fig64/g06_densitybybackgorundsections.pn
+g> <./fig64/g07_denseDensitybyBackgroundSections.png>] [25 <./fig64/g08_intensi
+tynorm.png> <./fig64/g09_avgbackgroundsectionsizes.png>] [26 <./fig64/g10_dense
+avgbackgroundsizeVSlooseavg.png>] [27 <./fig64/g12_denseIntensitynorm2.png>]
+[28] (bericht.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1092,10 +1215,10 @@ Package logreq Info: Writing requests to 'bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21989 strings out of 492484
- 416829 string characters out of 3121149
- 947214 words of memory out of 3000000
- 26152 multiletter control sequences out of 15000+200000
+ 22056 strings out of 492484
+ 419275 string characters out of 3121149
+ 950224 words of memory out of 3000000
+ 26208 multiletter control sequences out of 15000+200000
  538629 words of font info for 45 fonts, out of 3000000 for 9000
  1143 hyphenation exceptions out of 8191
  52i,8n,71p,819b,1655s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1110,9 +1233,9 @@ pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfo
 nts/cm/cmsy10.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type
 1/public/amsfonts/cm/cmti12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 
 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on bericht.pdf (21 pages, 18387207 bytes).
+Output written on bericht.pdf (28 pages, 18951173 bytes).
 PDF statistics:
- 126 PDF objects out of 1000 (max. 8388607)
+ 170 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 76 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 131 words of extra memory for PDF output out of 10000 (max. 10000000)
 
