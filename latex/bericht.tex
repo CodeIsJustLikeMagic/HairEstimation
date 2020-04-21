@@ -1,5 +1,7 @@
-\documentclass[german,a4paper,12p,headsepline, titlepage, liststotoc, idextotoc,bibtoctoc,blibliography = totocnumbered]{scrartcl}
-%\documentclass[german,a4paper, 12pt]{llncs}
+%\documentclass[german,a4paper,12p,headsepline, titlepage, liststotoc, idextotoc,bibtoctoc,blibliography = totocnumbered,left=40mm,right=20mm,top=25mm,bottom=20mm]{scrartcl}
+\documentclass[german,a4paper, 12pt]{scrartcl}
+\usepackage[left=30mm,right=30mm,top=25mm,bottom=20mm]{geometry}
+\setlength{\footskip}{6mm} % Abstand Seitenzahl zu Text
 \setcounter{tocdepth}{2}
 \makeatletter
 %\renewcommand*\l@author[2]{}
@@ -15,7 +17,7 @@
 
 \usepackage{parskip}
 \usepackage{float}
-\usepackage{aussehen/hbrs-inf}
+%\usepackage{hbrs-inf}
 
 %\usepackage{hyperref}
 \usepackage{filecontents}
@@ -91,12 +93,12 @@ https://numpy.org/
 		\small Delpstraße 28\\
 		53359 Rheinbach \\
 		janelle.pfeifer@smail.inf.h-brs.de}}
-\institute{\parbox{.9\textwidth}{\centering 
-		\large Hochschule Bonn-Rhein-Sieg \\
-		\normalsize Institute of Visual Computing \\ 
-		\small Fachbereich Informatik \\
-		Studiengang: Informatik (B.SC.)\\
-		\normalsize Rheinbach, 15.02.2020}}
+%\institute{\parbox{.9\textwidth}{\centering 
+%		\large Hochschule Bonn-Rhein-Sieg \\
+%		\normalsize Institute of Visual Computing \\ 
+%		\small Fachbereich Informatik \\
+%		Studiengang: Informatik (B.SC.)\\
+%		\normalsize Rheinbach, 15.02.2020}}
 \date{Rheinbach, 8.1.2020}
 \begin{document}
 	%{\let\newpage\relax\maketitle}
