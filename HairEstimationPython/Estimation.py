@@ -864,7 +864,7 @@ def model(x,y,datapoint,description,ignorelin,func):
     funcguess = func(datapoint, *popt)
     if debugstate:
         fitx = np.linspace(x.min(), x.max(), 100)
-        fig, ax = plt.subplots(figsize=(10, 8))
+        fig, ax = plt.subplots(figsize=(5, 4))
         ax.plot(fitx, spl(fitx),label ='splinefunktion')
         ax.plot(fitx, lin(a, b, fitx),label ='linearRegression')
         plt.plot(x, func(x, *popt), 'r-', label="Fitted Curve")

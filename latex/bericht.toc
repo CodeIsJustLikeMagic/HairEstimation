@@ -1,54 +1,60 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {german}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1}Einleitung}{3}%
+\contentsline {section}{\numberline {1}Einleitung}{3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Grundlagen}{3}%
+\contentsline {section}{\numberline {2}Grundlagen}{3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Computervision}{3}%
+\contentsline {subsection}{\numberline {2.1}Computervision}{3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}matchTemplate}{3}%
+\contentsline {subsection}{\numberline {2.2}matchTemplate}{3}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Canny Edge Detection}{4}%
+\contentsline {subsection}{\numberline {2.3}Canny Edge Detection}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.4}Dilatation}{4}%
+\contentsline {subsection}{\numberline {2.4}Dilatation}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.5}Inversion eines Graustufenbildes}{4}%
+\contentsline {subsection}{\numberline {2.5}Inversion eines Graustufenbildes}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.6}watershed Algorithmus}{4}%
+\contentsline {subsection}{\numberline {2.6}watershed Algorithmus}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {2.6.1}Region Growth}{4}%
+\contentsline {subsubsection}{\numberline {2.6.1}Region Growth}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.7}Connected Components}{4}%
+\contentsline {subsection}{\numberline {2.7}Connected Components}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.8}Skelettierung}{4}%
+\contentsline {subsection}{\numberline {2.8}Skelettierung}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.9}outlier removal ?}{4}%
+\contentsline {subsection}{\numberline {2.9}outlier removal ?}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.10}fitted curve, lineare regression, spline}{4}%
+\contentsline {subsection}{\numberline {2.10}fitted curve, lineare regression, spline}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Design und Implementation}{4}%
+\contentsline {section}{\numberline {3}Design und Implementation}{4}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}Verarbeitung der Haar-Bilder}{5}%
+\contentsline {subsection}{\numberline {3.1}Verarbeitung der Haar-Bilder}{5}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}Kalibrieren}{10}%
+\contentsline {subsection}{\numberline {3.2}Kalibrieren}{9}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Relation Daten zu Haar Menge}{11}%
+\contentsline {subsection}{\numberline {3.3}Relation Daten zu Haar Menge}{9}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Schätzen eines Haar-Bildes}{11}%
+\contentsline {subsection}{\numberline {3.4}Schätzen eines Haar-Bildes}{9}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Tests}{13}%
+\contentsline {subsection}{\numberline {3.5}Tests}{12}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.6}Test: Knielange, dunkelrote Haare}{13}%
+\contentsline {subsection}{\numberline {3.6}Test: Knielange, dunkelrote Haare}{12}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.7}Test: Hüftlange, feine, blonde Haare}{14}%
+\contentsline {subsection}{\numberline {3.7}Test: Hüftlange, feine, blonde Haare}{12}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{14}%
+\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{13}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Ergebnisse}{15}%
+\contentsline {section}{\numberline {4}Ergebnisse}{13}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Fazit}{15}%
+\contentsline {section}{\numberline {5}Fazit}{13}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}Anhang Schätzungs Modelle}{16}%
+\contentsline {section}{\numberline {A}Anhang: 28 Datenpunkte pro Bild}{15}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {B}Anhang: Blondes Haar}{18}%
+\contentsline {section}{\numberline {B}Anhang x Wert berechungen für Schätzungs-Modelle}{16}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {C}Anhang Schätzungs Modelle}{18}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {D}Anhang: Blondes Haar}{20}% 
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{\numberline {E}Anhang Schätzungs Modelle Blondes Haar}{22}% 

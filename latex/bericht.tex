@@ -336,37 +336,8 @@ Die Hintergrund Regionen werden wie zuvor untersucht.
 
 In der Methode denseAndLoosePerc wird die Haar-Intensität in den dichteren Regionen und in den weniger dichten Regionen berechnet und abgespeichert.
 
-Für das Bild werden 28 Datenpunkte extrahiert und abgespeichert: 
+Für das Bild werden 28 Datenpunkte extrahiert und abgespeichert. Siehe Anhang \ref{appendix:datenpunkte}. 
 
-\begin{itemize}
-	\item intensitySum - Summe der Graustufenwerte des Intensität-Bildes
-	\item intensityShare - Intensität pro HaarPixel
-	\item hairpixels - Anzahl der Pixel, die Haare darstellen
-	\item imagepixels - Gesammtanzahl der Pixel im Bild
-	\item hairpixel percentage - Prozentsatz der Haarpixel im Bild
-	\item number of sections - Anzahl an Hintergrund Regionen, die Watershed findet.
-	\item number of background sections - Anzahl an Regionen, die den Hintergrund darstelle. (2 weniger als number of section. Watershed zählt Haare und übergänge zwischen Regionen mit)
-	\item outerSectionSum - Summe an Pixeln, die sich in der Region befinden, die die Haare umschließt
-	\item outerSectionPercentage - outerSectionSum/imagepixels
-	\item innerSectionSum - Summa an Pixeln, die sich in Regionen befinden, die von Haaren umschlossen werden
-	\item innserSectionAvgSize - Druchschnittliche Pixelanzahl, die sich in den umschlossenen Regionen befinden
-	\item innerSectionAvgSize Percentage - innersectionAvgSize/imagepixels
-	\item innerSectionSizeVariance - statistische Varianz der Pixelmengen, die sich in umschlossenen Regionen befinden
-	\item innerSection standard deviation - Standardabweichung der Pixelmengen, die sich in umschlossenen Regionen befinden
-	\item number of sections only concidering dense hair - Anzahl der Regionen, die Watershed findet nachdem der input Skelettiert wurde. Regionen werden von dichteren Haaren unterteilt.
-	\item number of background sections inclosed by dense hair - Anzahl an Regionen, die den Hintergrund zwischen dichten Haaren darstellen
-	\item dense hair outerSectionSum - Summe an Pixeln, die die Regionen umschließen, die von dichten Haaren umschlossen werden
-	\item dense outerSectionPercentage - dense hair outerSectionSum / imagepixels
-	\item dense innerSectionSum - Summe an Pixeln, die sich in den Regionen befinden, die von dichten Haaren umschlossen werden
-	\item dense hair innserSectionAvgSize - Durschnittliche anzahl der Pixel, die sich in Regionen befinden, die von dichten Haaren umschlossen werden
-	\item dense hair innerSectionAvgSize Percentage - dense hair innerSectionAvgSize / imagepixels
-	\item dense innerSectionSizeVariance - statistische Varianz der Pixelmengen
-	\item dense innerSection Size standard deviation - Standardabweichung der Pixelmengen
-	\item denseHairSum - Summe an Pixeln, die als Dichte Haare angesehen werden
-	\item looseHairSum - Summe an Pixeln, die als Haare angesehen werden, jedoch nicht als Dicht gelten
-	\item IntensitySum in Loose Section - Summe der Graustufenwerte in nicht-dichten Regionen
-	\item IntensitySum in Dense Section - Summe der Graustufenwerte in dichten Regionen
-\end{itemize}
 
 
 \subsection{Kalibrieren}
@@ -392,7 +363,7 @@ So entstehen eine Menge an Graphen, bei denen die Haar-Menge jeweils auf der y A
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/gh4.PNG}
+	\includegraphics[width=0.8\textwidth]{fig64/gh4.PNG}
 	\caption[]{Haar-Menge in Relation zur Intensität in dichten Regionen normalisiert durch gesamte Intensität und Region-Größe}
 	\label{fig:mapping}
 \end{figure}
@@ -404,35 +375,14 @@ Siehe Abbildung \ref{fig:func}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g11_denseIntensitynorm.png}
+	\includegraphics[width=0.9\textwidth]{fig64/g11_denseIntensitynormDetailed.png}
 	\caption[]{Funktionen, die Datenpunkte Approximieren. Spline-Interpolation, lineare Regression und exponentielle Funktion.}
 	\label{fig:func}
 \end{figure} 
 
-Von den 28 Datenpunkten die aus den Bildern ausgewertet werden, werden 17 Genutzt um 12 Modelle zu erstellt. Diese Modelle wurden als aussagekräftig gefunden, um die Haarmenge schätzen zu können. Die folgenden x Werte werden verwendet:
+Von den 28 Datenpunkten die aus den Bildern ausgewertet werden, werden 17 Genutzt um 12 Modelle zu erstellt. Diese Modelle wurden als aussagekräftig gefunden, um die Haarmenge schätzen zu können. Untersucht werden die Menge der Pixel, die als Haare zählen, Intensität, Größe und Anzahl an Hintergrund-Regionen. Siehe Anhang \ref{appendix:xwertemodel} Für die Berechnungen der genutzten x Werte für die Modelle. 
 
-\begin{itemize}
-	\item hairpercent 
-	\begin{itemize}
-		\item Prozentsatz der Haarpixel im Bild
-	\end{itemize}
-	\item (hairpixels / hairSectionSize) * (1 - outerSectionPerc)
-	HaarPixel dichte in der Region, in der sich Haare Befinden. Gibt dasselbe Ergebnis wie hairpercent.
-	\item (hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc
-	Dichte 
-	
-	\item (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc))) = denseDensity
-	\item denseDensity / looseDensity
-	\item backgroundSectionNum*(1-outerSectionPerc)
-	\item denseSectionNum*(1-outerSectionPerc)
-	\item intensitySum*hairpixels*(1-outerSectionPerc)
-	\item denseSectionAVGSize/(1-denseSectionperc)
-	\item (denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc)
-	\item (denseIntensity/intensitySum)*(1-denseSectionperc)
-	\item (denseIntensity/denseHairSum)*(1-denseSectionperc)
-\end{itemize}
-
-Siehe den Anhang für die graphische Darstellung der Modelle.
+Siehe den Anhang \ref{appendix:modelle} für die graphische Darstellung der Modelle.
 
 Für jedes der Modelle werden 3 Funktionen approximiert. Mit den Funktionen werden jeweils 3 Schätzungen für das zu schätzdene Bild berechnet. 
 
@@ -443,7 +393,7 @@ Siehe Abbildung \ref{img:guess} für den Verlauf einer Schätzung auf der Komman
 
 \begin{figure}
   \centering
-  \includegraphics[width=1\textwidth]{fig64/commandlineGuessProcess.PNG}
+  \includegraphics[width=1.1\textwidth]{fig64/commandlineGuessProcess.PNG}
   \caption[]{Kommandozeilenaufruf und Verlauf einer Schätzung}
   \label{img:guess}
 \end{figure} 
@@ -452,8 +402,6 @@ Siehe Abbildung \ref{img:guess} für den Verlauf einer Schätzung auf der Komman
 \subsection{Test: Knielange, dunkelrote Haare}
 
 Knielange dunkelroten Haare wurden auf einem weißem Hintergrund aufgenommen. Die Ecken wurden mit dunkeln Punkten markiert. Siehe Abbildung \ref{img:tstM}.
-
-
 
 
 
@@ -550,275 +498,305 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 
 %\nocite{reaper}
 \newpage
+
+\printbibliography
+
+
 \appendix
+\section{Anhang: 28 Datenpunkte pro Bild}
+\label{appendix:datenpunkte}
+
+\begin{itemize}
+	\item intensitySum - Summe der Graustufenwerte des Intensität-Bildes
+	\item intensityShare - Intensität pro HaarPixel
+	\item hairpixels - Anzahl der Pixel, die Haare darstellen
+	\item imagepixels - Gesammtanzahl der Pixel im Bild
+	\item hairpixel percentage - Prozentsatz der Haarpixel im Bild
+	\item number of sections - Anzahl an Hintergrund Regionen, die Watershed findet.
+	\item number of background sections - Anzahl an Regionen, die den Hintergrund darstelle. (2 weniger als number of section. Watershed zählt Haare und übergänge zwischen Regionen mit)
+	\item outerSectionSum - Summe an Pixeln, die sich in der Region befinden, die die Haare umschließt
+	\item outerSectionPercentage - outerSectionSum/imagepixels
+	\item innerSectionSum - Summa an Pixeln, die sich in Regionen befinden, die von Haaren umschlossen werden
+	\item innserSectionAvgSize - Druchschnittliche Pixelanzahl, die sich in den umschlossenen Regionen befinden
+	\item innerSectionAvgSize Percentage - innersectionAvgSize/imagepixels
+	\item innerSectionSizeVariance - statistische Varianz der Pixelmengen, die sich in umschlossenen Regionen befinden
+	\item innerSection standard deviation - Standardabweichung der Pixelmengen, die sich in umschlossenen Regionen befinden
+	\item number of sections only concidering dense hair - Anzahl der Regionen, die Watershed findet nachdem der input Skelettiert wurde. Regionen werden von dichteren Haaren unterteilt.
+	\item number of background sections inclosed by dense hair - Anzahl an Regionen, die den Hintergrund zwischen dichten Haaren darstellen
+	\item dense hair outerSectionSum - Summe an Pixeln, die die Regionen umschließen, die von dichten Haaren umschlossen werden
+	\item dense outerSectionPercentage - dense hair outerSectionSum / imagepixels
+	\item dense innerSectionSum - Summe an Pixeln, die sich in den Regionen befinden, die von dichten Haaren umschlossen werden
+	\item dense hair innserSectionAvgSize - Durschnittliche anzahl der Pixel, die sich in Regionen befinden, die von dichten Haaren umschlossen werden
+	\item dense hair innerSectionAvgSize Percentage - dense hair innerSectionAvgSize / imagepixels
+	\item dense innerSectionSizeVariance - statistische Varianz der Pixelmengen
+	\item dense innerSection Size standard deviation - Standardabweichung der Pixelmengen
+	\item denseHairSum - Summe an Pixeln, die als Dichte Haare angesehen werden
+	\item looseHairSum - Summe an Pixeln, die als Haare angesehen werden, jedoch nicht als Dicht gelten
+	\item IntensitySum in Loose Section - Summe der Graustufenwerte in nicht-dichten Regionen
+	\item IntensitySum in Dense Section - Summe der Graustufenwerte in dichten Regionen
+\end{itemize}
+
+\section{Anhang x Wert berechungen für Schätzungs-Modelle}
+\label{appendix:xwertemodel}
+\begin{itemize}
+	\item hairpercent 
+	\begin{itemize}
+		\item Prozentsatz der Haarpixel im Bild.
+	\end{itemize}
+	\item (hairpixels / hairSectionSize) * (1 - outerSectionPerc)
+	\begin{itemize}
+		\item HaarPixel Dichte in der Region, in der sich Haare Befinden. Gibt dasselbe Ergebnis wie hairpercent.
+	\end{itemize}
+	\item (hairpixels/hairSectionSize)*(1-outerSectionPerc)*hairPerc
+	\item (((denseHairSum / denseInnerSectionSize) * (1 - denseSectionperc))) = denseDensity
+	\begin{itemize}
+		\item Dichte in den Dichten Regionen.
+	\end{itemize}
+	\item denseDensity / looseDensity
+	\begin{itemize}
+		\item Verhältnis dichte Regionen zu loosen Regionen.
+	\end{itemize}
+	\item backgroundSectionNum*(1-outerSectionPerc)
+		\begin{itemize}
+		\item Anzahl der HintergrundRegionen in Region, in der sich Haare Befinden.
+	\end{itemize}
+	\item denseSectionNum*(1-outerSectionPerc)
+		\begin{itemize}
+		\item Anzahl der HintergrundRegionen, die von dichten Haaren getrennt sind, in Haar-Region.
+	\end{itemize}
+	\item intensitySum*hairpixels*(1-outerSectionPerc)
+	\begin{itemize}
+		\item Intensitäts Summe pro HaarPixel in Haar-Region.
+	\end{itemize}
+	\item denseSectionAVGSize/(1-denseSectionperc)
+		\begin{itemize}
+		\item Durchschnittliche Größe der HintergrundRegionen, die durch dichte Haare getrennt sind.
+	\end{itemize}
+	\item (denseSectionAVGSize/looseSectionAVGSize)/(1-outerSectionPerc)
+		\begin{itemize}
+		\item Durchschnittliche Größe von Hintergrundregionen in dichten Regionen verglichen mit Durchschnittlicher Größe von Hintergrundregionen in loosen Regionen.
+	\end{itemize}
+	\item (denseIntensity/intensitySum)*(1-denseSectionperc)
+		\begin{itemize}
+		\item Intensität in Dichten Regionen verglichen mit gesammter Intensität.
+	\end{itemize}
+	\item (denseIntensity/denseHairSum)*(1-denseSectionperc)
+		\begin{itemize}
+		\item Intensität in Dichten Regionen verglichen mit Summe an Haarpixeln, die als dicht gelten.
+	\end{itemize}
+\end{itemize}
+
 \section{Anhang Schätzungs Modelle}
-\begin{figure*}
-	\centering
-	\begin{subfigure}[b]{0.475\textwidth}
-		\centering
-		\includegraphics[width=1.2\textwidth]{fig64/g01_hairpercent.png}
-		\caption[]{Schätzungsmodell: hairpercent}
-		\label{img:cover}
+\label{appendix:modelle}
+\begin{figure}[H] % "[t!]" placement specifier just for this example
+\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=1.1\linewidth]{fig64/g01_hairpercent.png}
+	\caption{hairpercent} \label{fig:a}
+\end{subfigure}\hspace*{\fill}
+\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=1.1\linewidth]{fig64/g02_densitynorm.png}
+	\caption{density*hairsection size} \label{fig:b}
+\end{subfigure}
 
-	\end{subfigure}
-	\hfill
-	\begin{subfigure}[b]{0.475\textwidth} 
-		\centering
-		\includegraphics[width=1.2\textwidth]{fig64/g02_densitynorm.png}
-		\caption[]{density*hairsectionSize}
-		\label{img:cover}
-	\end{subfigure}
-	\caption[  ]
-	{\small Beispiel input von blonden langen Haaren} 
-	\label{img:tstM}
-\end{figure*}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g01_hairpercent.png}
-	\caption[]{Schätzungsmodell: hairpercent}
-	\label{img:cover}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g02_densitynorm.png}
-	\caption[]{density*hairsectionSize}
-	\label{img:cover}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g03_densitynorm2.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g04_densityDenseSections.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g05_denseDensitytolooseDensity.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g06_densitybybackgorundsections.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g07_denseDensitybyBackgroundSections.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g08_intensitynorm.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g09_avgbackgroundsectionsizes.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g10_denseavgbackgroundsizeVSlooseavg.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g11_denseIntensitynorm.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{fig64/g12_denseIntensitynorm2.png}
-	\caption[]{Cover des Spiels}
-	\label{img:cover}
+\medskip
+\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=1.1\linewidth]{fig64/g03_densitynorm2.png}
+	\caption{density per sectionsize per hairperc} \label{fig:c}
+\end{subfigure}\hspace*{\fill}
+\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=1.1\linewidth]{fig64/g04_densityDenseSections.png}
+	\caption{density of dense section in relation to section size} \label{fig:d}
+\end{subfigure}
+
+\medskip
+\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=1.1\linewidth]{fig64/g05_denseDensitytolooseDensity.png}
+	\caption{dense Density to loose Density ratio} \label{fig:e}
+\end{subfigure}\hspace*{\fill}
+\begin{subfigure}{0.48\textwidth}
+	\includegraphics[width=1.1\linewidth]{fig64/g06_densitybybackgorundsections.png}
+	\caption{density by background section peeking through} \label{fig:f}
+\end{subfigure}
+
+
+\caption{Schätzungsmodelle angewandt auf lange rotbraune Haare (1)} \label{fig:1}
 \end{figure}
 
+\begin{figure}[H] % "[t!]" placement specifier just for this example
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.15\linewidth]{fig64/g07_denseDensitybyBackgroundSections.png}
+		\caption{dense Density by background section peeking through} \label{fig:a}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.15\linewidth]{fig64/g08_intensitynorm.png}
+		\caption{intensity in relation to hairPixels and hairsectionsize} \label{fig:b}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.15\linewidth]{fig64/g09_avgbackgroundsectionsizes.png}
+		\caption{average background section sizes in dense section} \label{fig:c}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.15\linewidth]{fig64/g10_denseavgbackgroundsizeVSlooseavg.png}
+		\caption{dense average background section size compared to looseaveragebackground section size} \label{fig:d}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.15\linewidth]{fig64/g11_denseIntensitynorm.png}
+		\caption{densityIntensity/intensitySum * denseSectionSize} \label{fig:e}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.15\linewidth]{fig64/g12_denseIntensitynorm2.png}
+		\caption{denseIntensity/denseHairSum * denseSectionSize} \label{fig:f}
+	\end{subfigure}
+	
+	
+	\caption{Schätzngsmodelle angewandt auf lenge rotbraune Haare (2)} \label{fig:1}
+\end{figure}
 
 \section{Anhang: Blondes Haar}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/01foundDots.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
+\begin{figure}[H] % "[t!]" placement specifier just for this example
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/01foundDots.png}
+		\caption{First subfigure} \label{fig:a}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/02revRes.png}
+		\caption{Second subfigure} \label{fig:b}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/02foundDots.png}
+		\caption{Third subfigure} \label{fig:c}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/03crop image.png}
+		\caption{Fourth subfigure} \label{fig:d}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/04edges.png}
+		\caption{Fifth subfigure} \label{fig:e}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/05intenstiy.png}
+		\caption{Sixth subfigure} \label{fig:f}
+	\end{subfigure}
+	
+	
+	\caption{My complicated figure} \label{fig:1}
 \end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/01match res.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/02foundDots.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/02revRes.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/03crop image.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/03rectImg.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/04edges.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/05gray.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/05intenstiy.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/05inverted gray.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/06small regions removed.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/07orig.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/07missed hair.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/08input intensity.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/08outer section.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/09input intensity.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/09outer section.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g1.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g3.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g4.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g5.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g6.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g7.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g8.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g9.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g10.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g11.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.7\textwidth]{figBina/g12.png}
-	\caption[]{Cover des Spiels}
-	\label{img:Bina01}
+
+\begin{figure}[H] % "[t!]" placement specifier just for this example
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/06small regions removed.png}
+		\caption{First subfigure} \label{fig:a}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/07missed hair.png}
+		\caption{Second subfigure} \label{fig:b}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/08input intensity.png}
+		\caption{Third subfigure} \label{fig:c}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/08outer section.png}
+		\caption{Fourth subfigure} \label{fig:d}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/09input intensity.png}
+		\caption{Fifth subfigure} \label{fig:e}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\linewidth]{figBina/09outer section.png}
+		\caption{Sixth subfigure} \label{fig:f}
+	\end{subfigure}
+	
+	
+	\caption{My complicated figure} \label{fig:1}
 \end{figure}
 
 
+\section{Anhang Schätzungs Modelle Blondes Haar}
+\label{appendix:Blond}
+\begin{figure}[H] % "[t!]" placement specifier just for this example
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g1.png}
+		\caption{hairpercent} \label{fig:a}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g2.png}
+		\caption{density*hairsection size} \label{fig:b}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g3.png}
+		\caption{density per sectionsize per hairperc} \label{fig:c}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g4.png}
+		\caption{density of dense section in relation to section size} \label{fig:d}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g5.png}
+		\caption{dense Density to loose Density ratio} \label{fig:e}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g6.png}
+		\caption{density by background section peeking through} \label{fig:f}
+	\end{subfigure}
+	
+	
+	\caption{Schätzungsmodelle angewandt auf feine Blonde Haare (1)} \label{fig:1}
+\end{figure}
 
-\printbibliography
+\begin{figure}[H] % "[t!]" placement specifier just for this example
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g7.png}
+		\caption{hairpercent} \label{fig:a}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g8.png}
+		\caption{density*hairsection size} \label{fig:b}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g9.png}
+		\caption{density per sectionsize per hairperc} \label{fig:c}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g10.png}
+		\caption{density of dense section in relation to section size} \label{fig:d}
+	\end{subfigure}
+	
+	\medskip
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g11.png}
+		\caption{dense Density to loose Density ratio} \label{fig:e}
+	\end{subfigure}\hspace*{\fill}
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=1.1\linewidth]{figBina/g12.png}
+		\caption{density by background section peeking through} \label{fig:f}
+	\end{subfigure}
+	
+	
+	\caption{Schätzungsmodelle angewandt auf feine Blonde Haare (2)} \label{fig:1}
+\end{figure}
+
+
 
 \end{document}
