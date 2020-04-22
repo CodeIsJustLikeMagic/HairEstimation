@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.2.7)  21 APR 2020 18:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.2.7)  22 APR 2020 02:36
 entering extended mode
 **./bericht.tex
 (bericht.tex
@@ -856,6 +856,15 @@ LaTeX Warning: Label `img:tstM' multiply defined.
 LaTeX Warning: Label `img:cover' multiply defined.
 
 
+LaTeX Warning: Label `sub@img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
+LaTeX Warning: Label `img:cover' multiply defined.
+
+
 LaTeX Warning: Label `img:cover' multiply defined.
 
 
@@ -1173,295 +1182,296 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 File: fig64/gh4.PNG Graphic file (type png)
 <use fig64/gh4.PNG>
 Package pdftex.def Info: fig64/gh4.PNG  used on input line 395.
-(pdftex.def)             Requested size: 512.14832pt x 410.92151pt.
-
-Overfull \hbox (85.35696pt too wide) in paragraph at lines 395--396
- [][] 
- []
-
+(pdftex.def)             Requested size: 298.75264pt x 239.6894pt.
 <fig64/g11_denseIntensitynorm.png, id=50, 722.7pt x 578.16pt>
 File: fig64/g11_denseIntensitynorm.png Graphic file (type png)
 <use fig64/g11_denseIntensitynorm.png>
 Package pdftex.def Info: fig64/g11_denseIntensitynorm.png  used on input line 4
 07.
-(pdftex.def)             Requested size: 512.14832pt x 409.72014pt.
-
-Overfull \hbox (85.35696pt too wide) in paragraph at lines 407--408
- [][] 
- []
-
-[11 <./fig64/gh4.PNG>] [12 <./fig64/g11_denseIntensitynorm.png>]
-<fig64/commandlineGuessProcess.PNG, id=59, 956.07187pt x 456.20438pt>
+(pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
+ [11 <./fig64/gh4.PNG>]
+<fig64/commandlineGuessProcess.PNG, id=55, 956.07187pt x 456.20438pt>
 File: fig64/commandlineGuessProcess.PNG Graphic file (type png)
 <use fig64/commandlineGuessProcess.PNG>
 Package pdftex.def Info: fig64/commandlineGuessProcess.PNG  used on input line 
 446.
-(pdftex.def)             Requested size: 512.14832pt x 244.3767pt.
-
-Overfull \hbox (85.35696pt too wide) in paragraph at lines 446--447
- [][] 
- []
-
+(pdftex.def)             Requested size: 426.79135pt x 203.64723pt.
+ [12 <./fig64/g11_denseIntensitynorm.png>]
 <fig64/plot.png, id=60, 704.6325pt x 346.896pt>
 File: fig64/plot.png Graphic file (type png)
 <use fig64/plot.png>
 Package pdftex.def Info: fig64/plot.png  used on input line 463.
-(pdftex.def)             Requested size: 512.14832pt x 252.13628pt.
+(pdftex.def)             Requested size: 426.79135pt x 210.11356pt.
 
-Overfull \hbox (85.35696pt too wide) in paragraph at lines 463--464
- [][] 
- []
-
-[13 <./fig64/commandlineGuessProcess.PNG>]
-<testFig/B_IMG_20200322_093659_50.jpg, id=66, 971.3088pt x 728.4816pt>
+[13 <./fig64/commandlineGuessProcess.PNG> <./fig64/plot.png>]
+<testFig/B_IMG_20200322_093659_50.jpg, id=67, 971.3088pt x 728.4816pt>
 File: testFig/B_IMG_20200322_093659_50.jpg Graphic file (type jpg)
 <use testFig/B_IMG_20200322_093659_50.jpg>
 Package pdftex.def Info: testFig/B_IMG_20200322_093659_50.jpg  used on input li
 ne 489.
 (pdftex.def)             Requested size: 202.72849pt x 152.04082pt.
-<testFig/B_IMG_20200330_094438_20.jpg, id=67, 971.3088pt x 728.4816pt>
+<testFig/B_IMG_20200330_094438_20.jpg, id=68, 971.3088pt x 728.4816pt>
 File: testFig/B_IMG_20200330_094438_20.jpg Graphic file (type jpg)
 <use testFig/B_IMG_20200330_094438_20.jpg>
 Package pdftex.def Info: testFig/B_IMG_20200330_094438_20.jpg  used on input li
 ne 496.
 (pdftex.def)             Requested size: 202.72849pt x 152.04082pt.
- [14 <./fig64/plot.png>] [15 <./testFig/B_IMG_20200322_093659_50.jpg> <./testFi
-g/B_IMG_20200330_094438_20.jpg>]
+ [14 <./testFig/B_IMG_20200322_093659_50.jpg> <./testFig/B_IMG_20200330_094438_
+20.jpg>] [15]
 <fig64/g01_hairpercent.png, id=75, 722.7pt x 578.16pt>
 File: fig64/g01_hairpercent.png Graphic file (type png)
 <use fig64/g01_hairpercent.png>
-Package pdftex.def Info: fig64/g01_hairpercent.png  used on input line 560.
-(pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
+Package pdftex.def Info: fig64/g01_hairpercent.png  used on input line 559.
+(pdftex.def)             Requested size: 243.27356pt x 194.61331pt.
+
+Overfull \hbox (40.54507pt too wide) in paragraph at lines 559--560
+ [][] 
+ []
+
 <fig64/g02_densitynorm.png, id=76, 722.7pt x 578.16pt>
 File: fig64/g02_densitynorm.png Graphic file (type png)
 <use fig64/g02_densitynorm.png>
-Package pdftex.def Info: fig64/g02_densitynorm.png  used on input line 566.
+Package pdftex.def Info: fig64/g02_densitynorm.png  used on input line 567.
+(pdftex.def)             Requested size: 243.27356pt x 194.61331pt.
+
+Overfull \hbox (40.54507pt too wide) in paragraph at lines 567--568
+ [][] 
+ []
+
+File: fig64/g01_hairpercent.png Graphic file (type png)
+<use fig64/g01_hairpercent.png>
+Package pdftex.def Info: fig64/g01_hairpercent.png  used on input line 577.
+(pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
+File: fig64/g02_densitynorm.png Graphic file (type png)
+<use fig64/g02_densitynorm.png>
+Package pdftex.def Info: fig64/g02_densitynorm.png  used on input line 583.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
 <fig64/g03_densitynorm2.png, id=77, 722.7pt x 578.16pt>
 File: fig64/g03_densitynorm2.png Graphic file (type png)
 <use fig64/g03_densitynorm2.png>
-Package pdftex.def Info: fig64/g03_densitynorm2.png  used on input line 572.
+Package pdftex.def Info: fig64/g03_densitynorm2.png  used on input line 589.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g04_densityDenseSections.png, id=78, 722.7pt x 578.16pt>
+[16 <./fig64/g01_hairpercent.png> <./fig64/g02_densitynorm.png>]
+<fig64/g04_densityDenseSections.png, id=83, 722.7pt x 578.16pt>
 File: fig64/g04_densityDenseSections.png Graphic file (type png)
 <use fig64/g04_densityDenseSections.png>
 Package pdftex.def Info: fig64/g04_densityDenseSections.png  used on input line
- 578.
+ 595.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g05_denseDensitytolooseDensity.png, id=79, 722.7pt x 578.16pt>
+<fig64/g05_denseDensitytolooseDensity.png, id=84, 722.7pt x 578.16pt>
 File: fig64/g05_denseDensitytolooseDensity.png Graphic file (type png)
 <use fig64/g05_denseDensitytolooseDensity.png>
 Package pdftex.def Info: fig64/g05_denseDensitytolooseDensity.png  used on inpu
-t line 584.
+t line 601.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g06_densitybybackgorundsections.png, id=80, 722.7pt x 578.16pt>
+ [17 <./fig64/g03_densitynorm2.png>]
+<fig64/g06_densitybybackgorundsections.png, id=89, 722.7pt x 578.16pt>
 File: fig64/g06_densitybybackgorundsections.png Graphic file (type png)
 <use fig64/g06_densitybybackgorundsections.png>
 Package pdftex.def Info: fig64/g06_densitybybackgorundsections.png  used on inp
-ut line 590.
+ut line 607.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g07_denseDensitybyBackgroundSections.png, id=81, 722.7pt x 578.16pt>
+<fig64/g07_denseDensitybyBackgroundSections.png, id=90, 722.7pt x 578.16pt>
 File: fig64/g07_denseDensitybyBackgroundSections.png Graphic file (type png)
 <use fig64/g07_denseDensitybyBackgroundSections.png>
 Package pdftex.def Info: fig64/g07_denseDensitybyBackgroundSections.png  used o
-n input line 596.
+n input line 613.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g08_intensitynorm.png, id=82, 722.7pt x 578.16pt>
+<fig64/g08_intensitynorm.png, id=91, 722.7pt x 578.16pt>
 File: fig64/g08_intensitynorm.png Graphic file (type png)
 <use fig64/g08_intensitynorm.png>
-Package pdftex.def Info: fig64/g08_intensitynorm.png  used on input line 602.
+Package pdftex.def Info: fig64/g08_intensitynorm.png  used on input line 619.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g09_avgbackgroundsectionsizes.png, id=83, 722.7pt x 578.16pt>
+<fig64/g09_avgbackgroundsectionsizes.png, id=92, 722.7pt x 578.16pt>
 File: fig64/g09_avgbackgroundsectionsizes.png Graphic file (type png)
 <use fig64/g09_avgbackgroundsectionsizes.png>
 Package pdftex.def Info: fig64/g09_avgbackgroundsectionsizes.png  used on input
- line 608.
+ line 625.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g10_denseavgbackgroundsizeVSlooseavg.png, id=84, 722.7pt x 578.16pt>
+<fig64/g10_denseavgbackgroundsizeVSlooseavg.png, id=93, 722.7pt x 578.16pt>
 File: fig64/g10_denseavgbackgroundsizeVSlooseavg.png Graphic file (type png)
 <use fig64/g10_denseavgbackgroundsizeVSlooseavg.png>
 Package pdftex.def Info: fig64/g10_denseavgbackgroundsizeVSlooseavg.png  used o
-n input line 614.
+n input line 631.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
 File: fig64/g11_denseIntensitynorm.png Graphic file (type png)
 <use fig64/g11_denseIntensitynorm.png>
 Package pdftex.def Info: fig64/g11_denseIntensitynorm.png  used on input line 6
-20.
+37.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<fig64/g12_denseIntensitynorm2.png, id=85, 722.7pt x 578.16pt>
+<fig64/g12_denseIntensitynorm2.png, id=94, 722.7pt x 578.16pt>
 File: fig64/g12_denseIntensitynorm2.png Graphic file (type png)
 <use fig64/g12_denseIntensitynorm2.png>
 Package pdftex.def Info: fig64/g12_denseIntensitynorm2.png  used on input line 
-626.
+643.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/01foundDots.png, id=86, 809.0225pt x 606.265pt>
+<figBina/01foundDots.png, id=95, 809.0225pt x 606.265pt>
 File: figBina/01foundDots.png Graphic file (type png)
 <use figBina/01foundDots.png>
-Package pdftex.def Info: figBina/01foundDots.png  used on input line 636.
+Package pdftex.def Info: figBina/01foundDots.png  used on input line 653.
 (pdftex.def)             Requested size: 298.75264pt x 223.87975pt.
-<figBina/01match res.png, id=87, 787.94376pt x 586.19pt>
+<figBina/01match res.png, id=96, 787.94376pt x 586.19pt>
 File: figBina/01match res.png Graphic file (type png)
 <use figBina/01match res.png>
-Package pdftex.def Info: figBina/01match res.png  used on input line 642.
+Package pdftex.def Info: figBina/01match res.png  used on input line 659.
 (pdftex.def)             Requested size: 298.75264pt x 222.25362pt.
-<figBina/02foundDots.png, id=88, 809.0225pt x 606.265pt>
+<figBina/02foundDots.png, id=97, 809.0225pt x 606.265pt>
 File: figBina/02foundDots.png Graphic file (type png)
 <use figBina/02foundDots.png>
-Package pdftex.def Info: figBina/02foundDots.png  used on input line 648.
+Package pdftex.def Info: figBina/02foundDots.png  used on input line 665.
 (pdftex.def)             Requested size: 298.75264pt x 223.87975pt.
-<figBina/02revRes.png, id=89, 787.94376pt x 586.19pt>
+<figBina/02revRes.png, id=98, 787.94376pt x 586.19pt>
 File: figBina/02revRes.png Graphic file (type png)
 <use figBina/02revRes.png>
-Package pdftex.def Info: figBina/02revRes.png  used on input line 654.
+Package pdftex.def Info: figBina/02revRes.png  used on input line 671.
 (pdftex.def)             Requested size: 298.75264pt x 222.25362pt.
-<figBina/03crop image.png, id=90, 614.295pt x 427.5975pt>
+<figBina/03crop image.png, id=99, 614.295pt x 427.5975pt>
 File: figBina/03crop image.png Graphic file (type png)
 <use figBina/03crop image.png>
-Package pdftex.def Info: figBina/03crop image.png  used on input line 660.
+Package pdftex.def Info: figBina/03crop image.png  used on input line 677.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/03rectImg.png, id=91, 809.0225pt x 606.265pt>
+<figBina/03rectImg.png, id=100, 809.0225pt x 606.265pt>
 File: figBina/03rectImg.png Graphic file (type png)
 <use figBina/03rectImg.png>
-Package pdftex.def Info: figBina/03rectImg.png  used on input line 666.
+Package pdftex.def Info: figBina/03rectImg.png  used on input line 683.
 (pdftex.def)             Requested size: 298.75264pt x 223.87975pt.
-<figBina/04edges.png, id=92, 614.295pt x 427.5975pt>
+<figBina/04edges.png, id=101, 614.295pt x 427.5975pt>
 File: figBina/04edges.png Graphic file (type png)
 <use figBina/04edges.png>
-Package pdftex.def Info: figBina/04edges.png  used on input line 672.
+Package pdftex.def Info: figBina/04edges.png  used on input line 689.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/05gray.png, id=93, 614.295pt x 427.5975pt>
+<figBina/05gray.png, id=102, 614.295pt x 427.5975pt>
 File: figBina/05gray.png Graphic file (type png)
 <use figBina/05gray.png>
-Package pdftex.def Info: figBina/05gray.png  used on input line 678.
+Package pdftex.def Info: figBina/05gray.png  used on input line 695.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/05intenstiy.png, id=94, 614.295pt x 427.5975pt>
+<figBina/05intenstiy.png, id=103, 614.295pt x 427.5975pt>
 File: figBina/05intenstiy.png Graphic file (type png)
 <use figBina/05intenstiy.png>
-Package pdftex.def Info: figBina/05intenstiy.png  used on input line 684.
+Package pdftex.def Info: figBina/05intenstiy.png  used on input line 701.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/05inverted gray.png, id=95, 614.295pt x 427.5975pt>
+<figBina/05inverted gray.png, id=104, 614.295pt x 427.5975pt>
 File: figBina/05inverted gray.png Graphic file (type png)
 <use figBina/05inverted gray.png>
-Package pdftex.def Info: figBina/05inverted gray.png  used on input line 690.
+Package pdftex.def Info: figBina/05inverted gray.png  used on input line 707.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/06small regions removed.png, id=96, 614.295pt x 427.5975pt>
+<figBina/06small regions removed.png, id=105, 614.295pt x 427.5975pt>
 File: figBina/06small regions removed.png Graphic file (type png)
 <use figBina/06small regions removed.png>
 Package pdftex.def Info: figBina/06small regions removed.png  used on input lin
-e 696.
+e 713.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/07orig.png, id=97, 614.295pt x 427.5975pt>
+<figBina/07orig.png, id=106, 614.295pt x 427.5975pt>
 File: figBina/07orig.png Graphic file (type png)
 <use figBina/07orig.png>
-Package pdftex.def Info: figBina/07orig.png  used on input line 702.
+Package pdftex.def Info: figBina/07orig.png  used on input line 719.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/07missed hair.png, id=98, 614.295pt x 427.5975pt>
+<figBina/07missed hair.png, id=107, 614.295pt x 427.5975pt>
 File: figBina/07missed hair.png Graphic file (type png)
 <use figBina/07missed hair.png>
-Package pdftex.def Info: figBina/07missed hair.png  used on input line 708.
+Package pdftex.def Info: figBina/07missed hair.png  used on input line 725.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/08input intensity.png, id=99, 614.295pt x 427.5975pt>
+<figBina/08input intensity.png, id=108, 614.295pt x 427.5975pt>
 File: figBina/08input intensity.png Graphic file (type png)
 <use figBina/08input intensity.png>
-Package pdftex.def Info: figBina/08input intensity.png  used on input line 714.
+Package pdftex.def Info: figBina/08input intensity.png  used on input line 731.
 
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/08outer section.png, id=100, 614.295pt x 427.5975pt>
+<figBina/08outer section.png, id=109, 614.295pt x 427.5975pt>
 File: figBina/08outer section.png Graphic file (type png)
 <use figBina/08outer section.png>
-Package pdftex.def Info: figBina/08outer section.png  used on input line 720.
+Package pdftex.def Info: figBina/08outer section.png  used on input line 737.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/09input intensity.png, id=101, 614.295pt x 427.5975pt>
+<figBina/09input intensity.png, id=110, 614.295pt x 427.5975pt>
 File: figBina/09input intensity.png Graphic file (type png)
 <use figBina/09input intensity.png>
-Package pdftex.def Info: figBina/09input intensity.png  used on input line 726.
+Package pdftex.def Info: figBina/09input intensity.png  used on input line 743.
 
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/09outer section.png, id=102, 614.295pt x 427.5975pt>
+<figBina/09outer section.png, id=111, 614.295pt x 427.5975pt>
 File: figBina/09outer section.png Graphic file (type png)
 <use figBina/09outer section.png>
-Package pdftex.def Info: figBina/09outer section.png  used on input line 732.
+Package pdftex.def Info: figBina/09outer section.png  used on input line 749.
 (pdftex.def)             Requested size: 298.75264pt x 207.9587pt.
-<figBina/g1.png, id=103, 722.7pt x 578.16pt>
+<figBina/g1.png, id=112, 722.7pt x 578.16pt>
 File: figBina/g1.png Graphic file (type png)
 <use figBina/g1.png>
-Package pdftex.def Info: figBina/g1.png  used on input line 738.
+Package pdftex.def Info: figBina/g1.png  used on input line 755.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g3.png, id=104, 722.7pt x 578.16pt>
+<figBina/g3.png, id=113, 722.7pt x 578.16pt>
 File: figBina/g3.png Graphic file (type png)
 <use figBina/g3.png>
-Package pdftex.def Info: figBina/g3.png  used on input line 744.
+Package pdftex.def Info: figBina/g3.png  used on input line 761.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g4.png, id=105, 722.7pt x 578.16pt>
+<figBina/g4.png, id=114, 722.7pt x 578.16pt>
 File: figBina/g4.png Graphic file (type png)
 <use figBina/g4.png>
-Package pdftex.def Info: figBina/g4.png  used on input line 750.
+Package pdftex.def Info: figBina/g4.png  used on input line 767.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g5.png, id=106, 722.7pt x 578.16pt>
+<figBina/g5.png, id=115, 722.7pt x 578.16pt>
 File: figBina/g5.png Graphic file (type png)
 <use figBina/g5.png>
-Package pdftex.def Info: figBina/g5.png  used on input line 756.
+Package pdftex.def Info: figBina/g5.png  used on input line 773.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g6.png, id=107, 722.7pt x 578.16pt>
+<figBina/g6.png, id=116, 722.7pt x 578.16pt>
 File: figBina/g6.png Graphic file (type png)
 <use figBina/g6.png>
-Package pdftex.def Info: figBina/g6.png  used on input line 762.
+Package pdftex.def Info: figBina/g6.png  used on input line 779.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g7.png, id=108, 722.7pt x 578.16pt>
+<figBina/g7.png, id=117, 722.7pt x 578.16pt>
 File: figBina/g7.png Graphic file (type png)
 <use figBina/g7.png>
-Package pdftex.def Info: figBina/g7.png  used on input line 768.
+Package pdftex.def Info: figBina/g7.png  used on input line 785.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g8.png, id=109, 722.7pt x 578.16pt>
+<figBina/g8.png, id=118, 722.7pt x 578.16pt>
 File: figBina/g8.png Graphic file (type png)
 <use figBina/g8.png>
-Package pdftex.def Info: figBina/g8.png  used on input line 774.
+Package pdftex.def Info: figBina/g8.png  used on input line 791.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g9.png, id=110, 722.7pt x 578.16pt>
+<figBina/g9.png, id=119, 722.7pt x 578.16pt>
 File: figBina/g9.png Graphic file (type png)
 <use figBina/g9.png>
-Package pdftex.def Info: figBina/g9.png  used on input line 780.
+Package pdftex.def Info: figBina/g9.png  used on input line 797.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g10.png, id=111, 722.7pt x 578.16pt>
+<figBina/g10.png, id=120, 722.7pt x 578.16pt>
 File: figBina/g10.png Graphic file (type png)
 <use figBina/g10.png>
-Package pdftex.def Info: figBina/g10.png  used on input line 786.
+Package pdftex.def Info: figBina/g10.png  used on input line 803.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g11.png, id=112, 722.7pt x 578.16pt>
+<figBina/g11.png, id=121, 722.7pt x 578.16pt>
 File: figBina/g11.png Graphic file (type png)
 <use figBina/g11.png>
-Package pdftex.def Info: figBina/g11.png  used on input line 792.
+Package pdftex.def Info: figBina/g11.png  used on input line 809.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
-<figBina/g12.png, id=113, 722.7pt x 578.16pt>
+<figBina/g12.png, id=122, 722.7pt x 578.16pt>
 File: figBina/g12.png Graphic file (type png)
 <use figBina/g12.png>
-Package pdftex.def Info: figBina/g12.png  used on input line 798.
+Package pdftex.def Info: figBina/g12.png  used on input line 815.
 (pdftex.def)             Requested size: 298.75264pt x 239.00562pt.
 
-Overfull \hbox (5.14345pt too wide) in paragraph at lines 806--806
+Overfull \hbox (5.14345pt too wide) in paragraph at lines 823--823
 []\OT1/cmr/m/n/12 Howard Mai-bach und Ian Ya-ma-gu-chi. []  Che-mi-cal-ly In-du
 -ced Hair Loss/Alopecia\.
  []
 
-[16 <./fig64/g01_hairpercent.png>] [17 <./fig64/g02_densitynorm.png> <./fig64/g
-03_densitynorm2.png>] [18 <./fig64/g04_densityDenseSections.png> <./fig64/g05_d
-enseDensitytolooseDensity.png>] [19 <./fig64/g06_densitybybackgorundsections.pn
-g> <./fig64/g07_denseDensitybyBackgroundSections.png>] [20 <./fig64/g08_intensi
-tynorm.png> <./fig64/g09_avgbackgroundsectionsizes.png>] [21 <./fig64/g10_dense
-avgbackgroundsizeVSlooseavg.png>] [22 <./fig64/g12_denseIntensitynorm2.png> <./
-figBina/01foundDots.png (PNG copy)>] [23 <./figBina/01match res.png (PNG copy)>
- <./figBina/02foundDots.png (PNG copy)>] [24 <./figBina/02revRes.png (PNG copy)
-> <./figBina/03crop image.png (PNG copy)>] [25 <./figBina/03rectImg.png (PNG co
-py)> <./figBina/04edges.png (PNG copy)>] [26 <./figBina/05gray.png (PNG copy)> 
-<./figBina/05intenstiy.png (PNG copy)>] [27 <./figBina/05inverted gray.png (PNG
- copy)> <./figBina/06small regions removed.png (PNG copy)>] [28 <./figBina/07or
-ig.png (PNG copy)> <./figBina/07missed hair.png (PNG copy)>] [29 <./figBina/08i
-nput intensity.png (PNG copy)> <./figBina/08outer section.png (PNG copy)>]
-[30 <./figBina/09input intensity.png (PNG copy)> <./figBina/09outer section.png
- (PNG copy)>] [31 <./figBina/g1.png> <./figBina/g3.png>] [32 <./figBina/g4.png>
- <./figBina/g5.png>] [33 <./figBina/g6.png> <./figBina/g7.png>] [34 <./figBina/
-g8.png> <./figBina/g9.png>] [35 <./figBina/g10.png> <./figBina/g11.png>]
-[36 <./figBina/g12.png>] (bericht.aux)
+[18 <./fig64/g04_densityDenseSections.png> <./fig64/g05_denseDensitytolooseDens
+ity.png>] [19 <./fig64/g06_densitybybackgorundsections.png> <./fig64/g07_denseD
+ensitybyBackgroundSections.png>] [20 <./fig64/g08_intensitynorm.png> <./fig64/g
+09_avgbackgroundsectionsizes.png>] [21 <./fig64/g10_denseavgbackgroundsizeVSloo
+seavg.png>] [22 <./fig64/g12_denseIntensitynorm2.png> <./figBina/01foundDots.pn
+g (PNG copy)>] [23 <./figBina/01match res.png (PNG copy)> <./figBina/02foundDot
+s.png (PNG copy)>] [24 <./figBina/02revRes.png (PNG copy)> <./figBina/03crop im
+age.png (PNG copy)>] [25 <./figBina/03rectImg.png (PNG copy)> <./figBina/04edge
+s.png (PNG copy)>] [26 <./figBina/05gray.png (PNG copy)> <./figBina/05intenstiy
+.png (PNG copy)>] [27 <./figBina/05inverted gray.png (PNG copy)> <./figBina/06s
+mall regions removed.png (PNG copy)>] [28 <./figBina/07orig.png (PNG copy)> <./
+figBina/07missed hair.png (PNG copy)>] [29 <./figBina/08input intensity.png (PN
+G copy)> <./figBina/08outer section.png (PNG copy)>] [30 <./figBina/09input int
+ensity.png (PNG copy)> <./figBina/09outer section.png (PNG copy)>] [31 <./figBi
+na/g1.png> <./figBina/g3.png>] [32 <./figBina/g4.png> <./figBina/g5.png>]
+[33 <./figBina/g6.png> <./figBina/g7.png>] [34 <./figBina/g8.png> <./figBina/g9
+.png>] [35 <./figBina/g10.png> <./figBina/g11.png>] [36 <./figBina/g12.png>]
+(bericht.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1473,10 +1483,10 @@ Package logreq Info: Writing requests to 'bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 24909 strings out of 492484
- 486123 string characters out of 3121149
- 1125266 words of memory out of 3000000
- 29023 multiletter control sequences out of 15000+200000
+ 24910 strings out of 492484
+ 486138 string characters out of 3121149
+ 1123275 words of memory out of 3000000
+ 29024 multiletter control sequences out of 15000+200000
  539193 words of font info for 47 fonts, out of 3000000 for 9000
  1143 hyphenation exceptions out of 8191
  55i,8n,87p,10168b,1835s stack positions out of 5000i,500n,10000p,200000b,50000s
@@ -1491,7 +1501,7 @@ ta/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users
 sfonts/cm/cmsy10.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/public/amsfonts/cm/cmti12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKT
 eX 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on bericht.pdf (36 pages, 25072635 bytes).
+Output written on bericht.pdf (36 pages, 25073103 bytes).
 PDF statistics:
  234 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)

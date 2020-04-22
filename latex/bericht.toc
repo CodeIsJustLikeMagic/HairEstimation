@@ -43,12 +43,12 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.7}Test: Hüftlange, feine, blonde Haare}{14}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{15}%
+\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{14}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.9}benutzung?}{15}%
+\contentsline {section}{\numberline {4}Ergebnisse}{15}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Fazit}{15}%
+\contentsline {section}{\numberline {5}Fazit}{15}%
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {A}Anhang Schätzungs Modelle}{16}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {B}Anhang: Blondes Haar}{16}%
+\contentsline {section}{\numberline {B}Anhang: Blondes Haar}{18}%

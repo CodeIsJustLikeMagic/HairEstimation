@@ -392,7 +392,7 @@ So entstehen eine Menge an Graphen, bei denen die Haar-Menge jeweils auf der y A
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1.2\textwidth]{fig64/gh4.PNG}
+	\includegraphics[width=0.7\textwidth]{fig64/gh4.PNG}
 	\caption[]{Haar-Menge in Relation zur Intensität in dichten Regionen normalisiert durch gesamte Intensität und Region-Größe}
 	\label{fig:mapping}
 \end{figure}
@@ -404,7 +404,7 @@ Siehe Abbildung \ref{fig:func}.
 
 \begin{figure}
 	\centering
-	\includegraphics[width=1.2\textwidth]{fig64/g11_denseIntensitynorm.png}
+	\includegraphics[width=0.7\textwidth]{fig64/g11_denseIntensitynorm.png}
 	\caption[]{Funktionen, die Datenpunkte Approximieren. Spline-Interpolation, lineare Regression und exponentielle Funktion.}
 	\label{fig:func}
 \end{figure} 
@@ -443,7 +443,7 @@ Siehe Abbildung \ref{img:guess} für den Verlauf einer Schätzung auf der Komman
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.2\textwidth]{fig64/commandlineGuessProcess.PNG}
+  \includegraphics[width=1\textwidth]{fig64/commandlineGuessProcess.PNG}
   \caption[]{Kommandozeilenaufruf und Verlauf einer Schätzung}
   \label{img:guess}
 \end{figure} 
@@ -460,7 +460,7 @@ Knielange dunkelroten Haare wurden auf einem weißem Hintergrund aufgenommen. Di
 es wurde eine Untersuchung in einem Zeitraum von 7 Wochen von dem tägliche Haarausfall angestellt. 
 \begin{figure}
 	\centering
-	\includegraphics[width=1.2\textwidth]{fig64/plot.png}
+	\includegraphics[width=1.0\textwidth]{fig64/plot.png}
 	\caption[]{Schätzungen aus einem Zeitraum von 7 Wochen}
 	\label{img:guess}
 \end{figure} 
@@ -515,25 +515,22 @@ Für hellbraune haare hat es sich gezeigt, das ein schwarzen Hintergrund einen b
 
 Input beispiele.
 
-Obwohl die Haare recht kurz sind, ist auch hier die Fehlerrate recht gering. 
-Getestet wird an:
-\begin{itemize}
-	\item Knielangen, dunkelroten Haaren
-	\item Hüftlangen, feinen, blonden Haaren
-	\item Schulterlangen, brauen Haaren
-	\item Den Bildern aus dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} 
-\end{itemize}
+Die Haare sind recht kurz und haben somit weniger Masse, im vergleich zu den vorherigen Testszenarien. Auch hier liegt die Fehlerrate bei :  
 
-\subsection{benutzung?}
+
+\section{Ergebnisse}
+Durchschnittliche Fehler von 5 manchmal fehler von 10 Haaren. 
+Da Haare manchmal mehr kürzere und manchmal mehr längere ausfallen kann man das nicht wirklich akkurat zählen. aber die generelle menge scheit gut geschätzt zu werden. 
+
+ergebnisse more detailed als in dem paper. in dem paper wurde in inkrementen von 10, 50, 100, 200 etc gewertet. 
 
 \section{Fazit}
-Es wird eine praktische Methode gegeben eine Langzeitüberwachung von Haarausfall anzustellen. 
+Das Schätzen von nicht zählbaren Mengen an Haaren zeigt sich als funktionsfähig. In der Zufunkt können die unterschieldichen SchäztungsModelle miteinandern verglichen werden, um die Kombination der akkuratesten Modelle zu finden. 
+Desweiteren kann mit noch mehr Testsituationen mit unterschieldichen Haar Typen aufgebaut werden. 
 
-So wird der Anwender sich bewusst, welcher tägliche Haarausfall normal ist und welche Menge besorgniserregend ist. Haarausfall ist sehr variabel und wird durch viele Faktoren beeinflusst. 
+Die Bildverarbeitung dauert recht lange, das könnte verbessert werden. 
 
-Eine Langzeitüberwachung beruhigt den Nutzer bei saisonalem Haarausfall und gibt Hinweise auf die allgemeine Gesundheit der Haare. 
-
-Die Langzeitüberwachung macht den Haarausfall transparenter und berechenbarer. So wird der Nutzer früher aufmerksam auf anomalen Haarausfall und kann darauf besser reagieren. Haarverlust ist ein Indikator für viele Krankheiten und kann somit als Warnsystem dienen.
+%wird eine praktische Methode gegeben eine Langzeitüberwachung von Haarausfall anzustellen. So wird der Anwender sich bewusst, welcher tägliche Haarausfall normal ist und welche Menge besorgniserregend ist. Haarausfall ist sehr variabel und wird durch viele Faktoren beeinflusst. Eine Langzeitüberwachung beruhigt den Nutzer bei saisonalem Haarausfall und gibt Hinweise auf die allgemeine Gesundheit der Haare. Die Langzeitüberwachung macht den Haarausfall transparenter und berechenbarer. So wird der Nutzer früher aufmerksam auf anomalen Haarausfall und kann darauf besser reagieren. Haarverlust ist ein Indikator für viele Krankheiten und kann somit als Warnsystem dienen.
 
 %\ref{cm}
 
@@ -555,31 +552,51 @@ Die Langzeitüberwachung macht den Haarausfall transparenter und berechenbarer. 
 \newpage
 \appendix
 \section{Anhang Schätzungs Modelle}
-\begin{figure}
+\begin{figure*}
+	\centering
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=1.2\textwidth]{fig64/g01_hairpercent.png}
+		\caption[]{Schätzungsmodell: hairpercent}
+		\label{img:cover}
+
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=1.2\textwidth]{fig64/g02_densitynorm.png}
+		\caption[]{density*hairsectionSize}
+		\label{img:cover}
+	\end{subfigure}
+	\caption[  ]
+	{\small Beispiel input von blonden langen Haaren} 
+	\label{img:tstM}
+\end{figure*}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig64/g01_hairpercent.png}
-	\caption[]{Cover des Spiels}
+	\caption[]{Schätzungsmodell: hairpercent}
 	\label{img:cover}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig64/g02_densitynorm.png}
-	\caption[]{Cover des Spiels}
+	\caption[]{density*hairsectionSize}
 	\label{img:cover}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig64/g03_densitynorm2.png}
 	\caption[]{Cover des Spiels}
 	\label{img:cover}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig64/g04_densityDenseSections.png}
 	\caption[]{Cover des Spiels}
 	\label{img:cover}
 \end{figure}
-\begin{figure}
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{fig64/g05_denseDensitytolooseDensity.png}
 	\caption[]{Cover des Spiels}
