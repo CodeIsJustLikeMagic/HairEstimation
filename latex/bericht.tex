@@ -77,6 +77,17 @@
 	urldate = {2020-04-17},
 }
 
+@article{watershed,
+	author = {Kornilov, Anton and Safonov, Ilia},
+	year = {2018},
+	month = {10},
+	pages = {123},
+	title = {An Overview of Watershed Algorithm Implementations in Open Source Libraries},
+	volume = {4},
+	journal = {Journal of Imaging},
+	doi = {10.3390/jimaging4100123}
+}
+
 
 https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
 
@@ -157,15 +168,34 @@ Somit gilt bei der inversion für jedes Pixel mit dem graustufenwefrt g:
 g neu = 255- g alt 
 \subsection{watershed Algorithmus}
 
+Der Watershed algorithmus arbeitet auf einem rgb Bild. Es handelt sich um ein Region growing Algorithmus.
+Region growing algorithmen finden zusammenhängende gruppen an Pixeln, die einander ähnlich sind. Diese Gruppen werden als Regionen bezeichnen. 
+
+Für den Watershed algorithmus wird zunächst in jede region, die der algorithmus wachsen lassen soll, eine markierung gesetzt. Ein Seed.
+Für Die Seeds werden die pixel, die dem seed ähnlich sind zu der region zusammengefasst. so wachsen die regionen. die regionen wachsen, bis sie auf eine andere Region stoßen. 
+
 \subsubsection{Region Growth}
 ist ein Verfahren, bei dem ein Bild in Regionen unterteilt wird. So werden zum Beispiel Sektionen mit ähnlicher Farbe herausgestellt.
 \subsection{Connected Components}
 
 
+
 \subsection{Skelettierung}
 reduziert Objekte in einem Bild auf eine Pixelbreite. So können Linien auf eine Pixelbreite geschrumpft werden.
 \subsection{outlier removal ?}
+
+Ein Algorithmus der statistische außreißer erkennt und entfernt. 
+Basierend auf dem dingsbums theorem, wird der mittelwert und die varianz eines satzes von messdaten verwendet, außreißer zu erkennen. 
+Dabei muss angegeben werden, wie weit ein Datenpunkt von den anderen Abweichen kann, bis er als außreißer an gesehen wird. 
 \subsection{fitted curve, lineare regression, spline}
+
+Lineare Regression ist eine lineare Funktion durch eine menge an Messdaten legen so das sie die messdaten am besten aproximiert.
+
+Spline. Berechnet eine Funktion, die durch angegebene Punkte verläuft.
+
+fitted curve. Eine Art von Funktion angeben, zum beispiel linear, oder auch exponentiell oder logarithmisch. in der art berechnet, das sie die messdatem am besten aproxximiert, der abstand zwischen den Daten und der Funktiona also am geringsten ist. 
+
+Die Lineare Regression ist eine fitted curve mit einer linearen Funktion. 
 
 \section{Design und Implementation}
 
