@@ -239,7 +239,7 @@ Schwarz wird Weiß und Weiß wird Schwarz, helle Graustufen werden dunkel und um
  
 Die Graustufen eines Bildes werden in 8 bit dargestellt. Somit gibt es 255 Graustufen. 0 ist schwarz und 255 ist weiß. 
 Somit gilt bei der Inversion für jedes Pixel mit dem Graustufenwert g:
-g neu = 255- g alt 
+g_{neu} = 255- g_{alt} 
 
 \subsection{Watershed Algorithmus}
 
@@ -266,15 +266,17 @@ Bei der Skelettierung werden Objekte in einem Bild auf nur eine Pixelbreite redu
 Ein Algorithmus der statistische Ausreißer entfernt. 
 Basierend auf dem Tschebyscheff Theorem, wird der Mittelwert und die Varianz eines Satzes von Messdaten verwendet, um Ausreißer zu erkennen.\cite{outlierRemoval}
 
-\subsection{fitted curve, lineare Regression, Spline}
+\subsection{Fitted Curve, lineare Regression, Spline}
 
-Lineare Regression ist eine Lineare Funktion durch eine menge an Messdaten legen so das sie die Messdaten am besten approximiert.
+Eine Fitted Curve ist eine mathematische Funktion, die Messdaten in einem Zeit Dimensionalem Raum am besten abbildet.
 
-Spline. Berechnet eine Funktion, die durch angegebene Punkte verläuft.\cite{splineScipy}
 
-fitted curve. Eine Art von Funktion angeben, zum Beispiel linear, oder auch exponentiell oder logarithmisch. in der Art berechnet, das sie die Mesdames am besten approximiert, der Abstand zwischen den Daten und der Funktion also am geringsten ist. 
+Um Messdaten mit einer Funktion Approximieren zu können, wird eine Funktionstyp vorgegeben, die dann an die Daten angepasst wird. 
+Beispielsweise eine Ganzrationale Funktion, eine exponentielle Funktion oder eine logarithmische Funktion. 
 
-Die Lineare Regression ist eine fitted curve mit einer linearen Funktion.\cite{curveFittingIntro,curveFittingScipy}
+Die Lineare Regression ist eine Fitted Curve mit einer linearen Funktion.\cite{curveFittingIntro,curveFittingScipy}
+
+Eine Spline ist eine Kurve, die durch ausgewählte, oder alle Messdaten verläuft. Sie kann mithilfe von Interpolation berechnet werden.\cite{splineScipy}
 
 \section{Design und Implementation}
 
@@ -628,10 +630,10 @@ Da Haare manchmal mehr kürzere und manchmal mehr längere ausfallen kann man da
 ergebnisse more detailed als in dem paper. in dem paper wurde in inkrementen von 10, 50, 100, 200 etc gewertet. 
 
 \section{Fazit}
-Das Schätzen von nicht zählbaren Mengen an Haaren zeigt sich als funktionsfähig. In der Zukunft können die unterschiedlichen Schäztungs Modelle miteinander verglichen werden, um die Kombination der akkuratesten Modelle zu finden. 
+Das Schätzen von Mengen an Haaren mithilfe von Bildverarbeitung und Statistischen Auswertungen zeigt sich als funktionsfähig und effizient. In der Zukunft können die unterschiedlichen Schäztungsmodelle miteinander verglichen werden, um die Kombination der akkuratesten Modelle zu finden. Und die Fehlerrate noch weiter zu reduzieren.
 Des weiteren kann mit noch mehr Testsituationen mit unterschiedlichen Haar Typen aufgebaut werden. 
 
-Die Bildverarbeitung dauert recht lange, das könnte verbessert werden. 
+Die Bildverarbeitungs-prozess, besonders das Entfernen von kleinen Regionen und die Untersuchung der Hintergrundregionen dauert vergleichsweise lange (wie lange?? in ersten Test hinzufügen).  
 
 %wird eine praktische Methode gegeben eine Langzeitüberwachung von Haarausfall anzustellen. So wird der Anwender sich bewusst, welcher tägliche Haarausfall normal ist und welche Menge besorgniserregend ist. Haarausfall ist sehr variabel und wird durch viele Faktoren beeinflusst. Eine Langzeitüberwachung beruhigt den Nutzer bei saisonalem Haarausfall und gibt Hinweise auf die allgemeine Gesundheit der Haare. Die Langzeitüberwachung macht den Haarausfall transparenter und berechenbarer. So wird der Nutzer früher aufmerksam auf anomalen Haarausfall und kann darauf besser reagieren. Haarverlust ist ein Indikator für viele Krankheiten und kann somit als Warnsystem dienen.
 
@@ -656,6 +658,7 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 
 \nocite{*}
 \printbibliography
+
 
 
 \appendix

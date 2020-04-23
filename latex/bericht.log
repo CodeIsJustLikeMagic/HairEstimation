@@ -1,15 +1,15 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7200 64-bit) (preloaded format=pdflatex 2019.10.12)  23 APR 2020 04:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (MiKTeX 2.9.7250 64-bit) (preloaded format=pdflatex 2020.2.7)  23 APR 2020 16:49
 entering extended mode
 **./bericht.tex
 (bericht.tex
-LaTeX2e <2019-10-01>
+LaTeX2e <2019-10-01> patch level 3
 (llncs.cls
 Document Class: llncs 2013/09/27 v2.18 
  LaTeX document class for Lecture Notes in Computer Science
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\article.cls"
-Document Class: article 2019/08/27 v1.4j Standard LaTeX document class
+Document Class: article 2019/10/25 v1.4k Standard LaTeX document class
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/base\size12.clo"
-File: size12.clo 2019/08/27 v1.4j Standard LaTeX file (size option)
+File: size12.clo 2019/10/25 v1.4k Standard LaTeX file (size option)
 )
 \c@part=\count80
 \c@section=\count81
@@ -131,26 +131,21 @@ LaTeX Font Info:    Redeclaring math symbol \Omega on input line 372.
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/geometry\geometry
 .sty"
-Package: geometry 2018/04/16 v5.8 Page Geometry
+Package: geometry 2020/01/02 v5.9 Page Geometry
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\keyval.s
 ty"
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks18
 )
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifpdf.
-sty"
-Package: ifpdf 2018/09/07 v3.3 Provides the ifpdf switch
-)
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifvtex
-.sty"
-Package: ifvtex 2016/05/16 v1.6 Detect VTeX and its facilities (HO)
-Package ifvtex Info: VTeX not detected.
-)
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/ifxetex\ifxetex
-.sty"
-Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
-)
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\ifvtex.st
+y"
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\iftex.sty
+"
+Package: iftex 2019/11/07 v1.0c TeX engine tests
+))
 \Gm@cnth=\count118
 \Gm@cntv=\count119
 \c@Gm@tempcnt=\count120
@@ -176,25 +171,19 @@ Package: inputenc 2018/08/11 v1.3c Input encoding file
 .sty"
 Package: biblatex 2019/08/31 v3.13a programmable bibliographies (PK/MW)
 
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\pdftex
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/pdftexcmds\pdftex
 cmds.sty"
-Package: pdftexcmds 2019/07/25 v0.30 Utility functions of pdfTeX for LuaTeX (HO
+Package: pdftexcmds 2019/11/24 v0.31 Utility functions of pdfTeX for LuaTeX (HO
 )
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\infwar
 err.sty"
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ifluat
-ex.sty"
-Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\ltxcmd
 s.sty"
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
-Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
@@ -215,7 +204,11 @@ Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/oberdiek\etexcm
 ds.sty"
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-)))
+
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/iftex\ifluatex.
+sty"
+Package: ifluatex 2019/10/25 v1.5 ifluatex legacy package. Use iftex instead.
+))))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/logreq\logreq.sty
 "
 Package: logreq 2010/08/04 v1.0 xml request logger
@@ -282,7 +275,7 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 \bibhang=\skip52
 \blx@bcfin=\read1
 \blx@bcfout=\write3
-\blx@langwohyphens=\language82
+\blx@langwohyphens=\language78
 \c@mincomprange=\count164
 \c@maxcomprange=\count165
 \c@mincompwidth=\count166
@@ -446,7 +439,7 @@ File: biblatex.cfg
 ))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes
 .sty"
-Package: csquotes 2019/05/10 v5.2e context-sensitive quotations (JAW)
+Package: csquotes 2019-12-06 v5.2j context-sensitive quotations (JAW)
 \csq@reset=\count312
 \csq@gtype=\count313
 \csq@glevel=\count314
@@ -457,7 +450,7 @@ Package: csquotes 2019/05/10 v5.2e context-sensitive quotations (JAW)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/csquotes\csquotes
 .def"
-File: csquotes.def 2019/05/10 v5.2e csquotes generic definitions (JAW)
+File: csquotes.def 2019-12-06 v5.2j csquotes generic definitions (JAW)
 )
 Package csquotes Info: Trying to load configuration file 'csquotes.cfg'...
 Package csquotes Info: ... configuration file loaded successfully.
@@ -472,7 +465,7 @@ Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\graphics
 .sty"
-Package: graphics 2019/07/20 v1.3b Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2019/11/01 v1.3d Standard LaTeX Graphics (DPC,SPQR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/graphics\trig.sty
 "
@@ -493,11 +486,11 @@ File: pdftex.def 2018/01/08 v1.0l Graphics/color driver for pdftex
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\babel.sty
 "
-Package: babel 2019/09/27 3.34 The Babel package
+Package: babel 2019/11/14 3.36 The Babel package
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\switch.de
 f"
-File: switch.def 2019/09/27 3.34 Babel switching mechanism
+File: switch.def 2019/11/14 3.36 Babel switching mechanism
 )
 *************************************
 * Local config file bblopts.cfg used
@@ -519,7 +512,7 @@ hy)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/generic/babel\babel.def
 "
-File: babel.def 2019/09/27 3.34 Babel common definitions
+File: babel.def 2019/11/14 3.36 Babel common definitions
 \babel@savecnt=\count318
 \U@D=\dimen135
 
@@ -531,16 +524,16 @@ Package babel Info: Making " an active character on input line 135.
 )))
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\subcaptio
 n.sty"
-Package: subcaption 2019/09/01 v1.3a Sub-captions (AR)
+Package: subcaption 2020/01/22 v1.3d Sub-captions (AR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\caption.s
 ty"
-Package: caption 2019/10/18 v3.4a Customizing captions (AR)
+Package: caption 2020/01/03 v3.4h Customizing captions (AR)
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/caption\caption3.
 sty"
-Package: caption3 2019/09/09 v1.8e caption3 kernel (AR)
-Package caption3 Info: TeX engine: e-TeX on input line 64.
+Package: caption3 2020/01/03 v1.8h caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 61.
 \captionmargin=\dimen136
 \captionmargin@=\dimen137
 \captionwidth=\dimen138
@@ -553,7 +546,7 @@ Package caption Info: Unknown document class (or package),
 Package caption Info: \@makecaption = \long macro:#1#2->\small \vskip \abovecap
 tionskip \sbox \@tempboxa {{\bfseries #1.} #2}\ifdim \wd \@tempboxa >\hsize {\b
 fseries #1.} #2\par \else \global \@minipagefalse \hb@xt@ \hsize {\hfil \box \@
-tempboxa \hfil }\fi \vskip \belowcaptionskip  on input line 1069.
+tempboxa \hfil }\fi \vskip \belowcaptionskip  on input line 1082.
 )
 
 Package caption Warning: Unknown document class (or package),
@@ -787,7 +780,7 @@ Package: appendix 2020/02/08 v1.2c extra appendix facilities
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/parskip\parskip.s
 ty"
-Package: parskip 2019-01-16 v2.0c non-zero parskip adjustments
+Package: parskip 2020-01-22 v2.0d non-zero parskip adjustments
 )
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/float\float.sty"
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
@@ -1095,9 +1088,9 @@ pdf.mkii"
 \makeMPintoPDFobject=\count443
 \everyMPtoPDFconversion=\toks26
 )
-("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\epstopdf
--base.sty"
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
+("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/epstopdf-pkg\epst
+opdf-base.sty"
+Package: epstopdf-base 2019/11/24 v2.7 Base part for package epstopdf
 
 ("C:\Users\Mummel\AppData\Local\Programs\MiKTeX 2.9\tex/latex/oberdiek\grfext.s
 ty"
@@ -1108,11 +1101,11 @@ nekeys.sty"
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 ))
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-38.
+42.
 Package grfext Info: Graphics extension search list:
 (grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 456.
+(grfext)             \AppendGraphicsExtensions on input line 460.
 )
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
@@ -1136,7 +1129,24 @@ oc)
 
  [2
 
-] [3] [4]
+] [3]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.242 g_
+        {neu} = 255- g alt
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.243 
+      
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+[4]
 
 LaTeX Warning: Citation 'splineScipy' on page 5 undefined on input line 273.
 
@@ -1147,28 +1157,28 @@ e Punk-te verl[]auft.[[]]
  []
 
 [5]
-<fig64/00IMG_20200406_153354_12_g_15.jpg, id=22, 4047.12pt x 3035.34pt>
+<fig64/00IMG_20200406_153354_12_g_15.jpg, id=24, 4047.12pt x 3035.34pt>
 File: fig64/00IMG_20200406_153354_12_g_15.jpg Graphic file (type jpg)
 <use fig64/00IMG_20200406_153354_12_g_15.jpg>
 Package pdftex.def Info: fig64/00IMG_20200406_153354_12_g_15.jpg  used on input
  line 300.
 (pdftex.def)             Requested size: 256.07741pt x 192.02406pt.
-<fig64/03rectImg.png, id=23, 606.265pt x 809.0225pt>
+<fig64/03rectImg.png, id=25, 606.265pt x 809.0225pt>
 File: fig64/03rectImg.png Graphic file (type png)
 <use fig64/03rectImg.png>
 Package pdftex.def Info: fig64/03rectImg.png  used on input line 311.
 (pdftex.def)             Requested size: 202.72849pt x 270.53352pt.
-<fig64/03crop image.png, id=24, 413.545pt x 570.13pt>
+<fig64/03crop image.png, id=26, 413.545pt x 570.13pt>
 File: fig64/03crop image.png Graphic file (type png)
 <use fig64/03crop image.png>
 Package pdftex.def Info: fig64/03crop image.png  used on input line 318.
 (pdftex.def)             Requested size: 182.45439pt x 251.54523pt.
-<fig64/04edges.png, id=25, 413.545pt x 570.13pt>
+<fig64/04edges.png, id=27, 413.545pt x 570.13pt>
 File: fig64/04edges.png Graphic file (type png)
 <use fig64/04edges.png>
 Package pdftex.def Info: fig64/04edges.png  used on input line 338.
 (pdftex.def)             Requested size: 202.72849pt x 279.49664pt.
-<fig64/05intenstiy.png, id=26, 413.545pt x 570.13pt>
+<fig64/05intenstiy.png, id=28, 413.545pt x 570.13pt>
 File: fig64/05intenstiy.png Graphic file (type png)
 <use fig64/05intenstiy.png>
 Package pdftex.def Info: fig64/05intenstiy.png  used on input line 345.
@@ -1180,7 +1190,7 @@ File: fig64/05intenstiy.png Graphic file (type png)
 <use fig64/05intenstiy.png>
 Package pdftex.def Info: fig64/05intenstiy.png  used on input line 379.
 (pdftex.def)             Requested size: 202.72849pt x 279.49664pt.
-<fig64/06small regions removed.png, id=34, 413.545pt x 570.13pt>
+<fig64/06small regions removed.png, id=36, 413.545pt x 570.13pt>
 File: fig64/06small regions removed.png Graphic file (type png)
 <use fig64/06small regions removed.png>
 Package pdftex.def Info: fig64/06small regions removed.png  used on input line 
@@ -1191,29 +1201,29 @@ File: fig64/06small regions removed.png Graphic file (type png)
 Package pdftex.def Info: fig64/06small regions removed.png  used on input line 
 406.
 (pdftex.def)             Requested size: 202.72849pt x 279.49664pt.
-<fig64/08outer section.png, id=35, 413.545pt x 570.13pt>
+<fig64/08outer section.png, id=37, 413.545pt x 570.13pt>
 File: fig64/08outer section.png Graphic file (type png)
 <use fig64/08outer section.png>
 Package pdftex.def Info: fig64/08outer section.png  used on input line 413.
 (pdftex.def)             Requested size: 202.72849pt x 279.49664pt.
  [8 <./fig64/06small regions removed.png (PNG copy)>]
-<fig64/09input intensity.png, id=39, 413.545pt x 570.13pt>
+<fig64/09input intensity.png, id=41, 413.545pt x 570.13pt>
 File: fig64/09input intensity.png Graphic file (type png)
 <use fig64/09input intensity.png>
 Package pdftex.def Info: fig64/09input intensity.png  used on input line 430.
 (pdftex.def)             Requested size: 202.72849pt x 279.49664pt.
-<fig64/09outer section.png, id=40, 413.545pt x 570.13pt>
+<fig64/09outer section.png, id=42, 413.545pt x 570.13pt>
 File: fig64/09outer section.png Graphic file (type png)
 <use fig64/09outer section.png>
 Package pdftex.def Info: fig64/09outer section.png  used on input line 437.
 (pdftex.def)             Requested size: 202.72849pt x 279.49664pt.
  [9 <./fig64/08outer section.png (PNG copy)>]
-<fig64/gh4.PNG, id=44, 468.24937pt x 375.65344pt>
+<fig64/gh4.PNG, id=46, 468.24937pt x 375.65344pt>
 File: fig64/gh4.PNG Graphic file (type png)
 <use fig64/gh4.PNG>
 Package pdftex.def Info: fig64/gh4.PNG  used on input line 475.
 (pdftex.def)             Requested size: 341.43437pt x 273.93239pt.
-<fig64/g11_denseIntensitynormDetailed.png, id=46, 471.9231pt x 289.08pt>
+<fig64/g11_denseIntensitynormDetailed.png, id=48, 471.9231pt x 289.08pt>
 File: fig64/g11_denseIntensitynormDetailed.png Graphic file (type png)
 <use fig64/g11_denseIntensitynormDetailed.png>
 Package pdftex.def Info: fig64/g11_denseIntensitynormDetailed.png  used on inpu
@@ -1224,7 +1234,7 @@ NG copy)>] [11 <./fig64/gh4.PNG> <./fig64/g11_denseIntensitynormDetailed.png>]
 
 LaTeX Warning: Reference `img:guess' on page 12 undefined on input line 501.
 
-<fig64/commandlineGuessProcess.PNG, id=55, 956.07187pt x 456.20438pt>
+<fig64/commandlineGuessProcess.PNG, id=57, 956.07187pt x 456.20438pt>
 File: fig64/commandlineGuessProcess.PNG Graphic file (type png)
 <use fig64/commandlineGuessProcess.PNG>
 Package pdftex.def Info: fig64/commandlineGuessProcess.PNG  used on input line 
@@ -1235,19 +1245,19 @@ Overfull \hbox (42.68173pt too wide) in paragraph at lines 505--506
  [][] 
  []
 
-<fig64/plot.png, id=56, 704.6325pt x 346.896pt>
+<fig64/plot.png, id=58, 704.6325pt x 346.896pt>
 File: fig64/plot.png Graphic file (type png)
 <use fig64/plot.png>
 Package pdftex.def Info: fig64/plot.png  used on input line 520.
 (pdftex.def)             Requested size: 426.79135pt x 210.11356pt.
 [12 <./fig64/commandlineGuessProcess.PNG>]
-<testFig/B_IMG_20200322_093659_50.jpg, id=61, 971.3088pt x 728.4816pt>
+<testFig/B_IMG_20200322_093659_50.jpg, id=63, 971.3088pt x 728.4816pt>
 File: testFig/B_IMG_20200322_093659_50.jpg Graphic file (type jpg)
 <use testFig/B_IMG_20200322_093659_50.jpg>
 Package pdftex.def Info: testFig/B_IMG_20200322_093659_50.jpg  used on input li
 ne 557.
 (pdftex.def)             Requested size: 202.72849pt x 152.04082pt.
-<testFig/B_IMG_20200330_094438_20.jpg, id=62, 971.3088pt x 728.4816pt>
+<testFig/B_IMG_20200330_094438_20.jpg, id=64, 971.3088pt x 728.4816pt>
 File: testFig/B_IMG_20200330_094438_20.jpg Graphic file (type jpg)
 <use testFig/B_IMG_20200330_094438_20.jpg>
 Package pdftex.def Info: testFig/B_IMG_20200330_094438_20.jpg  used on input li
@@ -1258,13 +1268,13 @@ Underfull \vbox (badness 1931) has occurred while \output is active []
 
  [13 <./fig64/plot.png> <./testFig/B_IMG_20200322_093659_50.jpg> <./testFig/B_I
 MG_20200330_094438_20.jpg>]
-<figJan/IMG_20200325_133957_10.jpg, id=68, 4047.12pt x 3035.34pt>
+<figJan/IMG_20200325_133957_10.jpg, id=70, 4047.12pt x 3035.34pt>
 File: figJan/IMG_20200325_133957_10.jpg Graphic file (type jpg)
 <use figJan/IMG_20200325_133957_10.jpg>
 Package pdftex.def Info: figJan/IMG_20200325_133957_10.jpg  used on input line 
 596.
 (pdftex.def)             Requested size: 202.72849pt x 152.00746pt.
-<figJan/IMG_20200325_134247_40.jpg, id=69, 4047.12pt x 3035.34pt>
+<figJan/IMG_20200325_134247_40.jpg, id=71, 4047.12pt x 3035.34pt>
 File: figJan/IMG_20200325_134247_40.jpg Graphic file (type jpg)
 <use figJan/IMG_20200325_134247_40.jpg>
 Package pdftex.def Info: figJan/IMG_20200325_134247_40.jpg  used on input line 
@@ -1306,30 +1316,30 @@ my insertion and my current dilemma will both disappear.
 <fig64/g01_hairpercent.png, id=90, 361.35pt x 289.08pt>
 File: fig64/g01_hairpercent.png Graphic file (type png)
 <use fig64/g01_hairpercent.png>
-Package pdftex.def Info: fig64/g01_hairpercent.png  used on input line 749.
+Package pdftex.def Info: fig64/g01_hairpercent.png  used on input line 750.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 749--750
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 750--751
 [][] 
  []
 
 <fig64/g02_densitynorm.png, id=91, 361.35pt x 289.08pt>
 File: fig64/g02_densitynorm.png Graphic file (type png)
 <use fig64/g02_densitynorm.png>
-Package pdftex.def Info: fig64/g02_densitynorm.png  used on input line 753.
+Package pdftex.def Info: fig64/g02_densitynorm.png  used on input line 754.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 753--754
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 754--755
 [][] 
  []
 
 <fig64/g03_densitynorm2.png, id=92, 361.35pt x 289.08pt>
 File: fig64/g03_densitynorm2.png Graphic file (type png)
 <use fig64/g03_densitynorm2.png>
-Package pdftex.def Info: fig64/g03_densitynorm2.png  used on input line 759.
+Package pdftex.def Info: fig64/g03_densitynorm2.png  used on input line 760.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 759--760
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 760--761
 [][] 
  []
 
@@ -1337,10 +1347,10 @@ Overfull \hbox (20.48705pt too wide) in paragraph at lines 759--760
 File: fig64/g04_densityDenseSections.png Graphic file (type png)
 <use fig64/g04_densityDenseSections.png>
 Package pdftex.def Info: fig64/g04_densityDenseSections.png  used on input line
- 763.
+ 764.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 763--764
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 764--765
 [][] 
  []
 
@@ -1348,10 +1358,10 @@ Overfull \hbox (20.48705pt too wide) in paragraph at lines 763--764
 File: fig64/g05_denseDensitytolooseDensity.png Graphic file (type png)
 <use fig64/g05_denseDensitytolooseDensity.png>
 Package pdftex.def Info: fig64/g05_denseDensitytolooseDensity.png  used on inpu
-t line 769.
+t line 770.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 769--770
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 770--771
 [][] 
  []
 
@@ -1359,10 +1369,10 @@ Overfull \hbox (20.48705pt too wide) in paragraph at lines 769--770
 File: fig64/g06_densitybybackgorundsections.png Graphic file (type png)
 <use fig64/g06_densitybybackgorundsections.png>
 Package pdftex.def Info: fig64/g06_densitybybackgorundsections.png  used on inp
-ut line 773.
+ut line 774.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 773--774
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 774--775
 [][] 
  []
 
@@ -1374,20 +1384,20 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: fig64/g07_denseDensitybyBackgroundSections.png Graphic file (type png)
 <use fig64/g07_denseDensitybyBackgroundSections.png>
 Package pdftex.def Info: fig64/g07_denseDensitybyBackgroundSections.png  used o
-n input line 783.
+n input line 784.
 (pdftex.def)             Requested size: 235.58546pt x 188.46878pt.
 
-Overfull \hbox (30.72745pt too wide) in paragraph at lines 783--784
+Overfull \hbox (30.72745pt too wide) in paragraph at lines 784--785
 [][] 
  []
 
 <fig64/g08_intensitynorm.png, id=101, 361.35pt x 289.08pt>
 File: fig64/g08_intensitynorm.png Graphic file (type png)
 <use fig64/g08_intensitynorm.png>
-Package pdftex.def Info: fig64/g08_intensitynorm.png  used on input line 787.
+Package pdftex.def Info: fig64/g08_intensitynorm.png  used on input line 788.
 (pdftex.def)             Requested size: 235.58546pt x 188.46878pt.
 
-Overfull \hbox (30.72745pt too wide) in paragraph at lines 787--788
+Overfull \hbox (30.72745pt too wide) in paragraph at lines 788--789
 [][] 
  []
 
@@ -1395,10 +1405,10 @@ Overfull \hbox (30.72745pt too wide) in paragraph at lines 787--788
 File: fig64/g09_avgbackgroundsectionsizes.png Graphic file (type png)
 <use fig64/g09_avgbackgroundsectionsizes.png>
 Package pdftex.def Info: fig64/g09_avgbackgroundsectionsizes.png  used on input
- line 793.
+ line 794.
 (pdftex.def)             Requested size: 235.58546pt x 188.46878pt.
 
-Overfull \hbox (30.72745pt too wide) in paragraph at lines 793--794
+Overfull \hbox (30.72745pt too wide) in paragraph at lines 794--795
 [][] 
  []
 
@@ -1406,10 +1416,10 @@ Overfull \hbox (30.72745pt too wide) in paragraph at lines 793--794
 File: fig64/g10_denseavgbackgroundsizeVSlooseavg.png Graphic file (type png)
 <use fig64/g10_denseavgbackgroundsizeVSlooseavg.png>
 Package pdftex.def Info: fig64/g10_denseavgbackgroundsizeVSlooseavg.png  used o
-n input line 797.
+n input line 798.
 (pdftex.def)             Requested size: 235.58546pt x 188.46878pt.
 
-Overfull \hbox (30.72745pt too wide) in paragraph at lines 797--798
+Overfull \hbox (30.72745pt too wide) in paragraph at lines 798--799
 [][] 
  []
 
@@ -1417,10 +1427,10 @@ Overfull \hbox (30.72745pt too wide) in paragraph at lines 797--798
 File: fig64/g11_denseIntensitynorm.png Graphic file (type png)
 <use fig64/g11_denseIntensitynorm.png>
 Package pdftex.def Info: fig64/g11_denseIntensitynorm.png  used on input line 8
-03.
+04.
 (pdftex.def)             Requested size: 235.58546pt x 188.46878pt.
 
-Overfull \hbox (30.72745pt too wide) in paragraph at lines 803--804
+Overfull \hbox (30.72745pt too wide) in paragraph at lines 804--805
 [][] 
  []
 
@@ -1428,10 +1438,10 @@ Overfull \hbox (30.72745pt too wide) in paragraph at lines 803--804
 File: fig64/g12_denseIntensitynorm2.png Graphic file (type png)
 <use fig64/g12_denseIntensitynorm2.png>
 Package pdftex.def Info: fig64/g12_denseIntensitynorm2.png  used on input line 
-807.
+808.
 (pdftex.def)             Requested size: 235.58546pt x 188.46878pt.
 
-Overfull \hbox (30.72745pt too wide) in paragraph at lines 807--808
+Overfull \hbox (30.72745pt too wide) in paragraph at lines 808--809
 [][] 
  []
 
@@ -1444,32 +1454,32 @@ tytolooseDensity.png> <./fig64/g06_densitybybackgorundsections.png>]
 <figBina/01foundDots.png, id=115, 809.0225pt x 606.265pt>
 File: figBina/01foundDots.png Graphic file (type png)
 <use figBina/01foundDots.png>
-Package pdftex.def Info: figBina/01foundDots.png  used on input line 819.
+Package pdftex.def Info: figBina/01foundDots.png  used on input line 820.
 (pdftex.def)             Requested size: 204.85802pt x 153.50854pt.
 <figBina/02revRes.png, id=116, 787.94376pt x 586.19pt>
 File: figBina/02revRes.png Graphic file (type png)
 <use figBina/02revRes.png>
-Package pdftex.def Info: figBina/02revRes.png  used on input line 823.
+Package pdftex.def Info: figBina/02revRes.png  used on input line 824.
 (pdftex.def)             Requested size: 204.85802pt x 152.39685pt.
 <figBina/02foundDots.png, id=117, 809.0225pt x 606.265pt>
 File: figBina/02foundDots.png Graphic file (type png)
 <use figBina/02foundDots.png>
-Package pdftex.def Info: figBina/02foundDots.png  used on input line 829.
+Package pdftex.def Info: figBina/02foundDots.png  used on input line 830.
 (pdftex.def)             Requested size: 204.85802pt x 153.50854pt.
 <figBina/03crop image.png, id=118, 614.295pt x 427.5975pt>
 File: figBina/03crop image.png Graphic file (type png)
 <use figBina/03crop image.png>
-Package pdftex.def Info: figBina/03crop image.png  used on input line 833.
+Package pdftex.def Info: figBina/03crop image.png  used on input line 834.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/04edges.png, id=119, 614.295pt x 427.5975pt>
 File: figBina/04edges.png Graphic file (type png)
 <use figBina/04edges.png>
-Package pdftex.def Info: figBina/04edges.png  used on input line 839.
+Package pdftex.def Info: figBina/04edges.png  used on input line 840.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/05intenstiy.png, id=120, 614.295pt x 427.5975pt>
 File: figBina/05intenstiy.png Graphic file (type png)
 <use figBina/05intenstiy.png>
-Package pdftex.def Info: figBina/05intenstiy.png  used on input line 843.
+Package pdftex.def Info: figBina/05intenstiy.png  used on input line 844.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -1482,37 +1492,37 @@ eIntensitynorm2.png>]
 File: figBina/06small regions removed.png Graphic file (type png)
 <use figBina/06small regions removed.png>
 Package pdftex.def Info: figBina/06small regions removed.png  used on input lin
-e 853.
+e 854.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/07missed hair.png, id=131, 614.295pt x 427.5975pt>
 File: figBina/07missed hair.png Graphic file (type png)
 <use figBina/07missed hair.png>
-Package pdftex.def Info: figBina/07missed hair.png  used on input line 857.
+Package pdftex.def Info: figBina/07missed hair.png  used on input line 858.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/08input intensity.png, id=132, 614.295pt x 427.5975pt>
 File: figBina/08input intensity.png Graphic file (type png)
 <use figBina/08input intensity.png>
-Package pdftex.def Info: figBina/08input intensity.png  used on input line 863.
+Package pdftex.def Info: figBina/08input intensity.png  used on input line 864.
 
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/08outer section.png, id=133, 614.295pt x 427.5975pt>
 File: figBina/08outer section.png Graphic file (type png)
 <use figBina/08outer section.png>
-Package pdftex.def Info: figBina/08outer section.png  used on input line 867.
+Package pdftex.def Info: figBina/08outer section.png  used on input line 868.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/09input intensity.png, id=134, 614.295pt x 427.5975pt>
 File: figBina/09input intensity.png Graphic file (type png)
 <use figBina/09input intensity.png>
-Package pdftex.def Info: figBina/09input intensity.png  used on input line 873.
+Package pdftex.def Info: figBina/09input intensity.png  used on input line 874.
 
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 <figBina/09outer section.png, id=135, 614.295pt x 427.5975pt>
 File: figBina/09outer section.png Graphic file (type png)
 <use figBina/09outer section.png>
-Package pdftex.def Info: figBina/09outer section.png  used on input line 877.
+Package pdftex.def Info: figBina/09outer section.png  used on input line 878.
 (pdftex.def)             Requested size: 204.85802pt x 142.59521pt.
 
-Underfull \hbox (badness 1005) in paragraph at lines 878--878
+Underfull \hbox (badness 1005) in paragraph at lines 879--879
 []\OT1/cmr/m/n/9 (f) |Hin-ter-grund Re-gi-on, die dich-te Haa-re um-
  []
 
@@ -1525,60 +1535,60 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figBina/g1.png, id=139, 361.35pt x 289.08pt>
 File: figBina/g1.png Graphic file (type png)
 <use figBina/g1.png>
-Package pdftex.def Info: figBina/g1.png  used on input line 890.
+Package pdftex.def Info: figBina/g1.png  used on input line 891.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 890--891
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 891--892
 [][] 
  []
 
 <figBina/g2.png, id=140, 361.35pt x 289.08pt>
 File: figBina/g2.png Graphic file (type png)
 <use figBina/g2.png>
-Package pdftex.def Info: figBina/g2.png  used on input line 894.
+Package pdftex.def Info: figBina/g2.png  used on input line 895.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 894--895
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 895--896
 [][] 
  []
 
 <figBina/g3.png, id=141, 361.35pt x 289.08pt>
 File: figBina/g3.png Graphic file (type png)
 <use figBina/g3.png>
-Package pdftex.def Info: figBina/g3.png  used on input line 900.
+Package pdftex.def Info: figBina/g3.png  used on input line 901.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 900--901
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 901--902
 [][] 
  []
 
 <figBina/g4.png, id=142, 361.35pt x 289.08pt>
 File: figBina/g4.png Graphic file (type png)
 <use figBina/g4.png>
-Package pdftex.def Info: figBina/g4.png  used on input line 904.
+Package pdftex.def Info: figBina/g4.png  used on input line 905.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 904--905
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 905--906
 [][] 
  []
 
 <figBina/g5.png, id=143, 361.35pt x 289.08pt>
 File: figBina/g5.png Graphic file (type png)
 <use figBina/g5.png>
-Package pdftex.def Info: figBina/g5.png  used on input line 910.
+Package pdftex.def Info: figBina/g5.png  used on input line 911.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 910--911
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 911--912
 [][] 
  []
 
 <figBina/g6.png, id=144, 361.35pt x 289.08pt>
 File: figBina/g6.png Graphic file (type png)
 <use figBina/g6.png>
-Package pdftex.def Info: figBina/g6.png  used on input line 914.
+Package pdftex.def Info: figBina/g6.png  used on input line 915.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 914--915
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 915--916
 [][] 
  []
 
@@ -1592,60 +1602,60 @@ ina/09outer section.png (PNG copy)>]
 <figBina/g7.png, id=148, 361.35pt x 289.08pt>
 File: figBina/g7.png Graphic file (type png)
 <use figBina/g7.png>
-Package pdftex.def Info: figBina/g7.png  used on input line 924.
+Package pdftex.def Info: figBina/g7.png  used on input line 925.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 924--925
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 925--926
 [][] 
  []
 
 <figBina/g8.png, id=149, 361.35pt x 289.08pt>
 File: figBina/g8.png Graphic file (type png)
 <use figBina/g8.png>
-Package pdftex.def Info: figBina/g8.png  used on input line 928.
+Package pdftex.def Info: figBina/g8.png  used on input line 929.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 928--929
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 929--930
 [][] 
  []
 
 <figBina/g9.png, id=150, 361.35pt x 289.08pt>
 File: figBina/g9.png Graphic file (type png)
 <use figBina/g9.png>
-Package pdftex.def Info: figBina/g9.png  used on input line 934.
+Package pdftex.def Info: figBina/g9.png  used on input line 935.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 934--935
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 935--936
 [][] 
  []
 
 <figBina/g10.png, id=151, 361.35pt x 289.08pt>
 File: figBina/g10.png Graphic file (type png)
 <use figBina/g10.png>
-Package pdftex.def Info: figBina/g10.png  used on input line 938.
+Package pdftex.def Info: figBina/g10.png  used on input line 939.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 938--939
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 939--940
 [][] 
  []
 
 <figBina/g11.png, id=152, 361.35pt x 289.08pt>
 File: figBina/g11.png Graphic file (type png)
 <use figBina/g11.png>
-Package pdftex.def Info: figBina/g11.png  used on input line 944.
+Package pdftex.def Info: figBina/g11.png  used on input line 945.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 944--945
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 945--946
 [][] 
  []
 
 <figBina/g12.png, id=153, 361.35pt x 289.08pt>
 File: figBina/g12.png Graphic file (type png)
 <use figBina/g12.png>
-Package pdftex.def Info: figBina/g12.png  used on input line 948.
+Package pdftex.def Info: figBina/g12.png  used on input line 949.
 (pdftex.def)             Requested size: 225.34506pt x 180.27756pt.
 
-Overfull \hbox (20.48705pt too wide) in paragraph at lines 948--949
+Overfull \hbox (20.48705pt too wide) in paragraph at lines 949--950
 [][] 
  []
 
@@ -1673,13 +1683,13 @@ Package logreq Info: Writing requests to 'bericht.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 22721 strings out of 492452
- 431951 string characters out of 3119596
- 965334 words of memory out of 3000000
- 26854 multiletter control sequences out of 15000+200000
+ 22735 strings out of 492484
+ 431601 string characters out of 3121149
+ 966958 words of memory out of 3000000
+ 26856 multiletter control sequences out of 15000+200000
  538629 words of font info for 45 fonts, out of 3000000 for 9000
  1143 hyphenation exceptions out of 8191
- 52i,8n,71p,819b,1657s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 52i,8n,71p,819b,1655s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
 s/cm/cmbx12.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/
 public/amsfonts/cm/cmbx9.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9
@@ -1692,7 +1702,7 @@ onts/cm/cmr9.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2.9/fonts/type1
 /public/amsfonts/cm/cmsy10.pfb><C:/Users/Mummel/AppData/Local/Programs/MiKTeX 2
 .9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/Mummel/AppData/Local/Pro
 grams/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on bericht.pdf (25 pages, 28716425 bytes).
+Output written on bericht.pdf (25 pages, 28718008 bytes).
 PDF statistics:
  205 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
