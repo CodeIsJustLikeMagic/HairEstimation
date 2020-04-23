@@ -15,6 +15,7 @@ from scipy import interpolate
 from matplotlib import pyplot as plt
 import math
 from scipy.optimize import curve_fit
+from datetime import datetime
 
 
 debugstate = False
@@ -389,7 +390,16 @@ def denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr):
     data,keys = h_add(data,keys, 'IntensitySum in Dense Section',np.sum(denseintensity))
     return data,keys
 
+printTime = False # set to true my using -t
+def printTime(last):
+    global printTime
+    if printTime:
+        now = datetime.now()
+        print(now, 'elapsed time', now - last)
+        return now
 def detect(path):
+    start = datetime.now()
+    print('started processing at',start)
     print('image path',path)
     # loading image
     blur = False
@@ -402,13 +412,22 @@ def detect(path):
 
 
     orig = cropDots(orig)
+    last = printTime(start)
     gray = cv2.cvtColor(orig, cv2.COLOR_BGR2GRAY)
+    last = printTime(last)
     data, keys, edges         = edgeProcess(data, keys, gray, blur)
+    last = printTime(last)
     data, keys, intensity     = hairPixelIntensity(data, keys, orig, gray, edges)
+    last = printTime(last)
     data, keys                = hairPixelPercentage(data, keys, intensity)
+    last = printTime(last)
     data, keys, maskoutr      = backgroundRegions(data, keys, intensity)
+    last = printTime(last)
     data, keys, densemaskoutr = backgroundRegions(data,keys,skeletonize(intensity))
+    last = printTime(last)
     data, keys                = denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr)
+    last = printTime(last)
+    print('total:',datetime.now()-start)
     # showstats( data,keys)
     return data, keys
 
@@ -1271,7 +1290,6 @@ def commandlinehandeling():
                     'delete': deleteUser, #args
                     'create': createUser, # args
                     'switch': switchUser, # args
-                    'repairUsers': repairUsers,
                     'removeLastGuess': removeLastSaveImg,
                     'fullTest': fullTest,
                     'onlyGuessTest': onlyGuessTest,
@@ -1280,31 +1298,35 @@ def commandlinehandeling():
     parser = argparse.ArgumentParser(description='Estimate shed hair')
     parser.add_argument("command", choices=FUNCTION_MAP.keys(), help="command to be executed by the programm")
     parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
-    parser.add_argument("arg1", nargs='?',help="depending on command: imagepath or user", type=str)
-    parser.add_argument("arg2", nargs='?', help="for command addCalibrationImage: hair Amount")
-    parser.add_argument("arg3", nargs='?' )
+    parser.add_argument("arg1", nargs='?',help="depending on command: imagepath, folderpath or user", type=str)
+    parser.add_argument("arg2", nargs='?', help="for command addCalibrationImage: hair Amount, command guess: tag or number of days")
+    parser.add_argument("arg3", nargs='?', help ="command guess: tag or number of days" )
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-r", action='store_true')#replace
-    group.add_argument("-m",action = 'store_true')#use mean
-    group.add_argument("-i", action = 'store_true')#ignore second duplicate
-    group.add_argument("-k",action ='store_true')#keep duplicate
-    group.add_argument("-a", action = 'store_true')
+    group.add_argument("-r", "--replace", action='store_true', help="when duplicate date found during guess: replace old guess with new one")#replace
+    group.add_argument("-m","--mean",action = 'store_true',help="when duplicate date found during guess: use mean of both guesses")#use mean
+    group.add_argument("-i","--ignore", action = 'store_true',help="when duplicate date found during guess: ignore new guess")#ignore second duplicate
+    group.add_argument("-k","--keep",action ='store_true',help="when duplicate date found during guess: keep both guesses")#keep duplicate
+    group.add_argument("-a", "--add",action = 'store_true', help="when duplicate date found during guess: use sum of both guesses")
     parser.add_argument("-o","--useOldFunc", help="dont find new functions during calibration",action="store_true")
+    parser.add_argument("-t","--time", help="print how long image processing took", action ="store_true")
     args = parser.parse_args()
+    global printTime
+    if args.time:
+        printTime = True
     global useOldFunc
     if args.useOldFunc:
         useOldFunc = True
     global duplicateHandelingMode
-    if args.r:
+    if args.replace:
 
         duplicateHandelingMode = 'r'
-    if args.m:
+    if args.mean:
         duplicateHandelingMode = 'm'
-    if args.i:
+    if args.ignore:
         duplicateHandelingMode = 'i'
-    if args.k:
+    if args.keep:
         duplicateHandelingMode ='k'
-    if args.a:
+    if args.add:
         duplicateHandelingMode='a'
     if args.debug:
         debugg(True)

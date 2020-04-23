@@ -376,6 +376,54 @@
       \verb 10.1109/AERO.2005.1559688
       \endverb
     \endentry
+    \entry{splineScipy}{online}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labeltitlesource}{title}
+      \field{title}{scipy InterpolatedUnivariateSpline}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.InterpolatedUnivariateSpline.html
+      \endverb
+      \verb{url}
+      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.InterpolatedUnivariateSpline.html
+      \endverb
+    \endentry
+    \entry{curveFittingIntro}{online}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labeltitlesource}{title}
+      \field{title}{Introduciton to Curve Fitting}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf
+      \endverb
+    \endentry
+    \entry{curveFittingScipy}{online}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labeltitlesource}{title}
+      \field{title}{scipy curve fit}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+      \endverb
+      \verb{url}
+      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+      \endverb
+    \endentry
     \entry{Matplotlib}{online}{}
       \field{sortinit}{2}
       \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
@@ -408,40 +456,6 @@
       \endverb
       \verb{url}
       \verb https://numpy.org/
-      \endverb
-    \endentry
-    \entry{curveFittingIntro}{online}{}
-      \field{sortinit}{2}
-      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
-      \field{labeltitlesource}{title}
-      \field{title}{Introduciton to Curve Fitting}
-      \field{urlday}{17}
-      \field{urlmonth}{4}
-      \field{urlyear}{2020}
-      \field{urldateera}{ce}
-      \true{nocite}
-      \verb{urlraw}
-      \verb https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf
-      \endverb
-      \verb{url}
-      \verb https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf
-      \endverb
-    \endentry
-    \entry{curveFittingScipy}{online}{}
-      \field{sortinit}{2}
-      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
-      \field{labeltitlesource}{title}
-      \field{title}{scipy curve_fit}
-      \field{urlday}{17}
-      \field{urlmonth}{4}
-      \field{urlyear}{2020}
-      \field{urldateera}{ce}
-      \true{nocite}
-      \verb{urlraw}
-      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
-      \endverb
-      \verb{url}
-      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
       \endverb
     \endentry
   \enddatalist

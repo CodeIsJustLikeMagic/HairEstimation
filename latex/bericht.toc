@@ -49,15 +49,15 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.7}Test: Hüftlange, feine, blonde Haare}{13}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{14}% 
+\contentsline {subsection}{\numberline {3.8}Test: kurze Hellbraune Haare}{15}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.9}Test: Mama}{14}% 
+\contentsline {subsection}{\numberline {3.9}Test: Schulterlange Dunkelbraue Haare}{15}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Ergebnisse}{14}% 
+\contentsline {section}{\numberline {4}Ergebnisse}{16}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {5}Fazit}{15}% 
+\contentsline {section}{\numberline {5}Fazit}{16}% 
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {A}Anhang: 28 Datenpunkte pro Bild}{16}% 
+\contentsline {section}{\numberline {A}Anhang: 28 Datenpunkte pro Bild}{17}% 
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {B}Anhang x Wert berechungen für Schätzungs-Modelle}{18}% 
 \defcounter {refsection}{0}\relax 
