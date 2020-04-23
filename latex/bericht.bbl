@@ -19,6 +19,75 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
+    \entry{averageHairshedding}{article}{}
+      \name{author}{1}{}{%
+        {{hash=90c96a7e5f28f99d1266371c31cd5e5b}{%
+           family={Sinclair},
+           familyi={S\bibinitperiod},
+           given={Rodney},
+           giveni={R\bibinitperiod}}}%
+      }
+      \strng{namehash}{90c96a7e5f28f99d1266371c31cd5e5b}
+      \strng{fullhash}{90c96a7e5f28f99d1266371c31cd5e5b}
+      \strng{bibnamehash}{90c96a7e5f28f99d1266371c31cd5e5b}
+      \strng{authorbibnamehash}{90c96a7e5f28f99d1266371c31cd5e5b}
+      \strng{authornamehash}{90c96a7e5f28f99d1266371c31cd5e5b}
+      \strng{authorfullhash}{90c96a7e5f28f99d1266371c31cd5e5b}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The British journal of dermatology}
+      \field{month}{04}
+      \field{title}{Hair Shedding In Women: How much is too much?}
+      \field{volume}{173}
+      \field{year}{2015}
+      \verb{doi}
+      \verb 10.1111/bjd.13873
+      \endverb
+    \endentry
+    \entry{seasoalShedding}{article}{}
+      \name{author}{4}{}{%
+        {{hash=71cd6fbb77f558b42df2531e04cfc898}{%
+           family={Hsiang},
+           familyi={H\bibinitperiod},
+           given={E.Y.},
+           giveni={E\bibinitperiod}}}%
+        {{hash=f06dc762c00188665d683a9414835c3b}{%
+           family={Semenov},
+           familyi={S\bibinitperiod},
+           given={Yevgeniy},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=e7323b9884238753ec6c274726f11f35}{%
+           family={Aguh},
+           familyi={A\bibinitperiod},
+           given={Crystal},
+           giveni={C\bibinitperiod}}}%
+        {{hash=991a9fa8e153a1baedc080e6536c0b6e}{%
+           family={Kwatra},
+           familyi={K\bibinitperiod},
+           given={S.G.},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{fullhash}{755a4e2d06858fb18abce01debaad8bf}
+      \strng{bibnamehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{authorbibnamehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{authornamehash}{a2ddacb848e19da049311cea2a1f1eee}
+      \strng{authorfullhash}{755a4e2d06858fb18abce01debaad8bf}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{British Journal of Dermatology}
+      \field{month}{10}
+      \field{title}{Seasonality of hair loss: a time series analysis of Google Trends data 2004 to 2016}
+      \field{volume}{178}
+      \field{year}{2017}
+      \verb{doi}
+      \verb 10.1111/bjd.16075
+      \endverb
+    \endentry
     \entry{chemicalAlopecia}{inbook}{}
       \name{author}{2}{}{%
         {{hash=0d6b455ff20daf6130c5ff164534ee28}{%
@@ -38,8 +107,8 @@
       \strng{authorbibnamehash}{be6671954a14fc0ed42430ee70cac41a}
       \strng{authornamehash}{be6671954a14fc0ed42430ee70cac41a}
       \strng{authorfullhash}{be6671954a14fc0ed42430ee70cac41a}
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-3-642-02034-6}
@@ -77,8 +146,8 @@
       \strng{authorbibnamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
       \strng{authornamehash}{f528bdd686dc0e23e59e6bf42e8276bc}
       \strng{authorfullhash}{f528bdd686dc0e23e59e6bf42e8276bc}
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of the American Academy of Dermatology}
@@ -90,48 +159,6 @@
       \range{pages}{21}
       \verb{doi}
       \verb 10.1016/j.jaad.2005.11.1104
-      \endverb
-    \endentry
-    \entry{seasoalShedding}{article}{}
-      \name{author}{4}{}{%
-        {{hash=71cd6fbb77f558b42df2531e04cfc898}{%
-           family={Hsiang},
-           familyi={H\bibinitperiod},
-           given={E.Y.},
-           giveni={E\bibinitperiod}}}%
-        {{hash=f06dc762c00188665d683a9414835c3b}{%
-           family={Semenov},
-           familyi={S\bibinitperiod},
-           given={Yevgeniy},
-           giveni={Y\bibinitperiod}}}%
-        {{hash=e7323b9884238753ec6c274726f11f35}{%
-           family={Aguh},
-           familyi={A\bibinitperiod},
-           given={Crystal},
-           giveni={C\bibinitperiod}}}%
-        {{hash=991a9fa8e153a1baedc080e6536c0b6e}{%
-           family={Kwatra},
-           familyi={K\bibinitperiod},
-           given={S.G.},
-           giveni={S\bibinitperiod}}}%
-      }
-      \strng{namehash}{a2ddacb848e19da049311cea2a1f1eee}
-      \strng{fullhash}{755a4e2d06858fb18abce01debaad8bf}
-      \strng{bibnamehash}{a2ddacb848e19da049311cea2a1f1eee}
-      \strng{authorbibnamehash}{a2ddacb848e19da049311cea2a1f1eee}
-      \strng{authornamehash}{a2ddacb848e19da049311cea2a1f1eee}
-      \strng{authorfullhash}{755a4e2d06858fb18abce01debaad8bf}
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{British Journal of Dermatology}
-      \field{month}{10}
-      \field{title}{Seasonality of hair loss: a time series analysis of Google Trends data 2004 to 2016}
-      \field{volume}{178}
-      \field{year}{2017}
-      \verb{doi}
-      \verb 10.1111/bjd.16075
       \endverb
     \endentry
     \entry{visualScale}{article}{}
@@ -168,8 +195,8 @@
       \strng{authorbibnamehash}{b8f874d154cd56af192b8216bf2db837}
       \strng{authornamehash}{b8f874d154cd56af192b8216bf2db837}
       \strng{authorfullhash}{36cfddd4a7fe314b0a1675713d9d4aa5}
-      \field{sortinit}{2}
-      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Dermatology and Therapy}
@@ -179,6 +206,242 @@
       \field{year}{2017}
       \verb{doi}
       \verb 10.1007/s13555-017-0171-8
+      \endverb
+    \endentry
+    \entry{TemplateMatchingCV}{online}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{e071e0bcb44634fab398d68ad04e69f4}
+      \field{labeltitlesource}{title}
+      \field{title}{Template Matching}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+      \endverb
+      \verb{url}
+      \verb https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+      \endverb
+    \endentry
+    \entry{Canny}{online}{}
+      \field{sortinit}{5}
+      \field{sortinithash}{5dd416adbafacc8226114bc0202d5fdd}
+      \field{labeltitlesource}{title}
+      \field{title}{Canny Edge Detector}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.opencv.org/master/da/d5c/tutorial_canny_detector.html
+      \endverb
+      \verb{url}
+      \verb https://docs.opencv.org/master/da/d5c/tutorial_canny_detector.html
+      \endverb
+    \endentry
+    \entry{DilationCV}{online}{}
+      \field{sortinit}{7}
+      \field{sortinithash}{f615fb9c6fba11c6f962fb3fd599810e}
+      \field{labeltitlesource}{title}
+      \field{title}{Eroding and Dilating}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docs.opencv.org/2.4/doc/tutorials/imgproc/erosion_dilatation/erosion_dilatation.html
+      \endverb
+      \verb{url}
+      \verb https://docs.opencv.org/2.4/doc/tutorials/imgproc/erosion_dilatation/erosion_dilatation.html
+      \endverb
+    \endentry
+    \entry{Watershed}{article}{}
+      \name{author}{2}{}{%
+        {{hash=1c39c7d653f46685c93fec74ec28d4a0}{%
+           family={Kornilov},
+           familyi={K\bibinitperiod},
+           given={Anton},
+           giveni={A\bibinitperiod}}}%
+        {{hash=ee7b494dd7776fb99e7a1a8d3a81e76b}{%
+           family={Safonov},
+           familyi={S\bibinitperiod},
+           given={Ilia},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{ae76228c934de3bcac64408e6f86c606}
+      \strng{fullhash}{ae76228c934de3bcac64408e6f86c606}
+      \strng{bibnamehash}{ae76228c934de3bcac64408e6f86c606}
+      \strng{authorbibnamehash}{ae76228c934de3bcac64408e6f86c606}
+      \strng{authornamehash}{ae76228c934de3bcac64408e6f86c606}
+      \strng{authorfullhash}{ae76228c934de3bcac64408e6f86c606}
+      \field{sortinit}{8}
+      \field{sortinithash}{1b24cab5087933ef0826a7cd3b99e994}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Imaging}
+      \field{month}{10}
+      \field{title}{An Overview of Watershed Algorithm Implementations in Open Source Libraries}
+      \field{volume}{4}
+      \field{year}{2018}
+      \field{pages}{123}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.3390/jimaging4100123
+      \endverb
+    \endentry
+    \entry{WatershedCV}{online}{}
+      \field{sortinit}{8}
+      \field{sortinithash}{1b24cab5087933ef0826a7cd3b99e994}
+      \field{labeltitlesource}{title}
+      \field{title}{Image Segmentation with Watershed Algorithm}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_watershed/py_watershed.html
+      \endverb
+      \verb{url}
+      \verb https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_watershed/py_watershed.html
+      \endverb
+    \endentry
+    \entry{ConnectedComponents}{online}{}
+      \field{sortinit}{9}
+      \field{sortinithash}{54047ffb55bdefa0694bbd554c1b11a0}
+      \field{labeltitlesource}{title}
+      \field{title}{Connected Components in OpenCV}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://davidlavy.wordpress.com/opencv/connected-components-in-opencv/
+      \endverb
+      \verb{url}
+      \verb https://davidlavy.wordpress.com/opencv/connected-components-in-opencv/
+      \endverb
+    \endentry
+    \entry{skel}{online}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labeltitlesource}{title}
+      \field{title}{Skeletonize}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://scikit-image.org/docs/dev/auto_examples/edges/plot_skeleton.html
+      \endverb
+      \verb{url}
+      \verb https://scikit-image.org/docs/dev/auto_examples/edges/plot_skeleton.html
+      \endverb
+    \endentry
+    \entry{outlierRemoval}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=df4039fc7b32f9b94292ae4f46a88981}{%
+           family={Amidan},
+           familyi={A\bibinitperiod},
+           given={B.G.},
+           giveni={B\bibinitperiod}}}%
+        {{hash=4be96c9d8609c140ef32f63ff4615804}{%
+           family={Ferryman},
+           familyi={F\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod}}}%
+        {{hash=360f308dcc83ca845ea61e3d4eed11bf}{%
+           family={Cooley},
+           familyi={C\bibinitperiod},
+           given={Scott},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{86518ef651013fc14353c9634909e446}
+      \strng{fullhash}{86518ef651013fc14353c9634909e446}
+      \strng{bibnamehash}{86518ef651013fc14353c9634909e446}
+      \strng{authorbibnamehash}{86518ef651013fc14353c9634909e446}
+      \strng{authornamehash}{86518ef651013fc14353c9634909e446}
+      \strng{authorfullhash}{86518ef651013fc14353c9634909e446}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Proc. IEEE Aerosp. Conf.}
+      \field{month}{04}
+      \field{title}{Data outlier detection using the Chebyshev theorem}
+      \field{year}{2005}
+      \field{pages}{3814\bibrangedash 3819}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1109/AERO.2005.1559688
+      \endverb
+    \endentry
+    \entry{Matplotlib}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labeltitlesource}{title}
+      \field{title}{Matplotlib}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://matplotlib.org/
+      \endverb
+      \verb{url}
+      \verb https://matplotlib.org/
+      \endverb
+    \endentry
+    \entry{Numpy}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labeltitlesource}{title}
+      \field{title}{Numpy}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://numpy.org/
+      \endverb
+      \verb{url}
+      \verb https://numpy.org/
+      \endverb
+    \endentry
+    \entry{curveFittingIntro}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labeltitlesource}{title}
+      \field{title}{Introduciton to Curve Fitting}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf
+      \endverb
+      \verb{url}
+      \verb https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf
+      \endverb
+    \endentry
+    \entry{curveFittingScipy}{online}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labeltitlesource}{title}
+      \field{title}{scipy curve_fit}
+      \field{urlday}{17}
+      \field{urlmonth}{4}
+      \field{urlyear}{2020}
+      \field{urldateera}{ce}
+      \true{nocite}
+      \verb{urlraw}
+      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
+      \endverb
+      \verb{url}
+      \verb https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html
       \endverb
     \endentry
   \enddatalist

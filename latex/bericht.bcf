@@ -2129,10 +2129,28 @@
     <bcf:datasource type="file" datatype="bibtex">references.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">chemicalAlopecia</bcf:citekey>
-    <bcf:citekey order="1">ironDeficiency</bcf:citekey>
-    <bcf:citekey order="1">seasoalShedding</bcf:citekey>
-    <bcf:citekey order="2">visualScale</bcf:citekey>
+    <bcf:citekey order="1">averageHairshedding</bcf:citekey>
+    <bcf:citekey order="2">chemicalAlopecia</bcf:citekey>
+    <bcf:citekey order="2">ironDeficiency</bcf:citekey>
+    <bcf:citekey order="2">seasoalShedding</bcf:citekey>
+    <bcf:citekey order="3">visualScale</bcf:citekey>
+    <bcf:citekey order="4">TemplateMatchingCV</bcf:citekey>
+    <bcf:citekey order="5">Canny</bcf:citekey>
+    <bcf:citekey order="6">Canny</bcf:citekey>
+    <bcf:citekey order="7">DilationCV</bcf:citekey>
+    <bcf:citekey order="8">Watershed</bcf:citekey>
+    <bcf:citekey order="8">WatershedCV</bcf:citekey>
+    <bcf:citekey order="9">ConnectedComponents</bcf:citekey>
+    <bcf:citekey order="10">skel</bcf:citekey>
+    <bcf:citekey order="11">outlierRemoval</bcf:citekey>
+    <bcf:citekey order="12">splineScipy</bcf:citekey>
+    <bcf:citekey order="13">curveFittingIntro</bcf:citekey>
+    <bcf:citekey order="13">curveFittingScipy</bcf:citekey>
+    <bcf:citekey order="14">TemplateMatchingCV</bcf:citekey>
+    <bcf:citekey order="15">Watershed</bcf:citekey>
+    <bcf:citekey order="15">WatershedCV</bcf:citekey>
+    <bcf:citekey order="16">outlierRemoval</bcf:citekey>
+    <bcf:citekey order="0" nocite="1">*</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

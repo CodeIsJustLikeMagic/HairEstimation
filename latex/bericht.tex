@@ -1,10 +1,10 @@
 %\documentclass[german,a4paper,12p,headsepline, titlepage, liststotoc, idextotoc,bibtoctoc,blibliography = totocnumbered,left=40mm,right=20mm,top=25mm,bottom=20mm]{scrartcl}
-\documentclass[german,a4paper, 12pt]{scrartcl}
-\usepackage[left=30mm,right=30mm,top=25mm,bottom=20mm]{geometry}
+\documentclass[german,a4paper, 12pt]{llncs}
+\usepackage[left=30mm,right=30mm,top=25mm,bottom=25mm]{geometry}
 \setlength{\footskip}{6mm} % Abstand Seitenzahl zu Text
 \setcounter{tocdepth}{2}
 \makeatletter
-%\renewcommand*\l@author[2]{}
+\renewcommand*\l@author[2]{}
 \makeatletter
 \usepackage[utf8]{inputenc}
 \usepackage[backend=biber,sorting =none]{biblatex}
@@ -25,6 +25,18 @@
 
 \begin{filecontents}{references.bib}
 	
+
+@article{averageHairshedding,
+	author = {Sinclair, Rodney},
+	year = {2015},
+	month = {04},
+	pages = {},
+	title = {Hair Shedding In Women: How much is too much?},
+	volume = {173},
+	journal = {The British journal of dermatology},
+	doi = {10.1111/bjd.13873}
+}
+
 @article{visualScale,
 	author = {Martínez-Velasco, María and Vázquez-Herrera, Norma and Maddy, Austin and Asz-Sigall, Daniel and Tosti, Antonella},
 	year = {2017},
@@ -35,7 +47,6 @@
 	journal = {Dermatology and Therapy},
 	doi = {10.1007/s13555-017-0171-8}
 }
-
 
 @article{seasoalShedding,
 	
@@ -77,7 +88,7 @@
 	urldate = {2020-04-17},
 }
 
-@article{watershed,
+@article{Watershed,
 	author = {Kornilov, Anton and Safonov, Ilia},
 	year = {2018},
 	month = {10},
@@ -88,29 +99,93 @@
 	doi = {10.3390/jimaging4100123}
 }
 
+@ONLINE{WatershedCV,
+	title = {Image Segmentation with Watershed Algorithm},
+	url = {https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_watershed/py_watershed.html},
+	urldate = {2020-04-17}
+}
 
-https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html
+@ONLINE{TemplateMatchingCV,
+	title = {Template Matching},
+	url = {https://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html},
+	urldate = {2020-04-17}
+}
 
-https://matplotlib.org/
-https://numpy.org/
+@ONLINE{Matplotlib,
+	title = {Matplotlib},
+	url = {https://matplotlib.org/},
+	urldate = {2020-04-17}
+}
+
+@ONLINE{Numpy,
+	title = {Numpy},
+	url = {https://numpy.org/},
+	urldate = {2020-04-17}
+}
+
+@ONLINE{DilationCV,
+	title = {Eroding and Dilating},
+	url = {https://docs.opencv.org/2.4/doc/tutorials/imgproc/erosion_dilatation/erosion_dilatation.html},
+	urldate = {2020-04-17}
+}
+
+@ONLINE{ConnectedComponents,
+	title = {Connected Components in OpenCV},
+	url = {https://davidlavy.wordpress.com/opencv/connected-components-in-opencv/},
+	urldate = {2020-04-17}
+}
+
+@ONLINE{skel,
+	title = {Skeletonize},
+	url = {https://scikit-image.org/docs/dev/auto_examples/edges/plot_skeleton.html},
+	urldate = {2020-04-17}
+}
+
+@inproceedings{outlierRemoval,
+	author = {Amidan, B.G. and Ferryman, Thomas and Cooley, Scott},
+	year = {2005},
+	month = {04},
+	pages = {3814 - 3819},
+	title = {Data outlier detection using the Chebyshev theorem},
+	journal = {Proc. IEEE Aerosp. Conf.},
+	doi = {10.1109/AERO.2005.1559688}
+}
+
+@ONLINE{curveFittingIntro,
+	title = {Introduciton to Curve Fitting},
+	url = {https://www.ncss.com/wp-content/themes/ncss/pdf/Procedures/NCSS/Introduction_to_Curve_Fitting.pdf},
+	urldate = {2020-04-17}
+}
+@ONLINE{curveFittingScipy,
+	title = {scipy curve fit},
+	url = {https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html},
+	urldate = {2020-04-17}
+}
+@ONLINE{splineScipy,
+	title = {scipy InterpolatedUnivariateSpline},
+	url = {https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.InterpolatedUnivariateSpline.html},
+	urldate = {2020-04-17}
+}
+
 
 \end{filecontents}
 
 \addbibresource{references.bib}
-\title{Exposee}
+\title{Praxisprojekt}
 \subtitle{Automatisches Schätzen der Haaranzahl in ausgefallenen Haarbüscheln}
 \author{\parbox{.9\textwidth}{\centering 
 		\large Janelle Pfeifer \\
 		\small Delpstraße 28\\
 		53359 Rheinbach \\
 		janelle.pfeifer@smail.inf.h-brs.de}}
-%\institute{\parbox{.9\textwidth}{\centering 
-%		\large Hochschule Bonn-Rhein-Sieg \\
-%		\normalsize Institute of Visual Computing \\ 
-%		\small Fachbereich Informatik \\
-%		Studiengang: Informatik (B.SC.)\\
-%		\normalsize Rheinbach, 15.02.2020}}
-\date{Rheinbach, 8.1.2020}
+\institute{\parbox{.9\textwidth}{\centering 
+		\large Hochschule Bonn-Rhein-Sieg \\
+		\normalsize Institute of Visual Computing \\ 
+		\small Fachbereich Informatik \\
+		Studiengang: Informatik (B.SC.)\\
+		\normalsize Rheinbach, 24.4.2020}}
+\date{Rheinbach, 24.4.2020}
+
 \begin{document}
 	%{\let\newpage\relax\maketitle}
 	\maketitle
@@ -125,84 +200,87 @@ https://numpy.org/
 \section{Einleitung}
 %Die Einleitung ist mit der wichtigste Teil der Arbeit, da sie den Leser motivieren soll die vorliegende Arbeit weiter z lesen. Sie sollte neben einer Motivation bzw Problembeschreibung auch das Ziel der Arbeit beschreiben.Zusätzlich sollten die Fabgebiete die die arbeit betreffen und deren Bedeutung genannt werden. Wichtig ist eine klare Formulierung der Zielstellung und des Lösungsansatzes so wie abschließend eine Beschreibung der Gliederung der Arbeit.
 
-Das Ausfallen von Haarsträhnen ist ein natürlicher Teil des Haarwachstum Zyklus. Durchschnittlich verliert der Mensch 50 bis 100 Haarsträhnen am Tag. Vermehrter Haarverlust kann ein Anzeichen von Krankheiten oder Mangelerscheinungen sein. Daher ist es von Vorteil das früher darauf reagieren zu können.
+Das Ausfallen von Haarsträhnen ist ein natürlicher Teil des Haarwachstum-Zyklus. Durchschnittlich verliert der Mensch 50 bis 150 Haarsträhnen am Tag. Vermehrter Haarverlust kann ein Anzeichen von Krankheiten oder Mangelerscheinungen sein.\cite{averageHairshedding}
 
-Haarausfall ist sehr variabel und wird durch viele Faktoren beeinflusst. Er kann sich abhängig von dem Haartyp, der Haarlänge und der Haarpflege-Methode jeden Tag ändern und Muster aufweisen. Jeder Mensch hat ein eigenes Haarausfall-Muster. Eine langzeitunersuchung gibt die möglichkeit diese Muster zu erkennen und Abweichungen herauszustellen. \cite{chemicalAlopecia,ironDeficiency,seasoalShedding}
+Haarausfall ist sehr variabel und wird durch viele Faktoren beeinflusst. Er kann sich abhängig von dem Haartyp, der Haarlänge und der Haarpflege-Methode jeden Tag ändern und Muster aufweisen. Jeder Mensch hat ein eigenes Haarausfall-Muster. Eine Langzeitüberwachung gibt die Möglichkeit diese Muster zu erkennen und Abweichungen herauszustellen. \cite{chemicalAlopecia,ironDeficiency,seasoalShedding}
 
-In dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} wird eine Methode beschrieben, in der Frauen anhand von Bildern den Umfang ihres täglichen Haarausfalls bestimmen können. Dabei werden den Frauen Bilder von abgezählten, ausgefallenen Haarbüscheln gezeigt, die ihrer eigenen Haarlänge entsprechen. Die Frauen wählen das Foto aus, welches ihrem persönlichen täglichen Haarausfall entspricht. Es wurde eine Korrelation festgestellt zwischen Frauen, die klinisch bestätigt Haarverlust erfahren und den Bildern, die sie ausgewählt haben.
-Der Haarausfall wird visuell, anhand von Bildern festgestellt.\cite{visualScale}
+In dem Paper \blockquote{The Hair shedding visual scale: A quick tool to assess hair loss in Women} wird eine Methode beschrieben, in der Frauen anhand von Bildern den Umfang ihres täglichen Haarausfalls bestimmen können. Dabei werden den Frauen Bilder von abgezählten, ausgefallenen Haarbüscheln gezeigt, die ihrer eigenen Haarlänge entsprechen. Die Frauen wählen das Foto aus, welches ihrem persönlichen täglichen Haarausfall entspricht. Dabei wurde eine Korrelation festgestellt zwischen Frauen, die klinisch bestätigt Haarverlust erfahren und den Bildern, die sie auswählen.
+Der Haarausfall kann somit visuell, anhand von Bildern festgestellt werden.\cite{visualScale}
 
 In dieser Arbeit wird ein Verfahren vorgestellt, mit dem der tägliche Haarausfall mithilfe von Methoden der Bildverarbeitung und statistischer Auswertung geschätzt werden kann. So wird eine Langzeitüberwachung möglichst effizient durchführbar.
 \section{Grundlagen}
 \subsection{Computervision}
 In dem Bereich der Bildverarbeitung gibt es viele Algorithmen, die es ermöglichen Objekte in einem Bild erkennbar zu machen und zu verarbeiten.
 
-\subsection{matchTemplate} 
+\subsection{Template Matching} 
 
-Template matching findet bereiche eines bildes, die einem gegebenen Vorbild (template) ähnlich sind.
+Template Matching findet Bereiche eines Bildes, die einem gegebenen Bildteil, einem Template, ähnlich sind.
 
-Dazu wird ein Source Image und ein template Image angegeben. Um die gesuchten Bereiche zu finden, wird das Template Image über das Source Image Pixelweise drüber geschoben. An jeder stelle wird das template mit dem source Image verglichen und eine ähnlichkeit zwischen den beiden berechnet. Als Ergebnis erhält man eine Matrix die für jeden Pixel des Bildes eine Wahrscheinlichkeit angibt, das sich dort das template befindet. 
-
+Dazu wird ein Source Image und ein Template Image angegeben. Um die gesuchten Bereiche zu finden, wird das Template Image Pixelweise über das Source Image geschoben. An jeder Stelle wird das Template mit dem Source Image verglichen und die Ähnlichkeit zwischen den Beiden berechnet. Als Ergebnis erhält man eine Matrix die für jeden Pixel des Bildes eine Wahrscheinlichkeit dafür angibt, das sich dort das Template befindet.\cite{TemplateMatchingCV}
 
 \subsection{Canny Edge Detection}
 Canny Edge Detection ist ein Algorithmus der Kanten in einem Bild erkennt. 
-Es handelt sich um einen Hochpassfilter. Hochpasfilter erhalten hochfrequente Bildanteile, während Niderigfrequente verschwinden oder abgeschwächt werden. Hochfrequent sind Bereich mit schnellen Farb- und Helligkeitsveränderungen, was bei Linien und Kanten der Fall ist. 
+Es handelt sich um einen Hochpassfilter. Diese suchen nach Stellen im Bild, wo sich die Farben bzw. Graustufen stark voneinander unterscheiden. Solche Stellen heißen Hochfrequent. Linien und Kanten weise eine Hohe Frequenz auf. Niederfrequente Bereiche weisen eine einheitlichere Farbe oder Graustufe auf.\cite{Canny}
+
+Ein Hochpassfilter lässt hochfrequente Bildanteile stehen und schwächt Niederfrequente ab. 
+Canny Edge Detection wird auf Graustufenbilder angewandt. An jeder Stelle des Bildes wird ein 3x3 Ausschnitt der Nachbarpixel betrachtet. Weisen die Nachbarpixel ein Bestimmtest Muster auf, indem der Graustufe-unterschied eine Linie beschreibt mit Helleren Pixel auf einer Seite und dunkleren Pixeln auf der anderen, wird die Stelle als Teil einer Kante betrachtet.\cite{Canny}
 
 
 \subsection{Dilatation}
-Die Dilatation ist eine Morpholigische Operation.
-Morphologische Operationen verändern ein Bild basierend auf Formen.
-Sie wenden ein Skturktu element 
-
 Die Dilatation arbeitet auf binären Bildern. Es gibt nur schwarz und weiß.
 Die Dilatation fügt weiße Pixel an die Ränder von weißen Objekten hinzu. 
-Bei der Dilatation handelt es sich um ein Morpholigschen Operator. Diese arbieten das Bild Pixelweise durch. Der Wert jedes Pixels basiert auf einem vergleich zischen dem Pixel und dessen Nachbar-Pixeln.
- 
+Bei der Dilatation handelt es sich um ein Morpholigschen Operator. Diese arbieten das Bild Pixelweise durch. Der Wert jedes Pixels basiert auf einem Vergleich zischen dem Pixel und dessen Nachbar-Pixeln.\cite{DilationCV}
 	
 \subsection{Inversion eines Graustufenbildes}
 
-schwarz wind weiß und weiß wird schwarz. und alles daziwschen entsprechend.
-Helle Graustufen werden dunekl und umgekehrt. 
-Die Graustufen eines bildes werden in 8 bit dargestellt. Somit gibt es 255 graustufen. 0 ist schwarz und 255 ist weiß. 
-Somit gilt bei der inversion für jedes Pixel mit dem graustufenwefrt g:
+Die Graustufenwerte eines Bildes werden invertiert. 
+Schwarz wird Weiß und Weiß wird Schwarz, helle Graustufen werden dunkel und umgekehrt.
+ 
+Die Graustufen eines Bildes werden in 8 bit dargestellt. Somit gibt es 255 Graustufen. 0 ist schwarz und 255 ist weiß. 
+Somit gilt bei der Inversion für jedes Pixel mit dem Graustufenwert g:
 g neu = 255- g alt 
-\subsection{watershed Algorithmus}
 
-Der Watershed algorithmus arbeitet auf einem rgb Bild. Es handelt sich um ein Region growing Algorithmus.
-Region growing algorithmen finden zusammenhängende gruppen an Pixeln, die einander ähnlich sind. Diese Gruppen werden als Regionen bezeichnen. 
+\subsection{Watershed Algorithmus}
 
-Für den Watershed algorithmus wird zunächst in jede region, die der algorithmus wachsen lassen soll, eine markierung gesetzt. Ein Seed.
-Für Die Seeds werden die pixel, die dem seed ähnlich sind zu der region zusammengefasst. so wachsen die regionen. die regionen wachsen, bis sie auf eine andere Region stoßen. 
+Der Watershed Algorithmus ist ein Region Growth Algorithmus. Er finden zusammenhängende Gruppen an Pixeln, die einander ähnlich sind. Diese Gruppen werden als Regionen bezeichnen. 
+
+Für den Watershed Algorithmus wird zunächst in jede Region, die der Algorithmus wachsen lassen soll, eine Markierung, ein seed, gesetzt.
+Für die seeds werden die Pixel, die dem seed ähnlich sind zu der Region zusammengefasst. So wachsen die Regionen, bis sie auf eine andere Region stößt.
+
+Das Prinzip ist es die Graustufenwerte des Bildes als eine Topologische Karte anzusehen. Jeder seed liegt in einem Tal, in das Wasser hineingefühlt wird. 
+Die Grenzen zwischen den Regionen liegen dort, wo das Wasser aus unterschiedlichen Tälern aufeinander trifft.\cite{Watershed,WatershedCV} 
 
 \subsubsection{Region Growth}
 ist ein Verfahren, bei dem ein Bild in Regionen unterteilt wird. So werden zum Beispiel Sektionen mit ähnlicher Farbe herausgestellt.
+
 \subsection{Connected Components}
 
-
+Connected Components sind benachbarte Pixel, die denselben Grauwert haben. \cite{ConnectedComponents}
 
 \subsection{Skelettierung}
-reduziert Objekte in einem Bild auf eine Pixelbreite. So können Linien auf eine Pixelbreite geschrumpft werden.
-\subsection{outlier removal ?}
+Bei der Skelettierung werden Objekte in einem Bild auf nur eine Pixelbreite reduziert. Dabei Gelten Objekte als Connected Components. So können Linien auf eine Pixelbreite geschrumpft werden.\cite{skel}
 
-Ein Algorithmus der statistische außreißer erkennt und entfernt. 
-Basierend auf dem dingsbums theorem, wird der mittelwert und die varianz eines satzes von messdaten verwendet, außreißer zu erkennen. 
-Dabei muss angegeben werden, wie weit ein Datenpunkt von den anderen Abweichen kann, bis er als außreißer an gesehen wird. 
-\subsection{fitted curve, lineare regression, spline}
+\subsection{Outlier Removal}
 
-Lineare Regression ist eine lineare Funktion durch eine menge an Messdaten legen so das sie die messdaten am besten aproximiert.
+Ein Algorithmus der statistische Ausreißer entfernt. 
+Basierend auf dem Tschebyscheff Theorem, wird der Mittelwert und die Varianz eines Satzes von Messdaten verwendet, um Ausreißer zu erkennen.\cite{outlierRemoval}
 
-Spline. Berechnet eine Funktion, die durch angegebene Punkte verläuft.
+\subsection{fitted curve, lineare Regression, Spline}
 
-fitted curve. Eine Art von Funktion angeben, zum beispiel linear, oder auch exponentiell oder logarithmisch. in der art berechnet, das sie die messdatem am besten aproxximiert, der abstand zwischen den Daten und der Funktiona also am geringsten ist. 
+Lineare Regression ist eine Lineare Funktion durch eine menge an Messdaten legen so das sie die Messdaten am besten approximiert.
 
-Die Lineare Regression ist eine fitted curve mit einer linearen Funktion. 
+Spline. Berechnet eine Funktion, die durch angegebene Punkte verläuft.\cite{splineScipy}
+
+fitted curve. Eine Art von Funktion angeben, zum Beispiel linear, oder auch exponentiell oder logarithmisch. in der Art berechnet, das sie die Mesdames am besten approximiert, der Abstand zwischen den Daten und der Funktion also am geringsten ist. 
+
+Die Lineare Regression ist eine fitted curve mit einer linearen Funktion.\cite{curveFittingIntro,curveFittingScipy}
 
 \section{Design und Implementation}
 
-Das Ziel ist es die Einschätzung eines Haarbüschels, mithilfe von Computervision, zu automatisieren. Zunächst wird ein Kalibriervorgang durchgeführt, in dem der Nutzer abgezählte Haarbpüschel-Bilder eingibt. Dann kann die Menge der Haare in nicht abgezählten Haarbüscheln automatisch geschätzt werden.
+Das Ziel ist es die Einschätzung eines Haarbüschels, mithilfe von Computervision, zu automatisieren. Zunächst wird ein Kalibriervorgang durchgeführt, in dem der Nutzer abgezählte Haarbüschel-Bilder eingibt. Dann kann die Menge der Haare in nicht abgezählten Haarbüscheln automatisch geschätzt werden.
 
 Die Schätzungen werden zugehörig zum Datum gespeichert. Um einen Zeitlichen verlauf festzuhalten.
-Zusätzlich zu den Schätzungen kann für jedes Datum eine Marker angegeben werden. So können regelmäßige Wiederholungen der Haarpflege, wie zum Beispiel eine Haarwäsche, notiert werden. Desweiteren können gesundheitliche Veränderungen oder Einnahme von Medikamenten vermerkt werden.
+Zusätzlich zu den Schätzungen kann für jedes Datum eine Marker angegeben werden. So können regelmäßige Wiederholungen der Haarpflege, wie zum Beispiel eine Haarwäsche, notiert werden. Des weiteren können gesundheitliche Veränderungen oder Einnahme von Medikamenten vermerkt werden.
 
 Das Programm wurde in Python implementiert und nutzt unter anderem das Plugin Open-cv.
 Der Nutzer steuert das Programm über die Kommandozeile. 
@@ -224,7 +302,7 @@ Als Eingabe wird von einem Haarbüschel auf einem einfarbige Hintergrund ausgega
 \end{figure}
 
 Im ersten Schritt der Bildverarbeitung wird das Bild auf die Markierungen in den Ecken zugeschnitten. Das ist in der Methode cropDots implementiert.
-Über einen Aufruf der Open cv methode matchTemplate wird nach vorkommen der Markierung gesucht. Das Resultat ist ein Karte an Wahrscheinlichkeiten, die für jedes Pixel angibt, zu welcher Wahrscheinlichkeit sich dort die Markierung befindet. Die 4 Stellen an denen die Wahrscheinlichkeit am höchsten ist, werden als Eckpunkte angesehen. Siehe Abbildung \ref{img:cropDots}.
+Über einen Aufruf der Open cv methode matchTemplate wird nach vorkommen der Markierung gesucht. Das Resultat ist ein Karte an Wahrscheinlichkeiten, die für jedes Pixel angibt, zu welcher Wahrscheinlichkeit sich dort die Markierung befindet. Die 4 Stellen an denen die Wahrscheinlichkeit am höchsten ist, werden als Eckpunkte angesehen. Siehe Abbildung \ref{img:cropDots}.\cite{TemplateMatchingCV}
 \begin{figure*}
 	\centering
 	\begin{subfigure}[b]{0.475\textwidth}   
@@ -269,37 +347,37 @@ Weiße Pixel gelten als Haare, schwarze als Hintergrund. Siehe Abbildung \ref{im
 	\end{subfigure}
 	\caption[  ]
 	{\small Beispiel input von knielangen dunkelroten Haare} 
-	\label{img:tstM}
+	\label{img:cannywrap}
 \end{figure*}
 
 
 In der Methode hairPixelIntensity wird die Detektion verfeinert.
-Auf das Resultat der Katendetektion wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
+Auf das Resultat der Kantendetektion wird eine Dilatation ausgeführt. Dadurch gelten mehr Pixel als Haare und eventuelle Löcher wachsen zusammen.
 
 Da Haare halb-transparent sind, wird ihre Farbe intensiver, wenn sie sich überlagern. Sie weisen eine höhere Intensität auf.
-Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten. Siehe Abbildung \ref{q:haironwhite}.
+Um die Haar-Intensität des Bildes zu extrahieren, wird ein Bild gebaut, in dem Hintergrund Pixel weiß sind, und Haarpixel ihren Graustufenwert aus dem Original Bild erhalten.
 
-Wenn die Haare heller sind als der Hintergrund, es sich beispielsweise um blondes Haar auf schwarzem Hintergrund handelt haben die Haare eine Höhere intensität, wenn sich heller sind. Bei dunkelem Haar auf hellem Hintergund ist es gegenteilig. Die Intensität ist höher, wenn das Haar dunkler ist.
-Damit beide Konstelationen zu einem ähnlichen Ergebnis kommen, werden die graustufenwerte invertiert, wenn die Haare hell sind. So ist auch bei ursprünglich hellem Haar, die Intensität höher, wenn die Graustufen dunkler sind.
+Wenn die Haare heller sind als der Hintergrund, es sich beispielsweise um blondes Haar auf schwarzem Hintergrund handelt haben die Haare eine Höhere Intensität, wenn sich heller sind. Bei dunklem Haar auf hellem Hintergrund ist es gegenteilig. Die Intensität ist höher, wenn das Haar dunkler ist.
+Damit beide Konstellationen zu einem ähnlichen Ergebnis kommen, werden die Graustufen invertiert, wenn die Haare hell sind. So ist auch bei ursprünglich hellem Haar, die Intensität höher, wenn die Graustufen dunkler sind.
 
 
 
 Die Inversion dieses Bildes ergibt ein Bild mit schwarzem Hintergrund und Haaren, die Heller sind an stellen wo sie sich Überlagern. Siehe Abbildung \ref{img:Intensity}.
 
 
-Es werden kleine vereinzelte Gebiete des Hintergrundes in der Kantendetection erkannt und gelten somit als Haare.
+Es werden kleine vereinzelte Gebiete des Hintergrundes in der Kantendetektion erkannt und gelten somit als Haare.
 Um diese Gebiete zu erkennen und zu entfernen, wird der Watershed Algorithmus angewendet.   
 Dabei werden Marker in alle verbundenen Gebiete gesetzt, die nicht schwarz sind. Der Watershed Algorithmus lässt die Regionen wachsen. 
-Dann werden die Regionen entfernt, die im Verglich auf die Größe des Bildes sehr klein sind. Siehe Abbildung \ref{img:smallRegions}.
+Dann werden die Regionen entfernt, die im Verglich auf die Größe des Bildes sehr klein sind. Siehe Abbildung \ref{img:smallRegionwrap}.
 
-Die Summe aller Graustufenwerte werden als Intensität gespeichert. Dabei wird der Hintergrund außer acht gelassen, weil es schwarz ist, und somit den Graustufenwert 0 hat.
+Die Summe aller Graustufenwerte werden als Intensität gespeichert. Dabei wird der Hintergrund außer Acht gelassen, weil es schwarz ist, und somit den Graustufenwert 0 hat.
 \begin{figure*}
 	\centering
 	\begin{subfigure}[b]{0.475\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{fig64/05intenstiy.png}
 		\caption[]{Intensität-Abbildung der Haare}
-		\label{img:Intensity}
+		\label{img:Intensity2}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.475\textwidth} 
@@ -310,7 +388,7 @@ Die Summe aller Graustufenwerte werden als Intensität gespeichert. Dabei wird d
 	\end{subfigure}
 	\caption[  ]
 	{\small Enternen von kleinen Regionen, vorher nachher} 
-	\label{img:tstM}
+	\label{img:smallRegionwrap}
 \end{figure*}
 
 In der Methode hairPixelPercentage werden die Pixel gezählt die als Haare gelten. Zusätzlich wird der Prozentsatz an Haar Pixeln und die Intensität des Bildes im Vergleich zur Bildgröße gespeichert. 
@@ -319,14 +397,14 @@ Dann wird die Dichte der Haare Untersucht. In der Methode
 Dafür werden die Hintergrund Regionen bestimmt, die durch Haare getrennt werden. Dafür wird der Watershed Algorithmus angewendet.
 Die Marker werden in alle zusammenhängenden Hintergrundgebiete gesetzt.
 Dabei wird die Größe der Region, die die Haare umschließt gespeichert. Abbildung \ref{img:outerSection}.
-Zusätzlich wird die Anzahl der Regionen die von Haaren umschlossen wird und deren Durchschnittliche Größe gespeichert.
+Zusätzlich wird die Anzahl der Regionen die von Haaren umschlossen wird und deren Durchschnittliche Größe gespeichert.\cite{Watershed,WatershedCV}
 \begin{figure*}
 	\centering
 	\begin{subfigure}[b]{0.475\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{fig64/06small regions removed.png}
 		\caption[]{watershed input}
-		\label{img:smallRegion}
+		\label{img:wsiput}
 	\end{subfigure}
 	\hfill
 	\begin{subfigure}[b]{0.475\textwidth} 
@@ -336,12 +414,12 @@ Zusätzlich wird die Anzahl der Regionen die von Haaren umschlossen wird und der
 		\label{img:outerSection}
 	\end{subfigure}
 	\caption[  ]
-	{\small Anwendug von watershed} 
-	\label{img:tstM}
+	{\small Anwendung von Watershed} 
+	\label{img:regionwrap}
 \end{figure*}
 
 Als nächstes werden die Gebiete des Bildes untersucht, die eine erhöhte Haar-Dichte aufweisen.
-Dafür wird das Intesität-Bild skelettiert. Siehe Abbildung \ref{img:skel}.
+Dafür wird das Intensität-Bild skelettiert. Siehe Abbildung \ref{img:skel}.
 Die Hintergrund Regionen werden wie zuvor untersucht.
 
 \begin{figure*}
@@ -357,11 +435,11 @@ Die Hintergrund Regionen werden wie zuvor untersucht.
 		\centering
 		\includegraphics[width=\textwidth]{fig64/09outer section.png}
 		\caption[]{Äußerte Region des skelettierten Bildes}
-		\label{img:skel}
+		\label{img:skelBGregion}
 	\end{subfigure}
 	\caption[  ]
 	{\small Dichtere Regionen untersuchen} 
-	\label{img:tstM}
+	\label{img:skelwarp}
 \end{figure*}
 
 In der Methode denseAndLoosePerc wird die Haar-Intensität in den dichteren Regionen und in den weniger dichten Regionen berechnet und abgespeichert.
@@ -372,7 +450,7 @@ Für das Bild werden 28 Datenpunkte extrahiert und abgespeichert. Siehe Anhang \
 
 \subsection{Kalibrieren}
 
-Die Kalibrierung ist in der Methode calibration impementiert.
+Die Kalibrierung ist in der Methode calibration implementiert.
 Für die Kalibrierung werden mehrere Bilder als Input angegeben. Für jedes der Bilder wird die Menge der Haare in dem Titel des Bildes angegeben. 
 Die Bilder werden alle mit detect Untersucht. Die Daten aus den Untersuchungen, sowie die Haar-Mengen werden abgespeichert.
 ganzen Ordner kalibrieren. einzelne Bilder hinzufügen.
@@ -416,16 +494,16 @@ Siehe den Anhang \ref{appendix:modelle} für die graphische Darstellung der Mode
 
 Für jedes der Modelle werden 3 Funktionen approximiert. Mit den Funktionen werden jeweils 3 Schätzungen für das zu schätzdene Bild berechnet. 
 
-Ausreißer werden entfernt. Dazu werden zunächst alle Schätzungen von weniger als 0 Haaren entfernt. Zusätzlich werden statistische Ausreißer mithilfe eines Algorithmus basierend auf dem tschebyschef theorem entfernt. 
+Ausreißer werden entfernt. Dazu werden zunächst alle Schätzungen von weniger als 0 Haaren entfernt. Zusätzlich werden statistische Ausreißer mithilfe eines Algorithmus basierend auf dem Tschebyscheff Theorem entfernt.\cite{outlierRemoval}
 
-Der Mittelwert der übrig geblibenen Schätzungen ist das Endergebnis. 
+Der Mittelwert, der übrig gebliebenen Schätzungen, ist das Endergebnis. 
 Siehe Abbildung \ref{img:guess} für den Verlauf einer Schätzung auf der Kommandozeile.
 
 \begin{figure}
   \centering
   \includegraphics[width=1.1\textwidth]{fig64/commandlineGuessProcess.PNG}
   \caption[]{Kommandozeilenaufruf und Verlauf einer Schätzung}
-  \label{img:guess}
+  \label{comand:guess}
 \end{figure} 
 
 \subsection{Tests}
@@ -440,21 +518,32 @@ es wurde eine Untersuchung in einem Zeitraum von 7 Wochen von dem tägliche Haar
 	\centering
 	\includegraphics[width=1.0\textwidth]{fig64/plot.png}
 	\caption[]{Schätzungen aus einem Zeitraum von 7 Wochen}
-	\label{img:guess}
+	\label{img:7weeks}
 \end{figure} 
 
 Um die Fehlerrate zu testen zu können wurde für einige der eingage Bilder die Anzahl der Haare per Hand gezählt.
 Mit einer großen Menge an Kalibrations-Bildern konnten die folgenden Fehler in den Schätzungen vermerkt werden:
  
-[22 23 67 23 16 28 19 17 14 13 20 27 26 89 25 13 23 19 14 13]
+['15' '15' '18' '22' '22' '25' '30' '30' '37' '40' '60' '95'] calibration images
+[27 22 23 22 67 17 23 16 28 19 17 14 13 20 27 26 89 25 13 23 19 14 13 34 estimated
+21 16 56 27 20]
 (estimated, actual)
-[(22, 22), (23, 25), (67, 65), (23, 22), (16, 18), (28, 26), (19, 21), (17, 18), (14, 9), (13, 17), (20, 27), (27, 30), (26, 27), (89, 95), (25, 40), (13, 15), (23, 31), (19, 31), (14, 11), (13, 16)]
-error per estimation [  0  -2   2   1  -2   2  -2  -1   5  -4  -7  -3  -1  -6 -15  -2  -8 -12 3  -3]
-mean error 4.05
+[(27, 22), (22, 22), (23, 25), (22, 18), (67, 65), (17, 22), (23, 22), (16, 18), (28, 26), (19, 21), (17, 18), (14, 9), (13, 17), (20, 27), (27, 30), (26, 27), (89, 95), (25, 40), (13, 15), (23, 31), (19, 31), (14, 11), (13, 16), (34, 50), (21, 30), (16, 12), (56, 45), (27, 34), (20, 16)]
+error per estimation [  5   0  -2   4   2  -5   1  -2   2  -2  -1   5  -4  -7  -3  -1  -6 -15
+-2  -8 -12   3  -3 -16  -9   4  11  -7   4]
+
 
 Mit nur 3 Kalibrationsbilern der Menge: 22, 60, 120 konnte diese Fehlerrate gefunden werden:
 
-TODO
+['15' '60' '95']
+[30 26 25 23 81 14 22  9 33 17 12  9  8 19 24 28 94 26  7 23 16  6  6 39
+18 10 62 31 19]
+(estimated, actual)
+[(30, 22), (26, 22), (25, 25), (23, 18), (81, 65), (14, 22), (22, 22), (9, 18), (33, 26), (17, 21), (12, 18), (9, 9), (8, 17), (19, 27), (24, 30), (28, 27), (94, 95), (26, 40), (7, 15), (23, 31), (16, 31), (6, 11), (6, 16), (39, 50), (18, 30), (10, 12), (62, 45), (31, 34), (19, 16)]
+error per estimation [  8   4   0   5  16  -8   0  -9   7  -4  -6   0  -9  -8  -6   1  -1 -14
+-8  -8 -15  -5 -10 -11 -12  -2  17  -3   3]
+mean error 6.896551724137931
+small calibration room
 
 \subsection{Test: Hüftlange, feine, blonde Haare}
 
@@ -484,17 +573,52 @@ Für den schwarzen Hintergrund wurde besonders matte schwarze Pappe verwendet. W
 Auf schwarzem Hintergrund ist Staub besonders gut sichtbar. Um die Wahrscheinlichkeit zu verringern, das Verschmutzungen auf der Pappe für die Markierungen in der Ecke gehalten werden, wurden die Markierungen von einem einfachen Punkt zu einem kreuz geändert.  
 
 Mit ? Kalibrations-Bilder kann folgende Fehlerrate gefunden werden.
+['10' '10' '10' '120' '124' '18' '20' '20' '25' '3' '30' '30' '30' '30'
+'40' '5' '50' '51' '55' '70']
+[ 4 10 30 44 50 24 24 71]
+(estimated, actual)
+[(4, 3), (10, 10), (30, 30), (44, 50), (50, 55), (24, 20), (24, 20), (71, 70)]
+error per estimation [ 1  0  0 -6 -5  4  4  1]
+mean error 2.625
 
 Siehe Anhang B für Schätzungs modelle und die Verarbeitung von Blonden Haaren.
+
 
 \subsection{Test: kurze Hellbraune Haare}
 
 Für hellbraune haare hat es sich gezeigt, das ein schwarzen Hintergrund einen besseren Kontrast bietet.
 
-Input beispiele.
+\begin{figure*}
+	\centering
+	\begin{subfigure}[b]{0.475\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figJan/IMG_20200325_133957_10.jpg}
+		\caption[]{Geschätzt auf ?? Haare. Tatsächlich 10 Haare}
+		\label{img:tstJan1} 
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.475\textwidth} 
+		\centering
+		\includegraphics[width=\textwidth]{figJan/IMG_20200325_134247_40.jpg}
+		\caption[]{Geschätzt auf ?? Haare. Tatsächlich 40.}
+		\label{img:tstJan2}
+	\end{subfigure}
+	\caption[  ]
+	{\small Beispiel input von blonden langen Haaren} 
+	\label{img:tstJan}
+\end{figure*}
 
 Die Haare sind recht kurz und haben somit weniger Masse, im vergleich zu den vorherigen Testszenarien. Auch hier liegt die Fehlerrate bei :  
 
+['10' '20' '40']
+[ 8 10 14 20 16 31 36 40 37 10]
+(estimated, actual)
+[(8, 5), (10, 10), (14, 14), (20, 20), (16, 20), (31, 30), (36, 30), (40, 40), (37, 40), (10, 7)]
+error per estimation [ 3  0  0  0 -4  1  6  0 -3  3]
+mean error 2.0
+
+\subsection{Test: Mama}
+TODO
 
 \section{Ergebnisse}
 Durchschnittliche Fehler von 5 manchmal fehler von 10 Haaren. 
@@ -503,8 +627,8 @@ Da Haare manchmal mehr kürzere und manchmal mehr längere ausfallen kann man da
 ergebnisse more detailed als in dem paper. in dem paper wurde in inkrementen von 10, 50, 100, 200 etc gewertet. 
 
 \section{Fazit}
-Das Schätzen von nicht zählbaren Mengen an Haaren zeigt sich als funktionsfähig. In der Zufunkt können die unterschieldichen SchäztungsModelle miteinandern verglichen werden, um die Kombination der akkuratesten Modelle zu finden. 
-Desweiteren kann mit noch mehr Testsituationen mit unterschieldichen Haar Typen aufgebaut werden. 
+Das Schätzen von nicht zählbaren Mengen an Haaren zeigt sich als funktionsfähig. In der Zukunft können die unterschiedlichen Schäztungs Modelle miteinander verglichen werden, um die Kombination der akkuratesten Modelle zu finden. 
+Des weiteren kann mit noch mehr Testsituationen mit unterschiedlichen Haar Typen aufgebaut werden. 
 
 Die Bildverarbeitung dauert recht lange, das könnte verbessert werden. 
 
@@ -529,6 +653,7 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 %\nocite{reaper}
 \newpage
 
+\nocite{*}
 \printbibliography
 
 
@@ -691,31 +816,31 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 \begin{figure}[H] % "[t!]" placement specifier just for this example
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/01foundDots.png}
-		\caption{First subfigure} \label{fig:a}
+		\caption{Input} \label{fig:a}
 	\end{subfigure}\hspace*{\fill}
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/02revRes.png}
-		\caption{Second subfigure} \label{fig:b}
+		\caption{Wahrscheinlichkeiten von matchTemplate} \label{fig:b}
 	\end{subfigure}
 	
 	\medskip
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/02foundDots.png}
-		\caption{Third subfigure} \label{fig:c}
+		\caption{4 gefundene Markierungen} \label{fig:c}
 	\end{subfigure}\hspace*{\fill}
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/03crop image.png}
-		\caption{Fourth subfigure} \label{fig:d}
+		\caption{Auf Markierungen zugeschnitten} \label{fig:d}
 	\end{subfigure}
 	
 	\medskip
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/04edges.png}
-		\caption{Fifth subfigure} \label{fig:e}
+		\caption{Kantendetektion} \label{fig:e}
 	\end{subfigure}\hspace*{\fill}
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/05intenstiy.png}
-		\caption{Sixth subfigure} \label{fig:f}
+		\caption{Intensität} \label{fig:f}
 	\end{subfigure}
 	
 	
@@ -725,31 +850,31 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 \begin{figure}[H] % "[t!]" placement specifier just for this example
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/06small regions removed.png}
-		\caption{First subfigure} \label{fig:a}
+		\caption{Kleine Regionen entfernt} \label{fig:a}
 	\end{subfigure}\hspace*{\fill}
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/07missed hair.png}
-		\caption{Second subfigure} \label{fig:b}
+		\caption{Intensität auf Input(Grayscale) ausgegeben. Zeigt wie viele Haare nicht erkannt wurden (hier: nicht viele)} \label{fig:b}
 	\end{subfigure}
 	
 	\medskip
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/08input intensity.png}
-		\caption{Third subfigure} \label{fig:c}
+		\caption{Intensität-Bild dient als Input für Hintergrund-Region-Untersuchung} \label{fig:c}
 	\end{subfigure}\hspace*{\fill}
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/08outer section.png}
-		\caption{Fourth subfigure} \label{fig:d}
+		\caption{Hintergrund Region, die die Haare umschließt, in weiß} \label{fig:d}
 	\end{subfigure}
 	
 	\medskip
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/09input intensity.png}
-		\caption{Fifth subfigure} \label{fig:e}
+		\caption{Intensität-Bild nach Skelettierung. Input für 2. Hintergrund Untersuchung} \label{fig:e}
 	\end{subfigure}\hspace*{\fill}
 	\begin{subfigure}{0.48\textwidth}
 		\includegraphics[width=\linewidth]{figBina/09outer section.png}
-		\caption{Sixth subfigure} \label{fig:f}
+		\caption{Hintergrund Region, die dichte Haare umschließt} \label{fig:f}
 	\end{subfigure}
 	
 	
@@ -790,7 +915,7 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 	\end{subfigure}
 	
 	
-	\caption{Schätzungsmodelle angewandt auf feine Blonde Haare (1)} \label{fig:1}
+	\caption{Schätzungsmodelle angewandt auf feine blonde Haare (1)} \label{fig:1}
 \end{figure}
 
 \begin{figure}[H] % "[t!]" placement specifier just for this example
@@ -824,7 +949,7 @@ Die Bildverarbeitung dauert recht lange, das könnte verbessert werden.
 	\end{subfigure}
 	
 	
-	\caption{Schätzungsmodelle angewandt auf feine Blonde Haare (2)} \label{fig:1}
+	\caption{Schätzungsmodelle angewandt auf feine blonde Haare (2)} \label{fig:1}
 \end{figure}
 
 
