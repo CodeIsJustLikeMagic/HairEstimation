@@ -2135,21 +2135,34 @@
     <bcf:citekey order="2">seasoalShedding</bcf:citekey>
     <bcf:citekey order="3">visualScale</bcf:citekey>
     <bcf:citekey order="4">TemplateMatchingCV</bcf:citekey>
-    <bcf:citekey order="5">Canny</bcf:citekey>
+    <bcf:citekey order="5">TemplateMatchingCV</bcf:citekey>
     <bcf:citekey order="6">Canny</bcf:citekey>
-    <bcf:citekey order="7">DilationCV</bcf:citekey>
-    <bcf:citekey order="8">Watershed</bcf:citekey>
-    <bcf:citekey order="8">WatershedCV</bcf:citekey>
-    <bcf:citekey order="9">ConnectedComponents</bcf:citekey>
-    <bcf:citekey order="10">skel</bcf:citekey>
-    <bcf:citekey order="11">outlierRemoval</bcf:citekey>
-    <bcf:citekey order="12">splineScipy</bcf:citekey>
-    <bcf:citekey order="13">curveFittingIntro</bcf:citekey>
-    <bcf:citekey order="13">curveFittingScipy</bcf:citekey>
-    <bcf:citekey order="14">TemplateMatchingCV</bcf:citekey>
-    <bcf:citekey order="15">Watershed</bcf:citekey>
-    <bcf:citekey order="15">WatershedCV</bcf:citekey>
-    <bcf:citekey order="16">outlierRemoval</bcf:citekey>
+    <bcf:citekey order="7">Canny</bcf:citekey>
+    <bcf:citekey order="8">DilationCV</bcf:citekey>
+    <bcf:citekey order="9">Watershed</bcf:citekey>
+    <bcf:citekey order="9">WatershedCV</bcf:citekey>
+    <bcf:citekey order="10">Watershed</bcf:citekey>
+    <bcf:citekey order="10">WatershedCV</bcf:citekey>
+    <bcf:citekey order="11">ConnectedComponents</bcf:citekey>
+    <bcf:citekey order="12">skel</bcf:citekey>
+    <bcf:citekey order="13">outlierRemoval</bcf:citekey>
+    <bcf:citekey order="14">curveFittingIntro</bcf:citekey>
+    <bcf:citekey order="14">curveFittingScipy</bcf:citekey>
+    <bcf:citekey order="15">splineScipy</bcf:citekey>
+    <bcf:citekey order="16">opencv</bcf:citekey>
+    <bcf:citekey order="17">TemplateMatchingCV</bcf:citekey>
+    <bcf:citekey order="18">Canny</bcf:citekey>
+    <bcf:citekey order="19">DilationCV</bcf:citekey>
+    <bcf:citekey order="20">Watershed</bcf:citekey>
+    <bcf:citekey order="20">WatershedCV</bcf:citekey>
+    <bcf:citekey order="20">ConnectedComponents</bcf:citekey>
+    <bcf:citekey order="21">Watershed</bcf:citekey>
+    <bcf:citekey order="21">WatershedCV</bcf:citekey>
+    <bcf:citekey order="22">Watershed</bcf:citekey>
+    <bcf:citekey order="22">WatershedCV</bcf:citekey>
+    <bcf:citekey order="23">outlierRemoval</bcf:citekey>
+    <bcf:citekey order="24">visualScale</bcf:citekey>
+    <bcf:citekey order="25">visualScale</bcf:citekey>
     <bcf:citekey order="0" nocite="1">*</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
@@ -2159,4 +2172,13 @@
     </bcf:sort>
   </bcf:sortingtemplate>
   <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="none/global//global/global"
+                type="entry"
+                sortingtemplatename="none"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
 </bcf:controlfile>

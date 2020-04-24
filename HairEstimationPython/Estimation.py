@@ -15,7 +15,6 @@ from scipy import interpolate
 from matplotlib import pyplot as plt
 import math
 from scipy.optimize import curve_fit
-from datetime import datetime
 
 
 debugstate = False
@@ -182,13 +181,13 @@ def skeletonize(img):
     """ OpenCV function to return a skeletonized version of img, a Mat object"""
 
     #  hat tip to http://felix.abecassis.me/2011/09/opencv-morphological-skeleton/
-
+    print('skeletonize')
     img = img.copy()  # don't clobber original
     skel = img.copy()
 
     skel[:, :] = 0
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
-
+    last = datetime.datetime.now()
     while True:
         eroded = cv2.morphologyEx(img, cv2.MORPH_ERODE, kernel)
         temp = cv2.morphologyEx(eroded, cv2.MORPH_DILATE, kernel)
@@ -197,7 +196,7 @@ def skeletonize(img):
         img[:, :] = eroded[:, :]
         if cv2.countNonZero(img) == 0:
             break
-
+    print('skeletonizing took', datetime.datetime.now()-last)
     return skel
 
 
@@ -210,6 +209,7 @@ def removeSmallRegions(intensity, img):
     markers = markers + 1
     labels = cv2.watershed(img, markers)
     returnImage = intensity.copy()
+    now = datetime.datetime.now()
     for label in np.unique(labels):
         mask = np.zeros(intensity.shape, dtype="uint8")
         mask[labels == label] = 1
@@ -220,6 +220,7 @@ def removeSmallRegions(intensity, img):
         if np.sum(mask) < removalThreshold:
             # remove region if it is to small
             returnImage = mask * 0 + (1 - mask) * returnImage
+    print('looping though sections took:',datetime.datetime.now() - now)
     h_show('small regions removed', returnImage)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -351,11 +352,13 @@ def backgroundRegions(data, keys, intensity):  # only uses intensity image. back
     data, keys = h_add(data, keys, 'innerSectionAvgSize Percentage', innerSectionAvg / allPixelSum)
     print('innerSectionNum',innerSectionNum)
     sizes = np.array([])
+    last = datetime.datetime.now()
     for marker in np.unique(markers):
         if marker > 2:
             mask = np.zeros(gray.shape, dtype="uint8")
             mask[markers == marker] = 1
             sizes = np.append(sizes, np.sum(mask))
+    print('looping though sections took:', datetime.datetime.now()-last);
     innerSectionSizeVariance = np.var(sizes)
     data, keys = h_add(data, keys, 'innerSectionSizeVariance', innerSectionSizeVariance)
     data, keys = h_add(data, keys, 'std', np.std(sizes))
@@ -390,16 +393,18 @@ def denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr):
     data,keys = h_add(data,keys, 'IntensitySum in Dense Section',np.sum(denseintensity))
     return data,keys
 
-printTime = False # set to true my using -t
+printTimeSet = False # set to true my using -t
 def printTime(last):
-    global printTime
-    if printTime:
-        now = datetime.now()
+    global printTimeSet
+    if printTimeSet:
+        now = datetime.datetime.now()
         print(now, 'elapsed time', now - last)
         return now
 def detect(path):
-    start = datetime.now()
-    print('started processing at',start)
+    global printTimeSet
+    start = datetime.datetime.now()
+    if printTimeSet:
+        print('started processing at',start)
     print('image path',path)
     # loading image
     blur = False
@@ -427,12 +432,14 @@ def detect(path):
     last = printTime(last)
     data, keys                = denseAndLoosePerc(data,keys, intensity,maskoutr,densemaskoutr)
     last = printTime(last)
-    print('total:',datetime.now()-start)
+    print('Image Processing took :',datetime.datetime.now()-start)
     # showstats( data,keys)
     return data, keys
 
 
 def testEdgeDetection(path):
+    global debugstate
+    debugstate = True
     orig = cv2.imread(path)
 
     blur = cv2.blur(orig, (5, 5))
@@ -458,7 +465,6 @@ def testEdgeDetection(path):
 
 # endregion
 # region calibration
-useOldFunc = False
 def calibration():
     #find every image in the folder and use them to calibrate with
     #retrieve names of the images
@@ -490,8 +496,6 @@ def calibrateProcessImages(calibrationPaths):
     np.save(calibrationResultDatapath, alldata)
     np.save(keyDatapath, keys)
     np.save(hairAmountDatapath, hairAmount)
-    if useOldFunc==False:
-        ProcessBestFunctions(alldata, keys, hairAmount)
     # f.write(alldata)
     # f.close()
     # save alldata and stats in a file
@@ -1026,7 +1030,7 @@ def checkCalibration():
         hairAmount = np.load(hairAmountDatapath + '.npy')
     except:
         print('no calibration data found')
-    print(np.sort(hairAmount))
+    print('calibration images',np.sort(hairAmount))
     if debugstate:
         guessTest()
 def calculateError(numberstring):
@@ -1044,7 +1048,7 @@ def calculateError(numberstring):
     estimatedHair = data[1::2]
     estimatedHair = np.array(list(map(float,estimatedHair)))
     estimatedHair = np.array(list(map(int, estimatedHair)))
-    print(estimatedHair)
+    print('estimated',estimatedHair)
     if np.size(estimatedHair)>np.size(numbers):
         estimatedHair = estimatedHair[np.size(estimatedHair)-np.size(numbers)::]
     print('(estimated, actual)')
@@ -1300,22 +1304,18 @@ def commandlinehandeling():
     parser.add_argument("-d", "--debug", help="show Images and extracted Image Data", action="store_true")
     parser.add_argument("arg1", nargs='?',help="depending on command: imagepath, folderpath or user", type=str)
     parser.add_argument("arg2", nargs='?', help="for command addCalibrationImage: hair Amount, command guess: tag or number of days")
-    parser.add_argument("arg3", nargs='?', help ="command guess: tag or number of days" )
+    parser.add_argument("arg3", nargs='?', help ="command guess: tag" )
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-r", "--replace", action='store_true', help="when duplicate date found during guess: replace old guess with new one")#replace
     group.add_argument("-m","--mean",action = 'store_true',help="when duplicate date found during guess: use mean of both guesses")#use mean
     group.add_argument("-i","--ignore", action = 'store_true',help="when duplicate date found during guess: ignore new guess")#ignore second duplicate
     group.add_argument("-k","--keep",action ='store_true',help="when duplicate date found during guess: keep both guesses")#keep duplicate
     group.add_argument("-a", "--add",action = 'store_true', help="when duplicate date found during guess: use sum of both guesses")
-    parser.add_argument("-o","--useOldFunc", help="dont find new functions during calibration",action="store_true")
     parser.add_argument("-t","--time", help="print how long image processing took", action ="store_true")
     args = parser.parse_args()
-    global printTime
+    global printTimeSet
     if args.time:
-        printTime = True
-    global useOldFunc
-    if args.useOldFunc:
-        useOldFunc = True
+        printTimeSet = True
     global duplicateHandelingMode
     if args.replace:
 
